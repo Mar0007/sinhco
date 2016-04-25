@@ -14,6 +14,7 @@
     //$modulo = ( isset($_GET['mod']) ) ? $_GET['mod'] : "dashboard";                                      
     // para el desktop
     // cogito ergo sum.
+    // Just commit.
     $modulo = ( !URLParam(1) ) ? "dashboard" : URLParam(1);
     
     echo $modulo;
