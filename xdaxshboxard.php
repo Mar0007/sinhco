@@ -10,7 +10,7 @@
         header("Location: login");
         die();
     }
-    
+    //Test
     //$modulo = ( isset($_GET['mod']) ) ? $_GET['mod'] : "dashboard";                                      
     
     $modulo = ( !URLParam(1) ) ? "dashboard" : URLParam(1);
