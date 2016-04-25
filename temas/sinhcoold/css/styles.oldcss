@@ -1,0 +1,150 @@
+/**** NavBar ****/
+nav {
+    background-color: #0484c3;
+}
+
+.nav-wrapper .brand-logo{
+    margin-left: 15px;
+}
+/**************/
+
+/**** Cards ****/
+
+.card-image IMG{
+    /*max-height: 200px;*/
+    height: 200px;
+}
+
+.card .card-author{
+    /*margin-top: 5px;*/
+    margin-left: 20px;
+    margin-bottom: 5px;
+}
+/**************/
+
+/**** Tabs ****/
+.tabs .tab a {
+    color: #039BE5;
+}
+    .tabs .tab a:hover {
+        color: rgba(3, 155, 229, 0.46); 
+    }
+
+    .tabs .tab.disabled a {
+        color: rgba(159, 159, 159, 0.83);
+    }
+    .tabs .indicator {
+        background-color: #039BE5;
+    }
+/**************/
+
+/**** Footer ****/
+footer.page-footer{
+    margin-top: 0px;
+    padding-top: 0px;
+    background-color: #0484c3;
+}
+/**************/
+
+/**** Parallax ****/
+
+.parallax-container {
+  height: 300px;
+}
+/**************/
+
+/**** Post ****/
+/*
+.Post{
+    margin: 0.5rem 0px 1rem;
+}
+
+.Post .divider{
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.Post .Tags{
+    margin-right: 5px;
+}
+*/
+/**************/
+
+.Comentarios .responsive-img{
+    min-width: 32px;
+    min-width: 32px;
+    margin-left: -10px;
+}
+
+
+.headergaleria .material-icons{
+    margin-top: -15px
+}
+
+
+.contentgaleria .card-action{
+    font-size: 11px;
+    text-align: center;
+}
+
+.contentgaleria .card-action a{
+    margin-left: -3px;
+}
+
+.breadcrumb {
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.breadcrumb i,
+.breadcrumb [class^="mdi-"], .breadcrumb [class*="mdi-"],
+.breadcrumb i.material-icons {
+  display: inline-block;
+  float: left;
+  font-size: 24px;
+}
+
+.breadcrumb:before {
+  content: '\E5CC';
+  color: rgba(255, 255, 255, 0.7);
+  vertical-align: top;
+  display: inline-block;
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 25px;
+  margin: 0 10px 0 8px;
+  -webkit-font-smoothing: antialiased;
+}
+
+.breadcrumb:first-child:before {
+  display: none;
+}
+
+.breadcrumb:last-child {
+  color: #fff;
+}
+
+/******* Fixes *************/
+
+/*#admin-slideout {*/
+.side-nav {
+    z-index: 1010;
+}
+
+#sidenav-overlay{
+    z-index: 1003;
+}
+
+@media only screen and (max-width : 601px){nav .material-icons { line-height: inherit; } /* fix Icons on Mobile */}
+
+/* Fix Dropdown with Card*/
+.card {
+	 position: static;
+ }
+
+@media only screen and (max-width : 992px){
+	table.responsive-table , table.responsive-table tbody { 
+		position: static; 
+	} /* Fix ResponsiveTable With Dropdown */
+}
