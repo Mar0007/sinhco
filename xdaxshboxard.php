@@ -14,6 +14,7 @@
     //$modulo = ( isset($_GET['mod']) ) ? $_GET['mod'] : "dashboard";                                      
     //Comentario en el xdaxshboxard
     //Que comentario mas malo eso javi...
+    //lo hizo automatico muela, no la verdad es que si es malo
     $modulo = ( !URLParam(1) ) ? "dashboard" : URLParam(1);
     
     echo $modulo;
