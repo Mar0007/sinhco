@@ -13,6 +13,7 @@
     //Test
     //$modulo = ( isset($_GET['mod']) ) ? $_GET['mod'] : "dashboard";                                      
     //Comentario en el xdaxshboxard
+    //Que comentario mas malo eso javi...
     $modulo = ( !URLParam(1) ) ? "dashboard" : URLParam(1);
     
     echo $modulo;
