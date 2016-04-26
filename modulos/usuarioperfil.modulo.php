@@ -1,45 +1,39 @@
 <?php
 	global $mysqli;	
-	global $SEGURIDAD;
+	global $OnDashboard;
 	
-	if($SEGURIDAD != 1 || !login_check($mysqli))
+	if($OnDashboard != 1 || !login_check($mysqli))
 	{
 		echo "<h1>Acceso denegado</h1>";
 		return;
 	}
 		
-	if( !isset($_GET["idusuario"]) )
+	if( !URLParam(2) )
 	{
 		echo "Usuario no valido.";
 		return;
 	}
 	
-	$idusuario = $_GET["idusuario"];	
+	$idusuario = URLParam(2);	
 	if(!esadmin($mysqli) && $idusuario != $_SESSION['idusuario'])
 	{
 		echo "<h1>No tiene permisos para ver este modulo.</h1>";
 		return;
 	}	
 		
-	$strSQL = "SELECT nombre,email,estado FROM usuarios WHERE idusuario = ?";
-	if( $stmt = $mysqli->prepare($strSQL) )
+	//Get user info
+	$stmt = $mysqli->select("usuarios",
+		["nombre","email","estado"],
+		["idusuario" => $idusuario]
+	);	
+
+	if(!$stmt)
 	{
-		$stmt->bind_param('s',$idusuario);
-		$stmt->execute();
-		$stmt->store_result();
-		$stmt->bind_result($usuario,$email,$estado);										
+		if($mysqli->error()[2] != "")
+			echo "Error:".$mysqli->error()[2];
 		
-		if(!$stmt->fetch())
-		{ 
-			echo "Usuario no encontrado";
-			return;
-		}
-	}
-    else 
-    {
-        echo "Error en consulta:" . $mysqli->error;
-        return;
-    }	   		
+		return;
+	}	
 ?>				
 
 <div class="card-content">
@@ -65,12 +59,12 @@
 				</div>		
 				<div class="input-field col s12">
 				<i class="material-icons prefix">perm_identity</i>
-				<input id="nombre" name="nombre" type="text" class="validate" required value="<?php echo $usuario ?>">
+				<input id="nombre" name="nombre" type="text" class="validate" required value="<?php echo $stmt[0]["nombre"] ?>">
 				<label for="nombre">Nombre</label>
 				</div>		
 				<div class="input-field col s12">
 				<i class="material-icons prefix">email</i>
-				<input id="email" name="email" type="email" class="validate" required value="<?php echo $email ?>">
+				<input id="email" name="email" type="email" class="validate" required value="<?php echo $stmt[0]["email"] ?>">
 				<label for="email">Email</label>
 				</div>		
 															
@@ -86,7 +80,7 @@
 				</div>
 										
 				<div class="col s3">
-				<input type="checkbox" id="ckactivo" name="estado" <?php echo ($estado) ? "checked" : "" ?>/>
+				<input type="checkbox" id="ckactivo" name="estado" <?php echo ($stmt[0]["estado"]) ? "checked" : "" ?>/>
 				<label for="ckactivo">Activo</label>
 				</div>					
 				<input type="submit" value="Guardar" style="display:none;">											

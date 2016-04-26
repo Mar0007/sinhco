@@ -170,6 +170,16 @@
 					swal("Error", data, "error");
 			});				
 		});		
-	}	
+	}
+	
+	function OpenModal()
+	{
+		var frm = $('#modalFrmAdd').find('form');
+		frm.trigger('reset');
+							
+		//At last open it.
+		$('#modalFrmAdd').openModal();
+		$('#idperfil').focus();	  
+	}			
 
 </script>

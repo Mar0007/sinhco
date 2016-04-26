@@ -100,52 +100,42 @@
                 ]);
                 
                 if( CheckDBError($mysqli) ) return;                
-                echo "0";
-                
+                echo "0";                
 				break;
-				
-		case 4: //Eliminar
-				$IDItem = $_POST["IDItem"];
-				$IDMenu = $_POST["IDMenu"];
-				$Orden	= $_POST["Posicion"];
+								
+		case 4: //Eliminar				
+				$mysqli->action(function($mysqli)
+				{
+					$IDItem = $_POST["IDItem"];
+					$IDMenu = $_POST["IDMenu"];
+					$Orden	= $_POST["Posicion"];
 
-				$strSQL = "DELETE FROM menu_detalle WHERE iditem = ? and idmenu = ?";
-				if( $stmt = $mysqli->prepare($strSQL) )
-				{
-					$stmt->bind_param('ii',$IDItem,$IDMenu);
-					$stmt->execute();
-					if($stmt->errno != 0)
-					{
-						echo $stmt->errno . " : " . $mysqli->error;
-						return;
-					}
-				}
-				else
-				{
-					echo "Error en la consulta: " . $mysqli->error;
-					return;
-				}
 
-				//Renumber database Order.
-				$strSQL   = "UPDATE menu_detalle SET orden = orden - 1 WHERE idmenu = ? and orden >= ?";
-				if( $stmt = $mysqli->prepare($strSQL) )
-				{
-					$stmt->bind_param('ii',$IDMenu,$Orden);
-					$stmt->execute();
-					if($stmt->errno != 0)
-					{
-						echo $stmt->errno . " : " . $mysqli->error;
-						return;
-					}						
-				}
-				else
-				{
-					echo "Error en la consulta: " . $mysqli->error;
-					return;
-				}							
-				echo "0";
-				break;
-				
+					$mysqli->delete("menu_detalle",
+					[
+						"AND" => 
+						[
+							"iditem" => $IDItem,
+							"idmenu" => $IDMenu	
+						]	
+					]
+					);										
+					if( CheckDBError($mysqli) ) return false;				
+					
+					//Renumber database Order.
+					$mysqli->update("menu_detalle", ["orden[-]" => 1],
+					[
+						"AND" => 
+						[
+							"idmenu" => $IDMenu,
+							"orden[>=]" => $Orden
+						]
+					]);                                                
+					if( CheckDBError($mysqli) ) return false;															
+					echo "0";					
+				});
+								
+				break;				
 		case 5: //Update Order
 				//Renumber database Order.
 				$IDMenu = $_POST['IDMenu'];				
@@ -184,23 +174,11 @@
 		
 				break;		
 		case 7: //Delete Menu
-				$IDMenu = $_POST["IDMenu"];
-				$strSQL = "DELETE FROM menus WHERE idmenu = ?";
-				if( $stmt = $mysqli->prepare($strSQL) )
-				{
-					$stmt->bind_param('i',$IDMenu);
-					$stmt->execute();
-					if($stmt->errno != 0)
-					{
-						echo $stmt->errno . " : " . $mysqli->error;
-						return;
-					}
-				}
-				else
-				{
-					echo "Error en la consulta: " . $mysqli->error;
-					return;
-				}
+				$IDMenu = $_POST["IDMenu"];				
+				
+				$mysqli->delete("menus",["idmenu" => $IDMenu]);								
+				if( CheckDBError($mysqli) ) return;							
+					
 				echo "0";
 				break;				
 	}

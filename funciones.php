@@ -34,7 +34,7 @@
             {
                 $Result .= 
                 "<li>
-                    <a href=\"".$row["vinculo"]."\"><img class=\"responsive-img circle left z-depth-1\"".
+                    <a href=\"".GetURL($row["vinculo"])."\"><img class=\"responsive-img circle left z-depth-1\"".
                     "style=\"width:32px;height:32px;margin-top:15px;margin-right:10px\""
                     ." src=\"".GetUserImagePath($_SESSION['idusuario'])."\">".$_SESSION['idusuario']."</a>
                  </li>
@@ -43,7 +43,7 @@
             else
                 $Result .= 
                 "<li>
-                    <a href=\"".$row["vinculo"]."\">". 
+                    <a href=\"".GetURL($row["vinculo"])."\">". 
                     (($row["icono"] && $row["icono"] != "") ? 
                     "<i class=\"material-icons left\" style=\"line-height: inherit;\">".$row["icono"].
                     "</i>" : "" ) .
@@ -290,6 +290,10 @@
     
     function GetURL($URL)
     {
+        //If it finds a "javascript:"
+        if (strlen($URL) > 10 && strtolower(substr($URL, 0, 11)) === 'javascript:')
+            return $URL;
+        
         return CurrentFolder().$URL;
     }    
     
