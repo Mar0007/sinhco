@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 26, 2016 at 02:06 AM
+-- Generation Time: Apr 27, 2016 at 04:22 AM
 -- Server version: 5.6.15-log
 -- PHP Version: 5.5.8
 
@@ -45,7 +45,15 @@ CREATE TABLE IF NOT EXISTS `imagenes` (
   `ruta` text COLLATE utf8_bin NOT NULL,
   `categoria` varchar(50) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`idimagen`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `imagenes`
+--
+
+INSERT INTO `imagenes` (`idimagen`, `img`, `ruta`, `categoria`) VALUES
+(1, 'Imagen test 1', '/sinhco/uploads/images/Slider-566f1ba1b55fe1.10941682.jpg', 'Slider'),
+(3, 'woot', '/sinhco/modulos/modadminslider/../../uploads/images/Slider-57201e5e9926f8.66327505.jpg', 'slider');
 
 -- --------------------------------------------------------
 
@@ -90,7 +98,9 @@ CREATE TABLE IF NOT EXISTS `menu_detalle` (
 INSERT INTO `menu_detalle` (`idmenu`, `iditem`, `itemmenu`, `vinculo`, `icono`, `orden`) VALUES
 (2, 0, 'Dashboard', 'dashboard/inicio', 'dashboard', 0),
 (2, 1, 'Menus', 'dashboard/adminmenu', 'list', 1),
-(2, 2, 'Usuarios', 'dashboard/usuarios', 'group', 2),
+(2, 2, 'Usuarios', 'dashboard/usuarios', 'group', 3),
+(2, 3, 'Modulos', 'dashboard/modulos', 'view_module', 2),
+(2, 4, 'Slider', 'dashboard/adminslider', 'photo_library', 4),
 (3, 0, 'Inicio', 'inicio', '', 0);
 
 -- --------------------------------------------------------
@@ -114,9 +124,11 @@ CREATE TABLE IF NOT EXISTS `modulos` (
 
 INSERT INTO `modulos` (`idmodulo`, `modulo`, `tipo`, `contenido`) VALUES
 ('adminmenu', 'Admin Menu', 1, ''),
+('adminslider', 'Administrador de Slider', 1, ''),
 ('dashboard', 'Informacion', 1, ''),
 ('inicio', 'Inicio', 1, ''),
 ('login', 'login', 1, ''),
+('modulos', 'Administrador de Modulos', 1, ''),
 ('usuarioperfil', 'Perfil del Usuario', 1, ''),
 ('usuarios', 'Modulo de Usuarios', 1, '');
 
@@ -207,7 +219,14 @@ CREATE TABLE IF NOT EXISTS `slider` (
   `idslider` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`idslider`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `slider`
+--
+
+INSERT INTO `slider` (`idslider`, `nombre`) VALUES
+(0, 'Slider Principal');
 
 -- --------------------------------------------------------
 
@@ -224,6 +243,14 @@ CREATE TABLE IF NOT EXISTS `slider_img_mod` (
   KEY `idmodulo` (`idmodulo`),
   KEY `idimagen` (`idimagen`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Dumping data for table `slider_img_mod`
+--
+
+INSERT INTO `slider_img_mod` (`idslider`, `idimagen`, `idmodulo`, `orden`) VALUES
+(0, 1, 'inicio', 0),
+(0, 3, 'inicio', 1);
 
 -- --------------------------------------------------------
 
