@@ -149,8 +149,13 @@
 				echo "<option value=\"".$last_id."\">$Slider</option>";
 										
 				break;		
-		case 7: //Delete Menu
+		case 7: //Delete Slider
 				$IDSlider = $_POST["IDSlider"];
+				if($IDSlider == 0)
+				{
+					echo "No se puede eliminar el slider principal.";
+					return;
+				}
 				
 				$mysqli->delete("slider",["idslider" => $IDSlider]);
 				if( CheckDBError($mysqli) ) return;
@@ -165,11 +170,12 @@
 						   NOT IN ( SELECT idmodulo FROM slider_img_mod 
 						   WHERE idslider = ".$mysqli->quote($IDSlider)."and idimagen = ".$mysqli->quote($IDImagen).")";
 
-				$stmt = $mysqli->query($strSQL)->fetchAll();
+				$stmt = $mysqli->query($strSQL);
 				if(CheckDBError($mysqli)) return;
 												
 				if($stmt != null)				
-				{													
+				{
+					$stmt = $stmt->fetchAll();													
 					foreach ($stmt as $row) 
 						$resultado .= $row["idmodulo"].",";
 						
@@ -202,13 +208,14 @@
 				FROM imagenes 
 				WHERE idimagen NOT IN (SELECT idimagen FROM slider_img_mod 
 					WHERE IDSlider = ". $mysqli->quote($IDSlider) . 
-					(($IDEdit == -1) ? "" : " and idimagen != " . $mysqli->quote($IDSlider) ).")";	
+					(($IDEdit == -1) ? "" : " and idimagen != " . $mysqli->quote($IDEdit) ).")";	
 
-				$stmt = $mysqli->query($strSQL)->fetchAll();
+				$stmt = $mysqli->query($strSQL);
 				if(CheckDBError($mysqli)) return;
 				
 				if($stmt != null)				
-				{													
+				{
+					$stmt = $stmt->fetchAll();													
 					foreach ($stmt as $row) 
 					{
 						echo "<a id=\"IMG_".$row["idimagen"]."\" value=\"".$row["idimagen"]."\" class=\"collection-item col s2".(($IDEdit == $row["idimagen"]) ? " active Initial":"")."\" style=\"margin-left:5px;margin-bottom:5px;width:110px;height:110px;cursor:pointer\" 
@@ -285,7 +292,7 @@
 																		
 		$stmt = $mysqli->query($strSQL);								
 		if(CheckDBError($mysqli) || !$stmt) return;												
-		$stmt = $mysqli->query($strSQL)->fetchAll();
+		$stmt = $stmt->fetchAll();
 		
 		foreach ($stmt as $row) 
 		{
