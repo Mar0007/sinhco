@@ -110,7 +110,6 @@
 					$IDMenu = $_POST["IDMenu"];
 					$Orden	= $_POST["Posicion"];
 
-
 					$mysqli->delete("menu_detalle",
 					[
 						"AND" => 
@@ -138,24 +137,27 @@
 				break;				
 		case 5: //Update Order
 				//Renumber database Order.
-				$IDMenu = $_POST['IDMenu'];				
-				$Orden = 0;
-                
-                foreach ($_POST['Row'] as $IDItem) 
-                {
-                    $mysqli->update("menu_detalle",["orden" => $Orden++],
-                    [
-                        "AND" => 
-                        [
-                            "idmenu" => $IDMenu,
-                            "iditem" => $IDItem
-                        ]
-                    ]);
-                    
-                    if( CheckDBError($mysqli) ) return;
-                }
-                
-				echo "0";
+				$mysqli->action(function($mysqli)
+				{				
+					$IDMenu = $_POST['IDMenu'];				
+					$Orden = 0;
+					
+					foreach ($_POST['Row'] as $IDItem) 
+					{
+						$mysqli->update("menu_detalle",["orden" => $Orden++],
+						[
+							"AND" => 
+							[
+								"idmenu" => $IDMenu,
+								"iditem" => $IDItem
+							]
+						]);
+						
+						if( CheckDBError($mysqli) ) return false;
+					}
+					
+					echo "0";
+				});
 				break;
 		case 6: //Insert Menu
 				$Menu = $_POST['Titulo'];																															

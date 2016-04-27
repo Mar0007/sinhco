@@ -1,8 +1,8 @@
 <?php
 	global $mysqli;
-	global $SEGURIDAD;
+	global $OnDashboard;
 	
-	if($SEGURIDAD != 1 || !login_check($mysqli))
+	if($OnDashboard != 1 || !login_check($mysqli))
 	{
 		echo "<h1>Acceso denegado</h1>";
 		return;
@@ -45,7 +45,7 @@
 	$(document).ready(function(){						
 		//Get data
 		$.ajax({
-			url:"modulos/modmodulos/servicemodulos.php?accion=1"
+			url:"<?php echo GetURL("modulos/modmodulos/servicemodulos.php?accion=1"); ?>"
 		}).done(
 			function(data){
 				$("#tblModulos tbody").append(data);
@@ -67,7 +67,7 @@
 			},
 			function(){
 			$.ajax({
-				url:"modulos/modmodulos/servicemodulos.php?accion=4",
+				url:"<?php echo GetURL("modulos/modmodulos/servicemodulos.php?accion=4"); ?>",
 				method: "POST",
 				data: {idmodulo:id}
 			}).done(function(data){

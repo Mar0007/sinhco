@@ -15,7 +15,7 @@
 	
 	if( login_check($mysqli) )
 	{
-		header("Location: dashboard.php");
+		header("Location: dashboard");
         return;
 	}		
 

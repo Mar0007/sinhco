@@ -19,25 +19,20 @@
 	switch($accion)
 	{
 		case 1: // Consulta
-				$strSQL = "SELECT idmodulo, modulo, tipo FROM modulos";
-				if( $stmt = $mysqli->prepare($strSQL) )
+				$stmt = $mysqli->select("modulos",["idmodulo","modulo","tipo"]);
+				
+				if(CheckDBError($mysqli))
+					return;
+				
+				foreach ($stmt as $row) 
 				{
-					$stmt->execute();
-					$stmt->store_result();
-					$stmt->bind_result($idmodulo,$modulo, $tipo);					
-										
-					while ( $stmt->fetch() )
-					{
-						echo "<tr class=\"datamodulos\" id=\"$idmodulo\" style=\"display:none\">
-							  <td>$idmodulo</td>
-							  <td>$modulo</td>
-							  <td>".GetIconHTML($tipo)."</td>
-							  <td>".GetDropDownSettingsRow($idmodulo,GetMenuArray($tipo == 0))."</td>
-							  </tr>";
-					}
+					echo "<tr class=\"datamodulos\" id=\"".$row["idmodulo"]."\" style=\"display:none\">
+							<td>".$row["idmodulo"]."</td>
+							<td>".$row["modulo"]."</td>
+							<td>".GetIconHTML($row["tipo"])."</td>
+							<td>".GetDropDownSettingsRow($row["idmodulo"],GetMenuArray($row["tipo"] == 0))."</td>
+							</tr>";
 				}
-				else
-					echo "Error en la consulta: " . $mysqli->error;
 							
 				break;			
 		case 2: // Insertar
@@ -46,19 +41,12 @@
 				break;
 		case 4: //Eliminar				
 				$idmodulo = $_POST["idmodulo"];
-				$strSQL = "DELETE FROM modulos WHERE idmodulo = ?";
-				if( $stmt = $mysqli->prepare($strSQL) )
-				{
-					$stmt->bind_param('s',$idmodulo);
-					$stmt->execute();
-					if($stmt->errno != 0)
-						echo $stmt->errno . " : " . $mysqli->error;
-					else
-						echo "0";	
-				}
-				else
-					echo "Error en la consulta: " . $mysqli->error;		
-				break;				
+				
+				$mysqli->delete("modulos",["idmodulo" => $idmodulo]);
+				if(CheckDBError($mysqli))
+					return;
+				
+				echo "0";				
 	}
 	
 	//Functions

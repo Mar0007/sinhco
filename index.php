@@ -7,7 +7,7 @@
     //$modulo = ( isset($_GET["mod"]) ) ? $_GET["mod"] : "inicio";
         
     $modulo = ( !URLParam(0) ) ? "inicio" : URLParam(0);    
-        
+
     switch($modulo)
     {
         case "dashboard":

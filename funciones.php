@@ -95,9 +95,9 @@
         {
             $Result .= 
             "<li>
-                <img src=\"". $row['i.ruta'] ."\">
+                <img src=\"". $row['ruta'] ."\">
                 <div class=\"caption center-align\">
-                    <h3>".$row['i.img']."</h3>
+                    <h3>".$row['img']."</h3>
                 </div>
              </li>";
         }
@@ -284,6 +284,9 @@
     
     function CurrentFolder()
     {
+        if(basename($_SERVER['SCRIPT_NAME']) != "index.php")
+            return dirname($_SERVER['SCRIPT_NAME'])."/../../";
+        
         return dirname($_SERVER['SCRIPT_NAME'])."/";
     }
     
@@ -310,9 +313,9 @@
 //-------------------------------------------------------------------------------------
 	function GetUserImagePath($idusuario)
 	{        
-        $result = glob(GetURL("uploads/avatars/").GetStrWithRange($idusuario).".*");
+        $result = glob("uploads/avatars/".GetStrWithRange($idusuario).".*");
 		if(count($result) > 0 )
-			return ltrim($result[0],"/.");
+			return GetURL(ltrim($result[0],"/."));
 		else
 			return GetURL("uploads/avatars/default.png");		
 	}

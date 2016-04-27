@@ -1,8 +1,8 @@
 <?php
 	global $mysqli;
-	global $SEGURIDAD;
+	global $OnDashboard;
 	
-	if($SEGURIDAD != 1 || !login_check($mysqli))
+	if($OnDashboard != 1 || !login_check($mysqli))
 	{
 		echo "<h1>Acceso denegado</h1>";
 		return;
@@ -13,30 +13,29 @@
 		echo "<h1>No tiene permisos para ver este modulo.</h1>";
 		return;
 	}
-
 ?>
 
-<div class="card-content">
+<div class="row">
 		<h3>Administracion de Sliders</h3>		
 		<div class="col s9 m10 l6" style="margin-left:-20px;">
 			<div class="input-field col s12">
 				<select id="cbSlider">
 					<option value="" href="" disabled>Escoge el Slider</option>
 					<?php
-						$strSQL = "SELECT idslider,slider FROM slider";
-						if( $stmt = $mysqli->prepare($strSQL) )
-						{
-							$stmt->execute();
-							$stmt->store_result();
-							$stmt->bind_result($idslider,$slider);
-							if( $stmt->num_rows > 0 )							
-								while ( $stmt->fetch() )
-									echo "<option value=\"$idslider\">$slider</option>";
-							else
-								echo "<option value=\"\">No hay Sliders disponible</option>";
-						}
+						$stmt = $mysqli->select("slider",["idslider","nombre"]);						
+						
+						if(CheckDBError($mysqli))
+							echo "<option value=\"\">Error al traer Sliders</option>";
 						else
-							echo "<option value=\"\">Error al traer Sliders</option>";							
+						{
+							if(!$stmt)
+								echo "<option value=\"\">No hay Sliders disponible</option>";
+							else
+							{
+								foreach ($stmt as $row) 
+									echo '<option value='.$row["idslider"].'">'.$row["nombre"].'</option>';
+							}
+						}															
 					?>				
 				</select>
 				<label>Slider</label>
@@ -179,7 +178,7 @@
 			var IDSlider = $('#cbSlider').val();
 			var data = $("#tblSliders tbody").sortable('serialize') + "&IDSlider=" + IDSlider;
 			$.ajax({
-				url:"modulos/modadminslider/serviceadminslider.php?accion=5",
+				url:"<?php echo GetURL("modulos/modadminslider/serviceadminslider.php?accion=5") ?>",
 				method: "POST",
 				data: data
 			}).done(function(data){
@@ -207,7 +206,7 @@
 	$("#tblSliders tbody").empty();
 	//Get data
 	ajax_request = $.ajax({
-		url:"modulos/modadminslider/serviceadminslider.php?accion=1",
+		url:"<?php echo GetURL("modulos/modadminslider/serviceadminslider.php?accion=1") ?>",
 		method: "POST",
 		data: {IDSlider:id}		
 	}).done(
@@ -329,7 +328,7 @@
 	if(!IDEdit) IDEdit = -1;
 	
 	$.ajax({
-		url:"modulos/modadminslider/serviceadminslider.php?accion=9",
+		url:"<?php echo GetURL("modulos/modadminslider/serviceadminslider.php?accion=9")?>",
 		method: "POST",
 		data: {IDSlider:IDSlider,IDEdit:IDEdit}		
 	}).done(function(data){
@@ -353,7 +352,7 @@
 	ShowLoadingSwal();
 	
 	$.ajax({
-		url:"modulos/modadminslider/serviceadminslider.php?accion=2",
+		url:"<?php echo GetURL("modulos/modadminslider/serviceadminslider.php?accion=2")?>",
 		method: "POST",
 		data: {IDImagen:IDImagen,
 			   IDSlider:IDSlider,
@@ -395,7 +394,7 @@
 	ShowLoadingSwal();
 	
 	$.ajax({
-		url:"modulos/modadminslider/serviceadminslider.php?accion=2",
+		url:"<?php echo GetURL("modulos/modadminslider/serviceadminslider.php?accion=2")?>",
 		method: "POST",
 		data: {IDImagen:IDImagen,
 			   IDImgInit:IDImgInit,
@@ -443,7 +442,7 @@
 		function()
 		{				
 		$.ajax({
-			url:"modulos/modadminslider/serviceadminslider.php?accion=4",
+			url:"<?php echo GetURL("modulos/modadminslider/serviceadminslider.php?accion=4")?>",
 			method: "POST",
 			data: {IDSlider:IDSlider,IDImagen:id}
 		}).done(function(data){
@@ -487,7 +486,7 @@
 		ShowLoadingSwal();			
 				
 		$.ajax({
-			url:"modulos/modadminslider/serviceadminslider.php?accion=6",
+			url:"<?php echo GetURL("modulos/modadminslider/serviceadminslider.php?accion=6")?>",
 			method: "POST",
 			data: {Titulo:inputValue}
 		}).done(function(data){
@@ -516,7 +515,7 @@
 		function(){
 			var IDSlider = $("#cbSlider").val();
 			$.ajax({
-				url:"modulos/modadminslider/serviceadminslider.php?accion=7",
+				url:"<?php echo GetURL("modulos/modadminslider/serviceadminslider.php?accion=7")?>",
 				method: "POST",
 				data: {IDSlider:IDSlider}
 			}).done(function(data){
@@ -551,7 +550,7 @@
 		if(ajax_request) ajax_request.abort();
 		
 		ajax_request = $.ajax({
-			url:"modulos/modadminslider/serviceadminslider.php?accion=8",
+			url:"<?php echo GetURL("modulos/modadminslider/serviceadminslider.php?accion=8")?>",
 			method: "POST",
 			data: {IDImage:IDImage,IDSlider:IDSlider}
 		}).done(function(data){
@@ -675,7 +674,7 @@
 		$("#LoaderUpload").show();
 		
 		$.ajax({
-				url: "modulos/modadminslider/serviceadminslider.php?accion=10",
+				url: "<?php echo GetURL("modulos/modadminslider/serviceadminslider.php?accion=10")?>",
 				type: "POST",
 				data: new FormData($(frmUpload)[0]),
 				contentType: false,
@@ -718,7 +717,7 @@
 			function()
 			{				
 				$.ajax({
-					url:"modulos/modadminslider/serviceadminslider.php?accion=11",
+					url:"<?php echo GetURL("modulos/modadminslider/serviceadminslider.php?accion=11")?>",
 					method: "POST",
 					data: {IDImagen:id}
 				}).done(function(data){
@@ -757,7 +756,7 @@
 			ShowLoadingSwal();
 			
 			$.ajax({
-				url:"modulos/modadminslider/serviceadminslider.php?accion=12",
+				url:"<?php echo GetURL("modulos/modadminslider/serviceadminslider.php?accion=12")?>",
 				method: "POST",
 				data: {IDImagen:id,Imagen:inputValue}
 			}).done(function(data){
