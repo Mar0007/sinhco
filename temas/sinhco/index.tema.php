@@ -8,7 +8,7 @@
   <!-- CSS  -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="<?php echo GetURL($tema."css/materialize.css")?>" type="text/css" rel="stylesheet" media="screen,projection"/>
-  <link href="<?php echo GetURL($tema."css/style.css")?>" type="text/css" rel="stylesheet" media="screen,projection"/>
+  <link href="<?php echo GetURL($tema."css/styles.css")?>" type="text/css" rel="stylesheet" media="screen,projection"/>
   
   <!--  Scripts-->
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
@@ -25,7 +25,7 @@
                         <a href="index.html" class="brand-logo light-blue-text text-accent-4"><img class="logo responsive-img" src="<?php echo GetURL("uploads/static/logo.png");?>"></a>
                         <a href="#" data-activates="mobile-demo" class="button-collapse light-blue-text text-accent-4"><i class="material-icons">menu</i></a>
                         <ul class="right hide-on-med-and-down">
-                            <li><a href="proyectos.html">Proyectos</a></li>
+                            <li><a href="proyectos">Proyectos</a></li>
                             <li><a class='dropdown-button' data-activates='drop-products' href="products.html">Productos</a></li>
                             <li><a href="servicios.html">Servicios</a></li>
                             <li><a href="about.html">Acerca de</a></li>
@@ -143,17 +143,9 @@
                   belowOrigin: true, // Displays dropdown below the button
                   alignment: 'left' // Displays dropdown with edge aligned to the left of button
                 }
-              );
-            $('a[href^="#"]').click(function(e) {
-                e.preventDefault();
-                var target = this.hash, $target = $(target);
-                $('html, body').stop().animate({
-                    'scrollTop': $target.offset().top
-                }, 900, 'swing', function() {
-                    window.location.hash = target;
-                });
-            });
+              );            
         });
+        
     </script>
     <style>
         @media only screen and (min-width: 992px) {

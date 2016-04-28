@@ -336,7 +336,7 @@
 	function GetDropDownSettingsRow($id,$Items)
 	{
 		$HTMLResult = 
-		"<a class='dropdown-button btn' href='#' data-activates='cbSettingsRow_$id'><i class=\"material-icons\">settings</i></a>
+		"<a class='dropdown-button btn-flat secondary-content grey-text lighten-1' href='#' data-activates='cbSettingsRow_$id'><i class=\"material-icons\">more_vert</i></a>
 			<ul id='cbSettingsRow_$id' class='dropdown-content'>";
 			
 		

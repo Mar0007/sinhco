@@ -87,11 +87,13 @@
     
     
     $(document).ready(function(){
+      
         $.ajax({
-			url:"<?php echo GetURL("modulos/modproyectos/serviceadminproyectos.php?accion=1") ?>"
+			url:"<?php echo GetURL("modulos/modadminproyectos/serviceadminproyectos.php?accion=1") ?>"
 		}).done(
 			function(data){
-				$("#proyectostb").append(data);				
+				$("#proyectostb").append(data);	
+                InitDropdown();
 				$(".dataproyectos").fadeIn();
 			}
 		);
@@ -100,7 +102,7 @@
         $("#confirmar-eliminar").openModal();
         $( "#delete-yes" ).click(function() {
                 $.ajax({
-				    url:"<?php echo GetURL("modulos/modproyectos/serviceadminproyectos.php?accion=4") ?>",
+				    url:"<?php echo GetURL("modulos/modadminproyectos/serviceadminproyectos.php?accion=4") ?>",
 				    method: "POST",
 				    data: {idproyecto:idproyecto}
 			    }).done(

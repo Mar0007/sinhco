@@ -44,8 +44,8 @@
                 outDuration: 100,
                 constrain_width: false,
                 gutter: 0,
-                belowOrigin: false,
-                alignment: 'left'
+                belowOrigin: true,
+                alignment: 'right'
                 }
             );			  
         }

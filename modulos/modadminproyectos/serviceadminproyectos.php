@@ -45,16 +45,13 @@
 					'
 						<li id="'.$row["idproyecto"].'" class="dataproyectos collection-item avatar">
 							<img src="/sinhco/recursos/img/proyect.jpg" class="circle">
-							<a  class="black-text"href="#!">
-								<span class="title">'.$row["nombre"].'</span>
-								<a href="#!">
-									<i class="material-icons grey-text" style="font-size:1.4rem !important" >mode_edit</i>
-								</a>
+							<a  class="black-text" href="#!">
+								<span class="title">'.$row["nombre"].'</span>								
 							</a>                 
 							<p class="grey-text lighten-2 title">'.$row["lugar"].' </p>
 							<p class="grey-text lighten-2">Proyecto realizado: '.$row["fecha"].'</p>
-							<a href="javascript:eliminar('.$row["idproyecto"].')" class="secondary-content">
-                                    <i class="material-icons blue-grey-text">delete</i>
+							<a class="">
+                                    '.GetDropDownSettingsRow($row["idproyecto"],GetMenuArray()).'
                             </a> 
 									                                           
 						</li>
@@ -82,8 +79,26 @@
            if( CheckDBError($mysqli) ) return false;
            echo "0" ;
 				
-           break;				
-		
+           break;	
+            
+	}
     
+    function GetMenuArray()
+	{
+		//Datarow menu
+		return array(
+			array
+			(
+				"href" 		=> "javascript:OpenModal('%id')",
+				"icon" 		=> "edit",
+				"contenido" => "Editar"
+			),
+			array
+			(
+				"href" 		=> "javascript:eliminar('%id')",
+				"icon" 		=> "delete",
+				"contenido" => "Eliminar"
+			)
+		);		
 	}
 ?>
