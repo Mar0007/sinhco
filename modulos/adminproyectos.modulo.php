@@ -40,22 +40,23 @@
     
 ?>
 <div class="row">
-    <div class="container story-content">
-    <div class="row">
-        <h3 class="light center blue-grey-text text-darken-3">Administrar Proyectos</h3>
-        <p class="center light">Cree, edite y organize los proyectos.</p>
-        <div class="divider3"></div>
-    </div>
-
+    <div class="container">
+        <!--Module Title-->
+        <div class="row">
+            <h3 class="light center blue-grey-text text-darken-3">Administrar Proyectos</h3>
+            <p class="center light">Cree, edite y organice los proyectos.</p>
+            <div class="divider3"></div>
+        </div>
+        
+        <!--Module Data-->
         <ul id="proyectostb" class="collection"></ul>
     
-        
-   
-    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-        <a id="crearProyecto" href="?mod=crearproyecto" class="btn-floating btn-large blue-grey darken-2 tooltipped" data-position="left" data-delay="50" data-tooltip="Nuevo proyecto">
-          <i class="large material-icons">mode_edit</i>
-        </a>
-        <!--<ul>
+        <!--Module Action Button-->
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a id="crearProyecto" href="crearproyecto" class="btn-floating btn-large blue-grey darken-2 tooltipped" data-position="left" data-delay="50" data-tooltip="Nuevo proyecto">
+                <i class="large material-icons">mode_edit</i>
+            </a>
+            <!--<ul>
               <li>
                   <a id="crearArticulo" href="?mod=creararticulo" class="btn-floating green tooltipped" data-position="left" data-delay="50" data-tooltip="Nuevo proyecto">
                       <i class="material-icons">add</i>
@@ -64,8 +65,8 @@
               <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
         </ul>
     </div>-->      
-</div>   
-</div>
+        </div>   
+    </div>
 </div>
 
     <!-- Confirm Delete Modal -->
@@ -75,8 +76,8 @@
             <p class="flow-text">Se eliminará el proyecto de la lista. Esta acción no se puede regresar. </p>
         </div>
         <div class="modal-footer">
-            <button type="submit" value="SI" id="delete-yes"  class=" modal-action modal-close btn-flat">eliminar</button>
-            <button type="submit" value="NO" id="delete-no"  class=" modal-action modal-close btn-flat">cancelar</button>
+            <button type="submit" value="SI" id="delete-yes"  class=" modal-action modal-close btn-flat waves-effect waves-light">eliminar</button>
+            <button type="submit" value="NO" id="delete-no"  class=" modal-action modal-close btn-flat waves-effect waves-light">cancelar</button>
         </div>        
     </div>
     <!-- Confirm Delete Modal -->
@@ -87,7 +88,7 @@
     
     $(document).ready(function(){
         $.ajax({
-			url:"<?php echo GetURL("modulos/modproyectos/serviceproyectos.php?accion=1") ?>"
+			url:"<?php echo GetURL("modulos/modproyectos/serviceadminproyectos.php?accion=1") ?>"
 		}).done(
 			function(data){
 				$("#proyectostb").append(data);				
@@ -99,7 +100,7 @@
         $("#confirmar-eliminar").openModal();
         $( "#delete-yes" ).click(function() {
                 $.ajax({
-				    url:"<?php echo GetURL("modulos/modproyectos/serviceproyectos.php?accion=4") ?>",
+				    url:"<?php echo GetURL("modulos/modproyectos/serviceadminproyectos.php?accion=4") ?>",
 				    method: "POST",
 				    data: {idproyecto:idproyecto}
 			    }).done(

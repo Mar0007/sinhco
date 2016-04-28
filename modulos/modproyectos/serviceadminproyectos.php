@@ -21,9 +21,17 @@
 	{
 		case 1: // Consulta
 				$stmt = $mysqli->select("proyectos",
-                ["idproyecto","nombre","contenido","fecha"]);
-                
-                
+                [
+                    "idproyecto",
+                    "nombre",
+                    "lugar",
+                    "contenido",
+                    "fecha"
+                ],                
+                [
+                    "ORDER" => "fecha DESC"
+                ]);
+            
                 if(!$stmt)
                 {
                     if($mysqli->error()[2] != "")
@@ -43,7 +51,7 @@
 									<i class="material-icons grey-text" style="font-size:1.4rem !important" >mode_edit</i>
 								</a>
 							</a>                 
-							<span class="title"> </span>
+							<p class="grey-text lighten-2 title">'.$row["lugar"].' </p>
 							<p class="grey-text lighten-2">Proyecto realizado: '.$row["fecha"].'</p>
 							<a href="javascript:eliminar('.$row["idproyecto"].')" class="secondary-content">
                                     <i class="material-icons blue-grey-text">delete</i>
@@ -61,20 +69,20 @@
 				break;
 								
 		case 4: //Eliminar	
-				$IDProyecto = $_POST["idproyecto"];
+			$IDProyecto = $_POST["idproyecto"];
+			
+            $mysqli->delete("proyectos",
+            [
+				"AND" =>
+            [
+				"idproyecto" => $IDProyecto					
+			]
+			]);			
+                
+           if( CheckDBError($mysqli) ) return false;
+           echo "0" ;
 				
-				
-				$mysqli->delete("proyectos",
-				[
-					"AND" =>
-					[
-						"idproyecto" => $IDProyecto
-						
-					]
-				]);				
-				
-								
-				break;				
+           break;				
 		
     
 	}
