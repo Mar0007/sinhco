@@ -13,7 +13,6 @@
   <!--  Scripts-->
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="<?php echo GetURL($tema."js/materialize.min.js")?>"></script>
-  <script src="<?php echo GetURL($tema."js/init.js")?>"></script>
     
 </head>
 <body>
@@ -65,23 +64,6 @@
         </div>        
     </header> 
     <section id="hero-slider">
-        <!--div id="hero" style="position:relative; height:100vh;"-->
-            <!--div class="slider fullscreen">                
-                <ul class="slides">
-                    <li>
-                        <img src="../recursos/img/proyecto1.jpg">            
-                    </li>
-                    <li>
-                        <img src="../recursos/img/proyecto2.jpg">            
-                    </li>
-                    <li>
-                        <img src="../recursos/img/slide3.jpg">            
-                    </li>
-                </ul>               
-                <a href="#sinhco-intro" class="hide-on-med-and-down floating-btn fab-btn right btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect wave-light">
-                    <span><i class="material-icons">expand_more</i></span>
-                </a>
-          </div-->
           <?php
                 $Slider = ShowSlider($mysqli,"",$modulo,"fullscreen");
                 if($Slider != "")

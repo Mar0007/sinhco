@@ -104,6 +104,7 @@
 			return;
 		}			
 				
+		ShowLoadingSwal();
 		$.ajax
 		({
 			url:"<?php echo GetURL("modulos/modcrearbloque/servicecrearbloque.php?accion=2")?>",
@@ -142,6 +143,7 @@
 			return;
 		}				
 		
+		ShowLoadingSwal();
 		$.ajax
 		({
 			url:"<?php echo GetURL("modulos/modcrearbloque/servicecrearbloque.php?accion=3")?>",
