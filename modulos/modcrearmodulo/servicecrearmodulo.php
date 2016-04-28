@@ -25,20 +25,16 @@
 				$modulo   	= $_POST["titulo"];
 				$contenido  = $_POST["contenido"];
 				
-				$strSQL   = "INSERT INTO modulos(idmodulo, modulo, tipo, contenido) VALUES (?, ?, 0, ?);";
-				if( $stmt = $mysqli->prepare($strSQL) )
-				{
-					$stmt->bind_param('sss',$idmodulo,$modulo,$contenido);
-					$stmt->execute();
-					if($stmt->errno != 0)
-					{
-						echo $stmt->errno . " : " . $mysqli->error;
-					}
-					else
-						echo "0";						
-				}
-				else
-					echo "Error en la consulta: " . $mysqli->error;
+				$mysqli->insert("modulos",
+				[
+					"idmodulo" => $idmodulo,
+					"modulo" => $modulo,
+					"tipo" => "0",
+					"contenido" => $contenido
+				]);
+				if( CheckDBError($mysqli) ) return;
+				
+				echo "0";
 					
 				break;
 		case 3: //Actualizar
@@ -46,20 +42,19 @@
 				$modulo   	= $_POST["titulo"];
 				$contenido  = $_POST["contenido"];
 				
-				$strSQL   = "UPDATE modulos SET modulo = ?,contenido = ? WHERE idmodulo = ?;";
-				if( $stmt = $mysqli->prepare($strSQL) )
-				{
-					$stmt->bind_param('sss',$modulo,$contenido,$idmodulo);
-					$stmt->execute();
-					if($stmt->errno != 0)
-					{
-						echo $stmt->errno . " : " . $mysqli->error;
-					}
-					else
-						echo "0";						
-				}
-				else
-					echo "Error en la consulta: " . $mysqli->error;							
+				$mysqli->update("modulos",
+				[
+					"modulo" => $idmodulo,
+					"contenido" => $contenido
+				],
+				[
+					"idmodulo" => $idmodulo
+				]);
+				
+				if( CheckDBError($mysqli) ) return;
+				
+				echo "0";
+				
 				break;
 		case 4: //Eliminar
 				break;

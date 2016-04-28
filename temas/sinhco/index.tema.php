@@ -101,17 +101,17 @@
     <footer class="page-footer light-blue darken-4" style="margin-top:0px">
           <div class="container center">
               <div class="row">
-                  <a href="index.html" class=""><img class="logo-footer responsive-img" src="../recursos/img/sinhco-white.png"></a>
+                  <a href="index.html" class=""><img class="logo-footer responsive-img" src="<?php echo GetURL("uploads/static/sinhco-white.png");?>"></a>
                   <p class="grey-text text-lighten-4">Brindando soluciones reales y prácticas.</p>
                   
                   <a class="grey-text text-lighten-4" href="#!">
-                      <img class="responsive-img" src="../recursos/img/facebook.png">
+                      <img class="responsive-img" src="<?php echo GetURL("uploads/static/facebook.png");?>">
                   </a>
                   <a class="grey-text text-lighten-4" href="#!">
-                      <img class="responsive-img" src="../recursos/img/twitter.png">
+                      <img class="responsive-img" src="<?php echo GetURL("uploads/static/twitter.png");?>">
                   </a>
                   <a class="grey-text text-lighten-4" href="#!">
-                      <img class="responsive-img" src="../recursos/img/instagram.png">
+                      <img class="responsive-img" src="<?php echo GetURL("uploads/static/instagram.png");?>">
                   </a>
                     
               </div>              

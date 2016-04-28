@@ -63,7 +63,11 @@
               </li>
               <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
         </ul>
-    </div>-->
+    </div>-->      
+</div>   
+</div>
+</div>
+
     <!-- Confirm Delete Modal -->
     <div id="confirmar-eliminar" class="modal">
         <div class="modal-content">
@@ -76,10 +80,7 @@
         </div>        
     </div>
     <!-- Confirm Delete Modal -->
-      
-</div>   
-</div>
-</div>
+
 
 <script>
     
