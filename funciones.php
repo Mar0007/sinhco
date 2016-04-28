@@ -284,7 +284,8 @@
     
     function CurrentFolder()
     {
-        if(basename($_SERVER['SCRIPT_NAME']) != "index.php")
+        if(basename($_SERVER['SCRIPT_NAME']) != "index.php" &&
+            basename($_SERVER['SCRIPT_NAME']) != "login.php")
             return dirname($_SERVER['SCRIPT_NAME'])."/../../";
         
         return dirname($_SERVER['SCRIPT_NAME'])."/";
