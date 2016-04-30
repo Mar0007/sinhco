@@ -69,7 +69,7 @@
                 if($Slider != "")
                 { 
                     echo '
-                        <div id="hero" style="position:relative; height:100vh;">'.
+                        <div id="hero" style="position:relative; height:89vh;">'.
                         $Slider.
                         '</div>';
                 } 
