@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 27, 2016 at 04:22 AM
+-- Generation Time: Apr 28, 2016 at 04:08 AM
 -- Server version: 5.6.15-log
 -- PHP Version: 5.5.8
 
@@ -19,6 +19,27 @@ SET time_zone = "+00:00";
 --
 -- Database: `bd5`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `bloques`
+--
+
+CREATE TABLE IF NOT EXISTS `bloques` (
+  `idbloque` varchar(20) COLLATE utf8_bin NOT NULL,
+  `bloque` varchar(100) COLLATE utf8_bin NOT NULL,
+  `tipo` tinyint(4) NOT NULL,
+  `contenido` text COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`idbloque`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Dumping data for table `bloques`
+--
+
+INSERT INTO `bloques` (`idbloque`, `bloque`, `tipo`, `contenido`) VALUES
+('mission', 'Mission de la Empresa', 0, '<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dolorem voluptatibus architecto laudantium accusantium illum quibusdam officiis minima fugit! Vitae excepturi voluptatibus necessitatibus maiores, maxime omnis totam fuga dolor distinctio laudantium?</p>');
 
 -- --------------------------------------------------------
 
@@ -101,6 +122,8 @@ INSERT INTO `menu_detalle` (`idmenu`, `iditem`, `itemmenu`, `vinculo`, `icono`, 
 (2, 2, 'Usuarios', 'dashboard/usuarios', 'group', 3),
 (2, 3, 'Modulos', 'dashboard/modulos', 'view_module', 2),
 (2, 4, 'Slider', 'dashboard/adminslider', 'photo_library', 4),
+(2, 5, 'Proyectos', 'dashboard/adminproyectos', 'build', 5),
+(2, 6, 'Bloques', 'dashboard/bloques', 'flip_to_front', 6),
 (3, 0, 'Inicio', 'inicio', '', 0);
 
 -- --------------------------------------------------------
@@ -124,7 +147,10 @@ CREATE TABLE IF NOT EXISTS `modulos` (
 
 INSERT INTO `modulos` (`idmodulo`, `modulo`, `tipo`, `contenido`) VALUES
 ('adminmenu', 'Admin Menu', 1, ''),
+('adminproyectos', 'Administrador de Proyectos', 1, ''),
 ('adminslider', 'Administrador de Slider', 1, ''),
+('bloques', 'Administracion de Bloques', 1, ''),
+('crearbloque', 'Creación de Bloque', 1, ''),
 ('dashboard', 'Informacion', 1, ''),
 ('inicio', 'Inicio', 1, ''),
 ('login', 'login', 1, ''),
@@ -193,7 +219,16 @@ CREATE TABLE IF NOT EXISTS `proyectos` (
   `contenido` text COLLATE utf8_bin NOT NULL,
   `fecha` date NOT NULL,
   PRIMARY KEY (`idproyecto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `proyectos`
+--
+
+INSERT INTO `proyectos` (`idproyecto`, `nombre`, `contenido`, `fecha`) VALUES
+(1, 'Cambio cubierta de techo', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed in tempor lacus. Vivamus ut urna sit amet lacus gravida maximus. Vestibulum maximus est id metus vulputate blandit. In lorem dui, eleifend vitae laoreet tincidunt, placerat quis ex. Maecenas ornare ligula venenatis finibus sodales. In maximus est in ligula euismod, at condimentum libero molestie. Donec sit amet lobortis ligula, et rutrum sem.', '2013-01-05'),
+(2, 'Construcción de Laboratorio PDD y remodelación de Lab. Técnico', 'Nulla pellentesque porttitor massa, nec malesuada ante volutpat malesuada. Nam turpis ligula, ultricies a luctus dapibus, imperdiet non eros. Fusce consequat nisl quis posuere malesuada. Quisque suscipit ligula vitae mi efficitur molestie. Curabitur mattis ipsum neque, vitae sagittis lacus cursus posuere. Nulla porttitor mi a tortor rhoncus, id blandit velit consequat.', '2012-09-26'),
+(3, 'Construcción canales de concreto', 'Pellentesque mollis maximus quam eget egestas. Pellentesque non risus orci. Maecenas mattis, massa ut imperdiet mattis, orci augue convallis risus, eu tempus augue arcu non tortor. Vestibulum porttitor mattis velit eu feugiat. Aenean neque felis, porttitor in magna sodales, consectetur euismod ligula. ', '2011-05-13');
 
 -- --------------------------------------------------------
 
