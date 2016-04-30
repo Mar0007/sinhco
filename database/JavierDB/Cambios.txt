@@ -1,0 +1,4 @@
+Tabla proveedores: campo nombre se cambio de int a varchar(50) y se agregaron dos proveedores
+Tabla modulos: se agrego el modulo admin de productos
+Tabla categoria_productos: se agregaron varias categorias
+Tabla productos: se agregaron dos productos
