@@ -208,7 +208,7 @@
                       <li>
                           <h1 class="logo-wrapper">
                               <a href="<?php echo GetURL("dashboard/")?>" class="brand-logo darken-1">
-                                <img src="<?php echo GetURL("uploads/static/sinhco-white.png");?>" alt="logo-top" style="display:inherit">
+                                <img src="<?php echo GetURL("uploads/static/sinhco-white.png");?>" alt="logo-top" style="display:inherit;margin-top:-8px">
                               </a>
                           </h1>
                       </li>
