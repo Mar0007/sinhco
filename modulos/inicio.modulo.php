@@ -8,7 +8,9 @@
 		return;
 	}		
 ?>
-
+<a href="#sinhco-intro" class="hide-on-med-and-down floating-btn fab-btn right btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect wave-light">
+    <span><i class="material-icons">expand_more</i></span>
+</a>
 <div id="sinhco-intro" class="section"></div>
 <div class="section"><!-- FOR CONTAINER end -->
 	<div class="row"> <!-- SECTION TITLE -->

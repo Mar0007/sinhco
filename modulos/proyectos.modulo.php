@@ -9,8 +9,7 @@
 	}	
     
 ?>
-<section id="hero-slider">
-        <div id="hero-img" class="hero-bg "></div>
+<section id="hero-slider">        
         <div class="section banner banner-pad-bot z-depth-1">
             <div class="container">
                 <h1 class="no-mar-bot thin">Proyectos</h1>
