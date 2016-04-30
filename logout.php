@@ -17,5 +17,5 @@
 	session_destroy();
 	
 	//Regresamos al Index
-	header('Location: ./index.php');
+	header('Location:'.GetURL("inicio"));
 ?>

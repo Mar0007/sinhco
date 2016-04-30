@@ -34,7 +34,7 @@
             {
                 $Result .= 
                 "<li>
-                    <a href=\"".GetURL($row["vinculo"])."\"><img class=\"responsive-img circle left z-depth-1\"".
+                    <a class=\"waves-effect waves-cyan\" href=\"".GetURL($row["vinculo"])."\"><img class=\"responsive-img circle left z-depth-1\"".
                     "style=\"width:32px;height:32px;margin-top:15px;margin-right:10px\""
                     ." src=\"".GetUserImagePath($_SESSION['idusuario'])."\">".$_SESSION['idusuario']."</a>
                  </li>
@@ -43,7 +43,7 @@
             else
                 $Result .= 
                 "<li>
-                    <a href=\"".GetURL($row["vinculo"])."\">". 
+                    <a class=\"waves-effect waves-cyan\" href=\"".GetURL($row["vinculo"])."\">". 
                     (($row["icono"] && $row["icono"] != "") ? 
                     "<i class=\"material-icons left\" style=\"line-height: inherit;\">".$row["icono"].
                     "</i>" : "" ) .
@@ -115,13 +115,15 @@
 	//function panel($bloques, $idmodulo, $mysqli) {}    
     function bloque($idbloque, $mysqli, $clasecss="", $idcss=""){}
     
-    function modulo($idmodulo, $mysqli, $clasecss="", $idcss="")
+    function modulo($idmodulo, $mysqli, $clasecss="", $idcss="", $bGetHTML = false)
     {
+        if($bGetHTML) ob_start();
+        
         if($idcss != "")	$idcss 	  = "id=\"$idcss\"";
         if($clasecss != "") $clasecss = "class=\"$clasecss\"";
         
-        $IgnoreMods = Array('inicio','articulos','galeria');
-        if(in_array($idmodulo,$IgnoreMods)) $clasecss = "";
+        //$IgnoreMods = Array('inicio','articulos','galeria');
+        //if(in_array($idmodulo,$IgnoreMods)) $clasecss = "";
         
         echo "<div $clasecss $idcss>";
         
@@ -158,7 +160,14 @@
             }
         }
         
-        echo "</div>";        
+        echo "</div>";
+        
+        if($bGetHTML)
+        {
+            $buffer = ob_get_contents();
+            ob_end_clean();
+            return $buffer;
+        }
     }
     	
 //-------------------------------------------------------------------------------------	
@@ -284,9 +293,9 @@
     
     function CurrentFolder()
     {
-        if(basename($_SERVER['SCRIPT_NAME']) != "index.php" &&
-            basename($_SERVER['SCRIPT_NAME']) != "login.php")
-            return dirname($_SERVER['SCRIPT_NAME'])."/../../";
+        $Scripts = Array('index.php','login.php','logout.php');
+        if(!in_array(basename($_SERVER['SCRIPT_NAME']),$Scripts)) 
+            return dirname($_SERVER['SCRIPT_NAME'])."/../../";            
         
         return dirname($_SERVER['SCRIPT_NAME'])."/";
     }

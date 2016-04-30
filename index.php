@@ -6,7 +6,8 @@
     
     //$modulo = ( isset($_GET["mod"]) ) ? $_GET["mod"] : "inicio";
         
-    $modulo = ( !URLParam(0) ) ? "inicio" : URLParam(0);    
+    $modulo = ( !URLParam(0) ) ? "inicio" : URLParam(0);
+    $WebTitle = "Sinhco";    
 
     switch($modulo)
     {

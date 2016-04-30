@@ -1,11 +1,85 @@
+<?php 
+        $WebTitle .= " - Dashboard";
+        
+        
+        $idusuario = $_SESSION['idusuario'];
+        
+        $stmt = $mysqli->select("usuarios",["nombre"],["idusuario" => $idusuario]);
+        if(!$stmt)
+        {
+            if($mysqli->error()[2] != "")
+                echo "Error:".$mysqli->error()[2];
+                
+           return;
+        }        
+        $nombre = $stmt[0]["nombre"];
+                /*
+        $MenuHTML = menu($mysqli, 2, "side-nav fixed leftside-navigation" ,"slide-out",
+        '
+        <div class="card" style="z-depth-0;margin-top:-1px;background-image: url('.GetURL("uploads/covers/cover.jpg").'); height:120px;background-size: 100% 100%;">                
+            <div class="card-content" style="margin-left: -10px">
+                <div class="row" >
+                    <div class="col s5">
+                        <img src="' . GetUserImagePath($idusuario) . '" alt="" class="circle responsive-img">
+                    </div>
+                    <div style="col s7">
+                        <span class="white-text truncate">
+                            '. $nombre .'
+                        </span>
+                    </div>
+                </div>
+            </div>                        
+        </div>
+        '
+        */
+        $MenuHTML = menu($mysqli, 2, "side-nav fixed leftside-navigation" ,"slide-out",
+        '
+                <li class="user-details cyan darken-2">
+                <div class="row">
+                    <div class="col s4 m4 l4">
+                        <img src=' . GetUserImagePath($idusuario) . ' alt="" class="circle responsive-img valign profile-image" style="margin-top:15px">
+                    </div>
+                    <div class="col s8 m8 l8">
+                        <ul id="profile-dropdown" class="dropdown-content">
+                            <li><a href="'.GetURL("dashboard/usuarioperfil/".$idusuario).'"><i class="mdi-action-settings"></i> Config</a>
+                            </li>
+                            <li><a href="#"><i class="mdi-communication-live-help"></i> Ayuda</a>
+                            </li>
+                            <li class="divider"></li>
+                            </li>
+                            <li><a href="'.GetURL("logout.php").'"><i class="mdi-hardware-keyboard-tab"></i> Logout</a>
+                            </li>
+                        </ul>
+                        <a class="btn-flat dropdown-button waves-effect waves-light white-text profile-btn" href="#" data-activates="profile-dropdown">
+                            <div class="row">
+                                <div class="col s9">
+                                <span style="margin-left:-10px">'. $nombre .'</span>
+                                </div>
+                                <div class="col s2">
+                                    <i class="mdi-navigation-arrow-drop-down"></i>                                                        
+                                </div>
+                            </div>                            
+                        </a>
+                        <p class="user-roal">Admin</p>
+                    </div>
+                </div>
+                </li> 
+        '       
+        );
+    
+    
+    //<--- Get Module ---> 
+      $ModuloHTML = modulo($modulo ,$mysqli, "", "ModuleView",true);
+?>
 <!DOCTYPE html>
 <html>
 <head>
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
     <meta content="es_HN" http-equiv="Content-Language">
-    <meta name="Author" content="Negocios Web">
-    <meta name="Designer" content="UNICAH">
-    <meta name="Date" content="17 de Septiembre de 2015">
+    <meta name="Author" content="">
+    <meta name="Designer" content="">
+    <meta name="Date" content="">
+    <title><?php echo $WebTitle ?></title>
 
     <!-- JQuery -->
     <script type="text/javascript" src="<?php echo GetURL("recursos/jquery.js")?>"></script>				
@@ -28,13 +102,19 @@
     
     <!-- Custom CSS -->
     <link type="text/css" rel="stylesheet" href="<?php echo GetURL($tema."css/styles.css")?>" media="screen,projection">
+    <link type="text/css" rel="stylesheet" href="<?php echo GetURL($tema."css/stylesgk.css")?>" media="screen,projection">
     <link type="text/css" rel="stylesheet" href="<?php echo GetURL("recursos/iconfont.css")?>">
+    
+    <!-- Perfect Scroll -->
+    <link rel='stylesheet' href="<?php echo GetURL("recursos/perfect-scrollbar/css/perfect-scrollbar.css")?>" />
+    <script src="<?php echo GetURL("recursos/perfect-scrollbar/js/perfect-scrollbar.jquery.js")?>"></script>
     
     <script>
         $(document).ready(function() 
         {
             $(".button-collapse").sideNav();
             swal.setDefaults({ html: 'true' });
+            //$('#ModuleView').perfectScrollbar(); 
         });
         
         function InitDropdown()
@@ -67,67 +147,109 @@
                 allowEscapeKey:false,
                 showConfirmButton: false
             });		  
-        }        
+        }
+        
+        function toggleFullScreen() 
+        {
+            if (!document.fullscreenElement &&    // alternative standard method
+                !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
+                if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+                } else if (document.documentElement.msRequestFullscreen) {
+                document.documentElement.msRequestFullscreen();
+                } else if (document.documentElement.mozRequestFullScreen) {
+                document.documentElement.mozRequestFullScreen();
+                } else if (document.documentElement.webkitRequestFullscreen) {
+                document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+                }
+            } else {
+                if (document.exitFullscreen) {
+                document.exitFullscreen();
+                } else if (document.msExitFullscreen) {
+                document.msExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                document.mozCancelFullScreen();
+                } else if (document.webkitExitFullscreen) {
+                document.webkitExitFullscreen();
+                }
+            }
+        }                
 
     </script>
     
     <style>
-        header, main, footer,html {
-            padding-left: 240px;
+        .user-details {
+            background: url("<?php echo GetURL("uploads/covers/cover-small.jpg")?>") no-repeat center center
         }
-
-        @media only screen and (max-width : 992px) {
-            header, main, footer,html {
-                padding-left: 0;
-            }
-        }                  
+                 
     </style>
 </head>
 <body>
-    <nav>
-        <div class="nav-wrapper">
-            <a href="dashboard.php" class="brand-logo"><i class="material-icons left">cloud</i>Dashboard</a>
-            <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>            
-        </div>
-    </nav>          
     
-    <?php
-        $idusuario = $_SESSION['idusuario'];
-        
-        $stmt = $mysqli->select("usuarios",["nombre"],["idusuario" => $idusuario]);
-        if(!$stmt)
-        {
-            if($mysqli->error()[2] != "")
-                echo "Error:".$mysqli->error()[2];
-                
-           return;
-        }        
-        $nombre = $stmt[0]["nombre"];
-                
-        echo menu($mysqli, 2, "side-nav fixed" ,"slide-out",
-        '
-        <div class="card" style="z-depth-0;margin-top:-1px;background-image: url('.GetURL("uploads/covers/cover.jpg").'); height:120px;background-size: 100% 100%;">                
-            <div class="card-content" style="margin-left: -10px">
-                <div class="row" >
-                    <div class="col s5">
-                        <img src="' . GetUserImagePath($idusuario) . '" alt="" class="circle responsive-img">
+    <!--div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper">
+                <a href="#!" class="brand-logo">Logo</a>            
+                <a href="dashboard.php" class="brand-logo"><i class="material-icons left">cloud</i>Dashboard</a>
+                <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+                <a href="#!" class="breadcrumb">Dashboard</a>
+                <a href="#!" class="breadcrumb">Menu</a>
+                <a href="#!" class="breadcrumb">Third</a>
+            </div>
+        </nav>
+    </div-->          
+   <!-- START HEADER -->
+    <header id="header" class="page-topbar">
+        <!-- start header nav-->
+        <div class="navbar-fixed">
+            <nav class="navbar-color">
+                <div class="nav-wrapper">
+                    <ul class="left">                      
+                      <li>
+                          <h1 class="logo-wrapper">
+                              <a href="<?php echo GetURL("dashboard/")?>" class="brand-logo darken-1">
+                                <img src="<?php echo GetURL("uploads/static/sinhco-white.png");?>" alt="logo-top" style="display:inherit">
+                              </a>
+                          </h1>
+                      </li>
+                    </ul>
+                    <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+                    <div class="header-search-wrapper hide-on-med-and-down">
+                        <i class="mdi-action-search"></i>
+                        <input type="text" name="Search" class="header-search-input z-depth-2" placeholder="Buscar..."/>
                     </div>
-                    <div style="col s7">
-                        <span class="white-text truncate">
-                            '. $nombre .'
-                        </span>
-                    </div>
+                    <ul class="right hide-on-med-and-down">
+                        <li><a href="javascript:void(0);" OnClick="toggleFullScreen()" class="waves-effect waves-block waves-light toggle-fullscreen white-text"><i class="mdi-action-settings-overscan"></i></a>
+                        </li>
+                        <li><a href="javascript:void(0);" class="waves-effect waves-block waves-light notification-button white-text" data-activates="notifications-dropdown"><i class="mdi-social-notifications"><small class="notification-badge">5</small></i>
+                        
+                        </a>
+                        </li>                        
+                        <li><a href="#" data-activates="chat-out" class="waves-effect waves-block waves-light chat-collapse white-text"><i class="mdi-communication-chat"></i></a>
+                        </li>
+                    </ul>
                 </div>
-            </div>                        
+            </nav>
         </div>
-        '
-        );
+        <!-- end header nav-->
+    </header>
+    <!-- END HEADER -->
     
-    
-    //<--- Load Module --->
-    
-      //$modulo = ( isset($_GET['mod']) ) ? $_GET['mod'] : "dashboard"; 
-      modulo($modulo ,$mysqli, "card z-depth-0", "ModuleView");
+    <!-- START LEFT SIDEBAR NAV-->
+        
+    <?php
+        echo $MenuHTML;        
     ?>
+    <!-- END LEFT SIDEBAR NAV-->
+    
+   <!-- START MAIN -->
+    <div id="main">
+        <!-- START WRAPPER -->
+        <div class="wrapper">
+            <?php
+                echo $ModuloHTML;
+            ?>
+        </div>    
+    </div>    
 </body>
 </html>
