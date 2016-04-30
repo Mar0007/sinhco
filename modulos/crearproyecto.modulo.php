@@ -96,7 +96,7 @@ if(!login_check($mysqli))
         //var estado= $("#estado").is(":checked")?1:0;
         var lugar = $("#lugar").val();
         var fechaproyecto = $("#fechaproyecto").val();
-        var descripcion = $("#descripcion").val;
+        var descripcion = $("#descripcion").val();
         
         
              $.ajax({
