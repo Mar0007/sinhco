@@ -57,7 +57,7 @@
 			array
 			(
 				"ifonly"	=> $b,
-				"href" 		=> "index.php?mod=crearmodulo&idmodulo=%id",
+				"href" 		=> GetURL("dashboard/crearmodulo/%id"),
 				"icon" 		=> "edit",
 				"contenido" => "Editar"
 			),

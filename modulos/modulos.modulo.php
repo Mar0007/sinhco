@@ -34,7 +34,7 @@
 		</div>
 	</div>
 	<div class="card-action">
-		<button id="btnCrearModulo" class="btn waves-effect waves-light" onclick="location.href='index.php?mod=crearmodulo';"><i class="material-icons left">library_add</i>Crear Modulo</button>
+		<button id="btnCrearModulo" class="btn waves-effect waves-light" onclick="location.href='<?php echo GetURL("dashboard/crearmodulo")?>';"><i class="material-icons left">library_add</i>Crear Modulo</button>
 		<button id="btnSubirModulo" class="btn waves-effect waves-light" onclick="SubirModulo()"><i class="material-icons left">cloud_upload</i>Subir Modulo</button>
 	</div>
 </div>

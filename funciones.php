@@ -155,7 +155,7 @@
             }
             else
             {
-                echo "<h1>". $stmt[0]["modulo"] ."</h1>";
+                //echo "<h1>". $stmt[0]["modulo"] ."</h1>";
                 echo $stmt[0]["contenido"];
             }
         }
