@@ -75,7 +75,7 @@
 </div>
 
 <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-	<a id="crearProyecto" href="crearproyecto" onclick="$('#frmModulo').find(':submit').click();" class="btn-floating btn-large blue-grey darken-2 tooltipped" data-position="left" data-delay="50" data-tooltip="Guardar">
+	<a id="btnGuardar" onclick="$('#frmModulo').find(':submit').click();" class="btn-floating btn-large blue-grey darken-2 tooltipped" data-position="left" data-delay="50" data-tooltip="Guardar">
 		<i class="large material-icons">save</i>
 	</a>      
 </div>

@@ -142,7 +142,11 @@
             if($mysqli->error()[2] != "")
                 echo "<h3>Error en la base de datos: Module()</h3>";
             else
-                echo "<h3>Error, el modulo no esta declarado en la base de datos.</h3>";                
+            {
+                if($bGetHTML) ob_end_clean();
+                return false;
+                //echo "<h3>Error, el modulo no esta declarado en la base de datos.</h3>";                
+            }                
         }
         else
         {        
@@ -327,18 +331,12 @@
     
     function URLParam($Segment)
     {
-        $URL = $_SERVER['REQUEST_URI'];
         
-        /*        
-        if(CurrentFolder() != "/")
-            $URL = str_replace(CurrentFolder(),"",$URL);
-        else 
-            $URL = ltrim($URL, '/');
-            */
+        $URL = $_SERVER['REQUEST_URI'];       
+        //$URL = ltrim($URL, CurrentFolder());
+        $URL = preg_replace('/^' . preg_quote(CurrentFolder(), '/') . '/', '', $URL);
+        $URL = explode('/',$URL);               
         
-       $URL = ltrim($URL, CurrentFolder());            
-       $URL = explode('/',$URL);                        
-               
         return ( isset($URL[$Segment]) ? $URL[$Segment] : false);
     }
     

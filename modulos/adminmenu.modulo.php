@@ -340,7 +340,7 @@
 	$.ajax({
 		url:"<?php echo GetURL("modulos/modadminmenu/serviceadminmenu.php?accion=2")?>",
 		method: "POST",
-		data: {Titulo:Titulo,Vinculo:Vinculo,Posicion:Posicion,IDMenu:IDMenu,IDIcon:IDIcon}
+		data: {"Titulo":Titulo,"Vinculo":Vinculo,"Posicion":Posicion,"IDMenu":IDMenu,"IDIcon":IDIcon}
 	}).done(function(data){
 		$("#modalFrmAdd").closeModal();		
 		if(data.indexOf("<tr") > -1)

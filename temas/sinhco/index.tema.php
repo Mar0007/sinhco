@@ -1,3 +1,14 @@
+<?php
+
+    $Modulo = modulo($modulo ,$mysqli, "", "inicio",true);
+    
+    if(!$Modulo)
+    {
+        require("404.php");
+        return;
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="es_HN">
 <head>
@@ -77,7 +88,7 @@
     <!--/div-->    
     </section>
     <main>
-        <?php modulo($modulo ,$mysqli, "", "inicio"); ?>
+        <?php echo $Modulo ?>
     </main>
     
     <footer class="page-footer light-blue darken-4" style="margin-top:0px">

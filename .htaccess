@@ -4,32 +4,11 @@
     RewriteEngine On
 </IfModule>
 
-<FilesMatch ".*\.(css|js|png|jpg|gif|txt)$">
-    RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^(.*)$ "/sinhco/404.php" [PT]
-</FilesMatch>
-
-#Removes last '/'
-<IfModule mod_rewrite.c>
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteCond %{REQUEST_URI} /(.*)/$
-    RewriteRule ^ /%1 [R=301,L]
-</IfModule>
-
-#Redirects
-<IfModule mod_rewrite.c>
-    RewriteRule    "^backend$"  "login.php" [PT]
-    RewriteRule    "^login$"  "login.php" [PT]
-    RewriteRule    "^dashboard$"  %{REQUEST_URI}/inicio [R,L]
-    RewriteRule    "^$"  %{REQUEST_URI}inicio [R,L] 
-</IfModule>
-
-#Clean URL
-<IfModule mod_rewrite.c>    
-    RewriteCond %{SCRIPT_FILENAME} !-d    
-    RewriteCond %{SCRIPT_FILENAME} !-f
-    RewriteRule ^(.*)$ ./index.php/$1 
-</IfModule>
+#Locks Config
+<files config.php>
+    order allow,deny
+    deny from all
+</files>
 
 #Min
 <ifModule mod_gzip.c>
@@ -43,8 +22,34 @@
     mod_gzip_item_exclude rspheader ^Content-Encoding:.*gzip.*
 </ifModule>
 
-#Locks Config
-<files config.php>
-    order allow,deny
-    deny from all
-</files>
+
+#Removes last '/'
+<IfModule mod_rewrite.c>
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} /(.*)/$
+    RewriteRule ^ /%1 [R=301,L]
+</IfModule>
+
+#Redirects
+<IfModule mod_rewrite.c>    
+    RewriteRule    "^backend$"      "login.php" [PT]
+    RewriteRule    "^login$"        "login.php" [PT]
+    RewriteRule    "^dashboard$"    %{REQUEST_URI}/inicio [R,L]
+    RewriteRule    "^$"             %{REQUEST_URI}inicio [R,L] 
+</IfModule>    
+
+#Clean URL
+<IfModule mod_rewrite.c>    
+    RewriteCond %{SCRIPT_FILENAME} !-d    
+    RewriteCond %{SCRIPT_FILENAME} !-f
+    RewriteCond %{REQUEST_URI} !\.(.*)$
+    RewriteRule ^(.*)$ ./index.php/$1 [L]
+</IfModule>
+
+
+#Simulate ErrorDocument 404 ./404.php
+<IfModule mod_rewrite.c>    
+    RewriteCond %{SCRIPT_FILENAME} !-d    
+    RewriteCond %{SCRIPT_FILENAME} !-f
+    RewriteRule ^(.*)$ ./404.php [L]
+</IfModule>

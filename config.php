@@ -6,7 +6,7 @@
         $mysqli = @ new medoo([
             'database_type' => 'mysql',
             'database_name' => 'bd5',
-            'server' => 'localhost',
+            'server' => '127.0.0.1',
             'username' => 'root',
             'password' => '',
             'charset' => 'utf8'

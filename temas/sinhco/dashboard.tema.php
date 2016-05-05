@@ -4,7 +4,7 @@
         
         
         $idusuario = $_SESSION['idusuario'];
-        
+        /*
         $stmt = $mysqli->select("usuarios",["nombre"],["idusuario" => $idusuario]);
         if(!$stmt)
         {
@@ -14,6 +14,8 @@
            return;
         }        
         $nombre = $stmt[0]["nombre"];
+        */
+        $nombre = $_SESSION['usuario'];
         $MenuHTML = menu($mysqli, 2, 'side-nav fixed leftside-navigation' ,'slide-out',
         '
                 <li class="user-details cyan darken-2">
@@ -96,7 +98,28 @@
         {
             $(".button-collapse").sideNav();
             swal.setDefaults({ html: 'true' });
-            //$('#ModuleView').perfectScrollbar(); 
+            //$('#ModuleView').perfectScrollbar();
+            
+            // Search class for focus
+            $('.header-search-input').focus(
+            function(){
+                $(this).parent('div').addClass('header-search-wrapper-focus');
+            }).blur(
+            function(){
+                $(this).parent('div').removeClass('header-search-wrapper-focus');
+            });
+            
+            // Perfect Scrollbar
+            $('select').not('.disabled').material_select();
+                var leftnav = $(".page-topbar").height();  
+                var leftnavHeight = window.innerHeight - leftnav;
+            $('.leftside-navigation').height(leftnavHeight).perfectScrollbar({
+                suppressScrollX: true
+            });
+                var righttnav = $("#chat-out").height();
+            $('.rightside-navigation').height(righttnav).perfectScrollbar({
+                suppressScrollX: true
+            });                         
         });
         
         function InitDropdown()
