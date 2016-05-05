@@ -36,7 +36,7 @@
                 {
                     echo 
                     '
-                        <tr class="datausuarios" id="'.$row["idusuario"].' style="display:none">
+                        <tr class="datausuarios" id="'.$row["idusuario"].'" style="display:none">
 							  <td><a href="usuarioperfil/'.$row["idusuario"].'">'.$row["idusuario"].'</a></td>
 							  <td>'.$row["nombre"].'</td>
 							  <td>'.$row["email"].'</td>

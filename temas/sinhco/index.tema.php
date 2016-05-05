@@ -21,7 +21,7 @@
             <nav class="grey lighten-5">
                 <div class="nav-wrapper">
                     <div class="">
-                        <a href="index.html" class="brand-logo light-blue-text text-accent-4"><img class="logo responsive-img" src="<?php echo GetURL("uploads/static/logo.png");?>"></a>
+                        <a href="<?php echo GetURL("inicio");?>" class="brand-logo light-blue-text text-accent-4"><img class="logo responsive-img" src="<?php echo GetURL("uploads/static/logo.png");?>"></a>
                         <a href="#" data-activates="mobile-demo" class="button-collapse light-blue-text text-accent-4"><i class="material-icons">menu</i></a>
                         <ul class="right hide-on-med-and-down">
                             <li><a href="proyectos">Proyectos</a></li>
@@ -38,7 +38,7 @@
                           </ul>
                         
                         <ul class="side-nav" id="mobile-demo">
-                            <li><a href="index.html">Inicio</a></li>
+                            <li><a href="<?php echo GetURL("inicio");?>">Inicio</a></li>
                             <li><a href="proyectos.html">Proyectos</a></li>
                             <li class="no-padding">
                                 <ul class="collapsible collapsible-accordion">

@@ -14,26 +14,7 @@
            return;
         }        
         $nombre = $stmt[0]["nombre"];
-                /*
-        $MenuHTML = menu($mysqli, 2, "side-nav fixed leftside-navigation" ,"slide-out",
-        '
-        <div class="card" style="z-depth-0;margin-top:-1px;background-image: url('.GetURL("uploads/covers/cover.jpg").'); height:120px;background-size: 100% 100%;">                
-            <div class="card-content" style="margin-left: -10px">
-                <div class="row" >
-                    <div class="col s5">
-                        <img src="' . GetUserImagePath($idusuario) . '" alt="" class="circle responsive-img">
-                    </div>
-                    <div style="col s7">
-                        <span class="white-text truncate">
-                            '. $nombre .'
-                        </span>
-                    </div>
-                </div>
-            </div>                        
-        </div>
-        '
-        */
-        $MenuHTML = menu($mysqli, 2, "side-nav fixed leftside-navigation" ,"slide-out",
+        $MenuHTML = menu($mysqli, 2, 'side-nav fixed leftside-navigation' ,'slide-out',
         '
                 <li class="user-details cyan darken-2">
                 <div class="row">
@@ -202,7 +183,7 @@
    <!-- START HEADER -->
     <header id="header" class="page-topbar">
         <!-- start header nav-->
-        <div class="navbar-fixed">
+        <div class="navbar-fixed" style="z-index:1000" >
             <nav class="navbar-color">
                 <div class="nav-wrapper">
                     <ul class="left">                      

@@ -297,7 +297,7 @@
         if(!in_array(basename($_SERVER['SCRIPT_NAME']),$Scripts)) 
             return dirname($_SERVER['SCRIPT_NAME'])."/../../";            
         
-        return dirname($_SERVER['SCRIPT_NAME'])."/";
+        return str_replace("\\","",dirname($_SERVER['SCRIPT_NAME'])."/");
     }
     
     
@@ -308,13 +308,37 @@
             return $URL;
         
         return CurrentFolder().$URL;
+    }
+    
+    
+    function Debug()
+    {
+        echo "<br>";
+        echo "CurrentFolder->".CurrentFolder();
+        echo "<br>";
+        echo "Fixed URL->".GetURL("");
+        echo "<br>";
+        //echo "ScriptName->".basename($_SERVER['SCRIPT_NAME']);
+        echo "ScriptName->".$_SERVER['SCRIPT_NAME'];
+        echo "<br>";
+        echo "ScriptName->".dirname($_SERVER['SCRIPT_NAME']);
+        echo "<br>";
     }    
     
     function URLParam($Segment)
     {
-        $URL = str_replace(CurrentFolder(),"",$_SERVER['REQUEST_URI']);
-        $URL = explode('/',$URL);                        
+        $URL = $_SERVER['REQUEST_URI'];
         
+        /*        
+        if(CurrentFolder() != "/")
+            $URL = str_replace(CurrentFolder(),"",$URL);
+        else 
+            $URL = ltrim($URL, '/');
+            */
+        
+       $URL = ltrim($URL, CurrentFolder());            
+       $URL = explode('/',$URL);                        
+               
         return ( isset($URL[$Segment]) ? $URL[$Segment] : false);
     }
     

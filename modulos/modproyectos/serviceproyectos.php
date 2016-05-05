@@ -1,19 +1,6 @@
 <?php
 	require_once("../../config.php");
-	require_once("../../funciones.php");	
-	inicio_sesion();
-	
-	if(!login_check($mysqli))
-	{
-		echo "<h2>Acceso denegado</h2>";
-		return;
-	}
-	
-	if(!esadmin($mysqli))
-	{
-		echo "<h2>No tiene permisos para ver este modulo.</h2>";
-		return;
-	}
+	require_once("../../funciones.php");		
 	
 	//1 = Consulta; 2 = Insertar; 3 = Actualizar; 4 = Eliminar;
 	$accion = $_GET["accion"];
@@ -75,18 +62,6 @@
 				break;
 								
 		case 4: //Eliminar	
-			$IDProyecto = $_POST["idproyecto"];
-			
-            $mysqli->delete("proyectos",
-            [
-				"AND" =>
-            [
-				"idproyecto" => $IDProyecto					
-			]
-			]);			
-                
-           if( CheckDBError($mysqli) ) return false;
-           echo "0" ;
 				
            break;	
             
@@ -94,20 +69,6 @@
     
     function GetMenuArray()
 	{
-		//Datarow menu
-		return array(
-			array
-			(
-				"href" 		=> "javascript:OpenModal('%id')",
-				"icon" 		=> "edit",
-				"contenido" => "Editar"
-			),
-			array
-			(
-				"href" 		=> "javascript:eliminar('%id')",
-				"icon" 		=> "delete",
-				"contenido" => "Eliminar"
-			)
-		);		
+	
 	}
 ?>

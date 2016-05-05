@@ -4,6 +4,11 @@
     RewriteEngine On
 </IfModule>
 
+<FilesMatch ".*\.(css|js|png|jpg|gif|txt)$">
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^(.*)$ "/sinhco/404.php" [PT]
+</FilesMatch>
+
 #Removes last '/'
 <IfModule mod_rewrite.c>
     RewriteCond %{REQUEST_FILENAME} !-d

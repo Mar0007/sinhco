@@ -50,6 +50,7 @@
 		</div>
 	</div>
 </nav>
+<div class="container" style="width:85%">
 <div class="card-content">
 	<h3><?php echo ($editID != "") ? "Editar":"Crear"?> modulo estatico</h3>
 	<div title="Crear modulo estatico">
@@ -67,10 +68,18 @@
 			<textarea id='edit' placeholder="Escriba algun texto..."><?php echo ($editID != "") ? $row["contenido"]:""?></textarea>
 		</form>
 	</div>
-	<div class="card-action">
+	<!--div class="card-action">
 		<button id="btnCrear" class="btn waves-effect waves-light" onclick="$('#frmModulo').find(':submit').click();"><?php echo ($editID != "") ? "<i class=\"material-icons left\">save</i>Guardar":"<i class=\"material-icons left\">library_add</i>Crear Modulo"?></button>
-	</div>
+	</div-->
 </div>
+</div>
+
+<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+	<a id="crearProyecto" href="crearproyecto" onclick="$('#frmModulo').find(':submit').click();" class="btn-floating btn-large blue-grey darken-2 tooltipped" data-position="left" data-delay="50" data-tooltip="Guardar">
+		<i class="large material-icons">save</i>
+	</a>      
+</div>
+
 <script>	
 	$(function(){
 		$('#edit')
@@ -82,7 +91,7 @@
 				})
 				*/
 			})
-			.froalaEditor({enter: $.FroalaEditor.ENTER_P, placeholderText: null})
+			.froalaEditor({enter: $.FroalaEditor.ENTER_P, placeholderText: null,toolbarStickyOffset: 64,zIndex: 999,language: 'es'})
 	});
 	
 	//Functions	
