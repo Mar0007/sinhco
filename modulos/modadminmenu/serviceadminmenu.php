@@ -207,7 +207,23 @@
     
     function GetDataHTML($Data)
     {
-        return 
+		return 
+		'
+			<li id="Row_'.$Data["iditem"].'" style="display:none" class="dataitems collection-item avatar" init="'.$Data["orden"].'">
+				<i class="material-icons left handler-class" style="cursor:move;margin-left:-100px;margin-top:10px">swap_vert</i>
+				<i class="material-icons circle'.(($Data["icono"]) ? '"' : ' tooltipped" data-position="bottom" data-delay="50" data-tooltip="No icono"').' style="background-color:#1665c1">'.(($Data["icono"]) ? $Data["icono"] : 'highlight_off').'</i>				
+				<a  class="black-text" href="#!">
+					<span class="title">'.$Data["itemmenu"].'</span>								
+				</a>                 
+				<p class="grey-text lighten-2 title">'.$Data["vinculo"].'</p>
+				<a class="">
+						'.GetDropDownSettingsRow($Data["iditem"],GetMenuArray()).'
+				</a> 																	
+			</li>
+		';        
+		
+		/*
+		return 
         '
             <tr class="datarows1" id="Row_'.$Data["iditem"].'" style="display:none">
                 <td class="ordermenu" init="'.$Data["orden"].'">
@@ -220,5 +236,6 @@
                 <td><div class="center">'.GetDropDownSettingsRow($Data["iditem"],GetMenuArray()).'</div></td>
             </tr>        
         ';
+		*/
     }	
 ?>

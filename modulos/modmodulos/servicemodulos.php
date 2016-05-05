@@ -19,19 +19,28 @@
 	switch($accion)
 	{
 		case 1: // Consulta
-				$stmt = $mysqli->select("modulos",["idmodulo","modulo","tipo"]);
+				$stmt = $mysqli->select("modulos",["idmodulo","modulo","tipo"],["tipo" => 0]);
 				
 				if(CheckDBError($mysqli))
 					return;
 				
 				foreach ($stmt as $row) 
 				{
-					echo "<tr class=\"datamodulos\" id=\"".$row["idmodulo"]."\" style=\"display:none\">
-							<td>".$row["idmodulo"]."</td>
-							<td>".$row["modulo"]."</td>
-							<td>".GetIconHTML($row["tipo"])."</td>
-							<td>".GetDropDownSettingsRow($row["idmodulo"],GetMenuArray($row["tipo"] == 0))."</td>
-							</tr>";
+					echo 
+					'
+						<li id="'.$row["idmodulo"].'" style="display:none" class="dataitems collection-item avatar">
+							<i class="material-icons circle" style="background-color:#1665c1">view_module</i>
+							<a  class="black-text" href="#!">
+								<span class="title">'.$row["modulo"].'</span>								
+							</a>                 
+							<p class="grey-text lighten-2 title">Descripcion del el modulo muy descriptivo.</p>
+							<a class="">
+									'.GetDropDownSettingsRow($row["idmodulo"],GetMenuArray($row["tipo"] == 0)).'
+							</a> 
+																				
+						</li>
+					';									
+					
 				}
 							
 				break;			

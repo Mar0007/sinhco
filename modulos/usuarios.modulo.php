@@ -16,7 +16,7 @@
 			
 ?>
 
-<div class="card-content">
+<!--div class="card-content">
 	<h3>Manejo de Usuarios</h3>			
 	<div class="row">
 		<div class="col s12">
@@ -38,7 +38,31 @@
 	<div class="card-action">
 		<button id="btnagregar" class="btn waves-effect waves-light" onclick="OpenModal()">Agregar Usuario</button>
 	</div>
+</div-->
+
+<div class="row">
+    <div class="container">
+        <!--Module Title-->
+        <div class="row">
+            <h3 class="light center blue-grey-text text-darken-3">Administrar Usuarios</h3>
+            <p class="center light">Cree, edite y organice los usuarios.</p>
+            <div class="divider3"></div>
+        </div>
+        
+        <!--Module Data-->
+        <ul id="datacontainer" class="collection fixed-drop">
+			
+		</ul>
+    
+        <!--Module Action Button-->
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a id="btnCrear" class="btn-floating btn-large blue-grey darken-2 tooltipped"  onclick="OpenModal()" data-position="left" data-delay="50" data-tooltip="Crear Usuario">
+                <i class="large material-icons">mode_edit</i>
+            </a>
+        </div>   
+    </div>
 </div>
+
 
 <div id="modalFrmAdd" class="modal modal-fixed-footer">
 	<div class="modal-content">
@@ -101,9 +125,9 @@
 			url:"<?php echo GetURL("modulos/modusuarios/serviceusuarios.php?accion=1") ?>"
 		}).done(
 			function(data){
-				$("#usuarios tbody").append(data);
+				$("#datacontainer").append(data);
 				InitDropdown();
-				$(".datausuarios").fadeIn();
+				$(".dataitems").fadeIn();
 			}
 		);		
 	});
@@ -134,7 +158,7 @@
 			if(data.indexOf("<tr") > -1)
 			{
 				swal.close();			
-				$("#usuarios tbody").append(data);
+				$("#datacontainer").append(data);
 				InitDropdown();
 				$("#"+idusuario).fadeIn();
 			}

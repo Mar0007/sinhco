@@ -44,7 +44,7 @@
 				
 				$mysqli->update("modulos",
 				[
-					"modulo" => $idmodulo,
+					"modulo" => $modulo,
 					"contenido" => $contenido
 				],
 				[

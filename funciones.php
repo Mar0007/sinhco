@@ -343,9 +343,11 @@
 //-------------------------------------------------------------------------------------    
 // Custom functions
 //-------------------------------------------------------------------------------------
-	function GetUserImagePath($idusuario)
+	function GetUserImagePath($idusuario,$bIsService = false)
 	{        
-        $result = glob("uploads/avatars/".GetStrWithRange($idusuario).".*");
+        $Prefix = ($bIsService) ? "../../" : "";
+        
+        $result = glob($Prefix . "uploads/avatars/".GetStrWithRange($idusuario).".*");
 		if(count($result) > 0 )
 			return GetURL(ltrim($result[0],"/."));
 		else

@@ -34,51 +34,27 @@
                 
                 foreach ($stmt as $row)
                 {
-                    echo 
-                    '
-                        <tr class="datausuarios" id="'.$row["idusuario"].'" style="display:none">
-							  <td><a href="usuarioperfil/'.$row["idusuario"].'">'.$row["idusuario"].'</a></td>
-							  <td>'.$row["nombre"].'</td>
-							  <td>'.$row["email"].'</td>
-							  <td>'.GetIconHTML($row["estado"]).'</td>
-							  <td>'.GetDropDownSettingsRow($row["idusuario"],GetMenuArray()).'</td>
-                        </tr>                        
-                    ';
+                    GetRowHTML($row);
                 }
                                
 				break;		
 		case 2: // Insertar
-				$idusuario 	= $_POST["idusuario"];
-				$usuario   	= $_POST["nombre"];
-				$email   	= $_POST["email"];
-				$estado   	= $_POST["estado"];
-				$password   = $_POST["password"];
-				$llave 		= hash('sha512',rand());
-				$password 	= hash('sha512',$password . $llave);
+				$Data = 
+				[
+					"idusuario" => $_POST["idusuario"],
+					"usuario" 	=> $_POST["nombre"],
+					"email" 	=> $_POST["email"],
+					"estado" 	=> $_POST["estado"],
+					"llave" 	=> hash('sha512',rand()),
+					"password" 	=> $_POST["password"],
+					"#fecha_registro" => "NOW()" 
+				];				
+				$Data["password"] = hash('sha512',$Data["password"] . $Data["llave"]);															
+				$mysqli->insert("usuarios",$Data);
+				if( CheckDBError($mysqli) ) return;								
 				
-				$strSQL   = "INSERT INTO usuarios(idusuario, nombre, email, estado, llave, password, fecha_registro) VALUES (?, ?, ?, ?, ?, ?, NOW());";
-				if( $stmt = $mysqli->prepare($strSQL) )
-				{
-					$stmt->bind_param('ssssiiss',$idusuario,$usuario,$email,$estado,$llave,$password);
-					$stmt->execute();
-					if($stmt->errno != 0)
-					{
-						echo $stmt->errno . " : " . $mysqli->error;
-					}
-					else
-					{
-						echo "<tr class=\"datausuarios\" id=\"$idusuario\" style=\"display:none\">
-							  <td><a href=\"index.php?mod=usuarioperfil&idusuario=$idusuario\">$idusuario</a></td>
-							  <td>$usuario</td>
-							  <td>$email</td>
-							  <td>".GetIconHTML($estado)."</td>
-							  <td>".GetDropDownSettingsRow($idusuario,GetMenuArray())."</td>
-							  </tr>";
-					}										
-				}
-				else
-					echo "Error en la consulta: " . $mysqli->error;
-                    				
+				GetRowHTML($Data);
+				                    				
 				break;
 		case 3: //Actualizar
 		case 4: //Eliminar
@@ -99,6 +75,27 @@
 				}				
 				break;							
 	}
+	
+	
+	function GetRowHTML($row)
+	{
+		echo 
+		'
+			<li id="'.$row["idusuario"].'" style="display:none" class="dataitems collection-item avatar">
+				<img src="'.GetUserImagePath($row["idusuario"],true).'" class="circle">
+				<a  class="black-text" href="#!">
+					<span class="title">'.$row["nombre"].'</span>								
+				</a>                 
+				<p class="grey-text lighten-2 title">'.$row["idusuario"].' </p>
+				<p class="grey-text lighten-2">'.$row["email"].'</p>
+				<a class="">
+						'.GetDropDownSettingsRow($row["idusuario"],GetMenuArray()).'
+				</a> 
+																	
+			</li>
+		';				
+	}
+	
 	
 	//Functions
 	function GetMenuArray()

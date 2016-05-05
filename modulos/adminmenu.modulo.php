@@ -17,7 +17,7 @@
 ?>
 
 
-<div class="card-content">
+<!--div class="card-content">
 	<h3>Administracion de Menus</h3>
 	<div class="row">
 		<div class="col s7 m9 l6" style="">
@@ -79,20 +79,50 @@
 			<i class="material-icons left">library_add</i>Agregar Item
 		</button>
 	</div>
+</div-->
+
+
+<div class="row">
+    <div class="container">
+        <!--Module Title-->
+        <div class="row">
+            <h3 class="light center blue-grey-text text-darken-3">Administrar Menus</h3>
+            <p class="center light">Cree, edite y organice los menus.</p>
+            <div class="divider3"></div>
+			<div class="col s12">
+				<ul id="maintabs" class="tabs" style="width: 100%;">
+					<li class="tab col s6"><a menuid="3" href="#" OnClick="GetAjaxData('3')">Principal</a></li>
+					<li class="tab col s6"><a menuid="2" href="#" OnClick="GetAjaxData('2')">Administrador</a></li>
+				</ul>
+			</div>					
+        </div>		
+        
+        <!--Module Data-->
+        <ul id="datacontainer" class="collection fixed-drop">
+			
+		</ul>
+    
+        <!--Module Action Button-->
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a id="btnCrear" class="btn-floating btn-large blue-grey darken-2 tooltipped"  onclick="OpenModal()" data-position="left" data-delay="50" data-tooltip="Crear item">
+                <i class="large material-icons">mode_edit</i>
+            </a>
+        </div>   
+    </div>
 </div>
 
 <!-- Modal -->
 <div id="modalFrmAdd" class="modal modal-fixed-footer">
-<div class="modal-content">
-	<h4>Agregar Item a menu</h4>	
-	<div class="row">
+<div class="modal-content">		
+	<div class="row">		
 		<div class="col s12">
-		<ul class="tabs">
-			<li class="tab col s3"><a class="active" href="#tabFrm">Datos</a></li>
-			<li class="tab col s3"><a href="#tabicon">Icono</a></li>
-		</ul>
+			<h4>Agregar Item a menu</h4>
+			<ul class="tabs">
+				<li class="tab col s3"><a class="active" href="#tabFrm">Datos</a></li>
+				<li class="tab col s3"><a href="#tabicon">Icono</a></li>
+			</ul>
 		</div>
-		<div id="tabFrm" class="col s12">        
+		<div id="tabFrm" class="col s12" style="margin-top:20px">        
 			<div class="row">
 				<form class="col s12" id="FrmAdd" action="javascript:Agregar()">
 				<div class="row">
@@ -105,11 +135,8 @@
 					<i class="material-icons prefix">link</i>
 					<input id="txtvinculo" type="text" class="validate" required>
 					<label for="txtvinculo">Vinculo/URL</label>					
-					<p>Posicion</p>
-					<i class="material-icons prefix">format_list_numbered</i>
-					<input id="txtPosicion" type="number" value="0" min="0" max="100" required>			
-					<input type="submit" style="display:none">
-					</div>
+					</div>										
+					<input type="submit" style="display:none">					
 				</div>
 				</form>
 			</div>			
@@ -132,12 +159,15 @@
 
 						foreach($Icons as $Icon)
 						{
-							echo "<a id=\"icon_".$Icon['ligature']."\" value=\"".$Icon['ligature']."\" class=\"collection-item col s2\" style=\"margin-left:5px;margin-bottom:5px;width:100px;height:100px;cursor:pointer\">						  
-									<div class=\"center-align\">
-										<i class=\"material-icons medium black-text\">".$Icon['ligature']."</i>										
-										<span class=\"truncate\">".$Icon['name']."</span>
-									</div>
-								</a>";						
+							if($Icon['ligature'] != "highlight_off")
+							{
+								echo "<a id=\"icon_".$Icon['ligature']."\" value=\"".$Icon['ligature']."\" class=\"collection-item col s2\" style=\"margin-left:5px;margin-bottom:5px;width:100px;height:100px;cursor:pointer\">						  
+										<div class=\"center-align\">
+											<i class=\"material-icons medium black-text\">".$Icon['ligature']."</i>										
+											<span class=\"truncate\">".$Icon['name']."</span>
+										</div>
+									</a>";
+							}						
 						}
 						
 						echo "</div></div>";						
@@ -159,6 +189,7 @@
 
 <script>
   $(document).ready(function() {
+	/*
 	 //Init Materialize combobox/select
     $('select').material_select();
 	
@@ -167,9 +198,10 @@
 	{
 		GetAjaxData($(this).val());
 	});
+	*/
 		
 	//Get Data via ajax
-	GetAjaxData($('#cbMenu').val());
+	GetAjaxData("3");
 	
 	$('.collection-item').unbind('click').click(function()
 	{
@@ -222,7 +254,7 @@
 	//Prevent parallel execution of ajax.
 	if(ajax_request) ajax_request.abort();
 	//Clear table
-	$("#tblMenus tbody").empty();
+	$("#datacontainer").empty();
 	//Get data
 	ajax_request = $.ajax({
 		url:"<?php echo GetURL("modulos/modadminmenu/serviceadminmenu.php?accion=1")?>",
@@ -230,24 +262,13 @@
 		data: {IDMenu:id}		
 	}).done(
 		function(data){
-			$("#tblMenus tbody").append(data);
+			$("#datacontainer").append(data);
 			InitDropdown();
-			$(".datarows1").fadeIn();
+			$(".dataitems").fadeIn();
+			$('.tooltipped').tooltip({delay: 50});
 		}
 	);			  
-  }
-  
-  //Renumber table rows 
-  function renumber_table(tableID) 
-  {     
-	$(tableID + " tr").each(function() 
-	{         
-		count = $(this).parent().children().index($(this));
-		//$FIX
-		$(this).removeAttr('style');
-		$(this).find('.ordermenu').find('span').html(count);
-	}); 
-  }
+  }  
   
   function GetRowIDByOrder(idOrder)
   {
@@ -303,21 +324,23 @@
 	else
 	{
 		$('#modalFrmAdd').find('H4').html("Editar item");
-		$('#txtPosicion').attr("max",TotalPos - 2);
+		//$('#txtPosicion').attr("max",TotalPos - 2);
 		//Get row cells
 		var cells = $("#Row_"+idEdit).children();		
 				
 		//Update form info
-		$('#txtTitulo').val(cells[2].innerHTML);	
+		$('#txtTitulo').val(cells[2].children[0].innerHTML);	
 		$('#txtvinculo').val(cells[3].innerHTML);
-		$('#txtPosicion').val(cells[0].children[1].innerHTML);
+		//$('#txtPosicion').val($("#Row_"+idEdit).attr('init'));
 		
-		$('#icon_'+cells[1].children[0].innerHTML).addClass('active');
+		$('#icon_'+cells[1].innerHTML).addClass('active');
 		
 		//Update form action
 		frm.attr('action','javascript:Editar('+idEdit+')');
 		$('#btnSaveDialog').html('<i class="material-icons left">save</i>Guardar');
 	}
+	
+	Materialize.updateTextFields();
 	
 	//At last open it.
 	$('#modalFrmAdd').openModal();
@@ -330,8 +353,10 @@
   {
 	var Titulo   = $('#txtTitulo').val();	
 	var Vinculo  = $('#txtvinculo').val();
-	var Posicion = $('#txtPosicion').val();
-	var IDMenu   = $('#cbMenu').val();
+	//var Posicion = $('#txtPosicion').val();
+	var Posicion = "0";
+	//var IDMenu   = $('#cbMenu').val();
+	var IDMenu 	 = $("#maintabs").find("li").find("a.active").attr("menuid");
 	var IDIcon 	 = $(".collection-item.active").attr('value');	
 	if(!IDIcon) IDIcon = "";
 	
@@ -374,8 +399,10 @@
   {
 	var Titulo   = $('#txtTitulo').val();	
 	var Vinculo  = $('#txtvinculo').val();
-	var Posicion = $('#txtPosicion').val();
-	var IDMenu   = $('#cbMenu').val();
+	//var Posicion = $('#txtPosicion').val();
+	var Posicion = $("#Row_"+id).attr("init");
+	//var IDMenu   = $('#cbMenu').val();
+	var IDMenu 	 = $("#maintabs").find("li").find("a.active").attr("menuid");
 	var IDIcon 	 = $(".collection-item.active").attr('value');
 	if(!IDIcon) IDIcon = "";
 	
@@ -398,13 +425,13 @@
 				//Get row cells
 				var cells = $("#Row_"+id).children();
 				//Set Icon
-				cells[1].children[0].innerHTML = IDIcon;		
+				cells[1].innerHTML = IDIcon;		
 				//Set Titulo
-				cells[2].innerHTML = Titulo;
+				cells[2].children[0].innerHTML = Titulo;
 				//Set Vinculo
 				cells[3].innerHTML = Vinculo;												
 				//Move row position
-				MoveRow(id,Posicion);				
+				//MoveRow(id,Posicion);				
 				//Show
 				$(this).fadeIn();								
 			});		

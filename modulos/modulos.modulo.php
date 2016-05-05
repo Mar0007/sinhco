@@ -15,7 +15,7 @@
 	}
 ?>
 
-<div class="card-content">
+<!--div class="card-content">
 	<h3>Administracion de Modulos</h3>			
 	<div class="row">
 		<div class="col s12">
@@ -37,6 +37,30 @@
 		<button id="btnCrearModulo" class="btn waves-effect waves-light" onclick="location.href='<?php echo GetURL("dashboard/crearmodulo")?>';"><i class="material-icons left">library_add</i>Crear Modulo</button>
 		<button id="btnSubirModulo" class="btn waves-effect waves-light" onclick="SubirModulo()"><i class="material-icons left">cloud_upload</i>Subir Modulo</button>
 	</div>
+</div-->
+
+
+<div class="row">
+    <div class="container">
+        <!--Module Title-->
+        <div class="row">
+            <h3 class="light center blue-grey-text text-darken-3">Administrar Modulos</h3>
+            <p class="center light">Cree, edite y organice los modulos.</p>
+            <div class="divider3"></div>
+        </div>
+        
+        <!--Module Data-->
+        <ul id="datacontainer" class="collection fixed-drop">
+			
+		</ul>
+    
+        <!--Module Action Button-->
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a id="btnCrear" href="crearmodulo" class="btn-floating btn-large blue-grey darken-2 tooltipped" data-position="left" data-delay="50" data-tooltip="Crear Modulo">
+                <i class="large material-icons">mode_edit</i>
+            </a>
+        </div>   
+    </div>
 </div>
 
 
@@ -48,9 +72,9 @@
 			url:"<?php echo GetURL("modulos/modmodulos/servicemodulos.php?accion=1"); ?>"
 		}).done(
 			function(data){
-				$("#tblModulos tbody").append(data);
+				$("#datacontainer").append(data);
 				InitDropdown();
-				$(".datamodulos").fadeIn();
+				$(".dataitems").fadeIn();
 			}
 		);		
 	});			
