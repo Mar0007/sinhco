@@ -24,7 +24,7 @@
             <p class="center light">Cree, edite y organice los menus.</p>
             <div class="divider3"></div>
 			<div class="col s12">
-				<ul id="maintabs" class="tabs" style="width: 100%;">
+				<ul id="maintabs" class="tabs" style="width: 100%; overflow:hidden">
 					<li class="tab col s6"><a menuid="3" href="#" OnClick="GetAjaxData('3')">Principal</a></li>
 					<li class="tab col s6"><a menuid="2" href="#" OnClick="GetAjaxData('2')">Administrador</a></li>
 				</ul>
