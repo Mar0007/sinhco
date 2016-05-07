@@ -98,7 +98,7 @@
         {
             $(".button-collapse").sideNav();
             swal.setDefaults({ html: 'true' });
-            //$('#ModuleView').perfectScrollbar();
+            //$('#main').perfectScrollbar();
             
             // Search class for focus
             $('.header-search-input').focus(

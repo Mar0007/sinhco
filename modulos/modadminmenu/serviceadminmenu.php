@@ -209,7 +209,7 @@
     {
 		return 
 		'
-			<li id="Row_'.$Data["iditem"].'" style="display:none" class="dataitems collection-item avatar" init="'.$Data["orden"].'">
+			<li id="Row_'.$Data["iditem"].'" style="display:none" class="dataitems collection-item avatar" pos="'.$Data["orden"].'">
 				<i class="material-icons left handler-class" style="cursor:move;margin-left:-100px;margin-top:10px">swap_vert</i>
 				<i class="material-icons circle'.(($Data["icono"]) ? '"' : ' tooltipped" data-position="bottom" data-delay="50" data-tooltip="No icono"').' style="background-color:#1665c1">'.(($Data["icono"]) ? $Data["icono"] : 'highlight_off').'</i>				
 				<a  class="black-text" href="#!">

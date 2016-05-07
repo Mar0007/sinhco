@@ -91,7 +91,7 @@
 				})
 				*/
 			})
-			.froalaEditor({enter: $.FroalaEditor.ENTER_P, placeholderText: null,toolbarStickyOffset: 64,zIndex: 999,language: 'es'})
+			.froalaEditor({enter: $.FroalaEditor.ENTER_P, placeholderText: null, zIndex: 999,language: 'es'})
 	});
 	
 	//Functions	
