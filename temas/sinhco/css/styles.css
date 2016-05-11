@@ -13,6 +13,14 @@
         width: calc(50% - 18px);    
     }
     
+    .card .custom-content{
+       height:70px;
+    }
+    
+    .card .card-action-custom{
+        padding: 20px;
+        padding-top: 0px;
+    }
     /**left Sidebar for item information**/
     .sidebar-left{
         position: fixed;
@@ -28,18 +36,25 @@
     }
 }
 
+
 @media only screen and (max-width: 550px) {
     /**adjust all modals width in smaller screens**/
     .modal.custom-item{        
-        width: 100%;        
+        width: 100% !important;        
     }
     .modal.create-item{
-        width: 100%;        
+        width: 100% !important;
+        height: 100% !important;
+    }
+    .modal.delete-item{
+        width: 95% !important;
+        height: 210px !important;
     }
     .modal{
-        width:100%;
+        width:95% !important;
     }
 }
+
 
 @media only screen and (max-width: 535px) {
     /**adjust sidebar + content to column view**/
@@ -94,10 +109,12 @@ nav {
 /**************************/
 
 
+
 /** MODALS **/
 
 .modal{
-    width:55%;            
+    width:55%;  
+    top:20% !important;
 }
 
 .modal.bottom-sheet{
@@ -120,7 +137,14 @@ nav {
 /**create item modal**/
 .modal.create-item{
     width: 480px;
+    top:20% !important;
     height: 384px;
+}
+
+.modal.delete-item{
+    width: 360px;
+    top:40% !important;
+    height: 195px
 }
 
 /************/
