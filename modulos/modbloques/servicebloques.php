@@ -26,12 +26,20 @@
 				
 				foreach ($stmt as $row) 
 				{
-					echo "<tr class=\"databloques\" id=\"".$row["idbloque"]."\" style=\"display:none\">
-							<td>".$row["idbloque"]."</td>
-							<td>".$row["bloque"]."</td>
-							<td>".GetIconHTML($row["tipo"])."</td>
-							<td>".GetDropDownSettingsRow($row["idbloque"],GetMenuArray($row["tipo"] == 0))."</td>
-							</tr>";							
+					echo 
+					'
+						<li id="'.$row["idbloque"].'" style="display:none" class="dataitems collection-item avatar">
+							<i class="material-icons circle" style="background-color:#1665c1">picture_in_picture</i>
+							<a  class="black-text" href="#!">
+								<span class="title">'.$row["bloque"].'</span>								
+							</a>                 
+							<p class="grey-text lighten-2 title">Descripcion del el modulo muy descriptivo.</p>
+							<a class="">
+									'.GetDropDownSettingsRow($row["idbloque"],GetMenuArray($row["tipo"] == 0)).'
+							</a> 
+																				
+						</li>
+					';																						
 				}
 								
 				break;			
@@ -61,13 +69,6 @@
 				"icon" 		=> "edit",
 				"contenido" => "Editar"
 			),
-			/*array
-			(
-				"href" 		=> "javascript:Modulos('%id')",
-				"icon" 		=> "view_module",
-				"contenido" => "Modulos"
-			),
-			*/
 			array("divider"),
 			array
 			(

@@ -23,7 +23,7 @@
 				$idMenu = $_POST['IDMenu'];
                 $stmt = $mysqli->select("menu_detalle",
                 [
-                    "iditem","itemmenu","vinculo","orden","icono"
+                    "iditem","itemmenu","vinculo","orden","icono","submenus"
                 ],
                 [
                     "idmenu" => $idMenu,
@@ -39,7 +39,7 @@
                 }
                 
                 foreach($stmt as $row)
-                    echo GetDataHTML($row);
+                    echo GetDataHTML($row,$stmt);
         
 				break;		
 		case 2: // Insertar				
@@ -74,7 +74,8 @@
                         "itemmenu" => $Titulo,
                         "vinculo" => $Vinculo,
                         "orden" => $Orden,
-                        "icono" => $IDIcon
+                        "icono" => $IDIcon,
+						"submenus" => ""
                     ];                                                        
                     $mysqli->insert("menu_detalle",$Data);                    
                     if( CheckDBError($mysqli) ) return false;
@@ -136,7 +137,52 @@
 								
 				break;				
 		case 5: //Update Order
-				//Renumber database Order.
+				//Renumber database Order.											
+				$IDMenu = $_POST['IDMenu'];
+				$JData = json_decode($_POST['JSONData'],true);
+				
+				$mysqli->pdo->beginTransaction();				
+				
+				foreach ($JData as $key => $val) 
+				{					
+					if(isset($val["children"]))
+					{
+						if(!UpdateChildren($mysqli,$val["children"],$IDMenu))
+						{
+							echo "::1";
+							$mysqli->pdo->rollBack();
+							return;
+						}
+					}
+					else
+						$val["children"] = "";					
+					
+					$mysqli->update("menu_detalle",
+					[
+						"orden" => $key,
+						"(JSON) submenus" => $val["children"]
+					],
+					[
+						"AND" => 
+						[
+							"idmenu" => $IDMenu,
+							"iditem" => $val["id"]
+						]
+					]);
+					
+					if( CheckDBError($mysqli) )
+					{
+						$mysqli->pdo->rollBack();
+						echo "::2";
+						return;
+					}					
+				}
+				
+				$mysqli->pdo->commit();
+				echo "0";
+				
+				//echo print_r(json_decode($JData));				
+				/*
 				$mysqli->action(function($mysqli)
 				{				
 					$IDMenu = $_POST['IDMenu'];				
@@ -158,6 +204,9 @@
 					
 					echo "0";
 				});
+				*/
+				
+				
 				break;
 		case 6: //Insert Menu
 				$Menu = $_POST['Titulo'];																															
@@ -205,37 +254,81 @@
 	}
     
     
-    function GetDataHTML($Data)
+    function GetDataHTML($row,$stmt = null,$bIsChild = false)
     {
+		if($row["orden"] == -1 && !$bIsChild)
+			return '';
+		
 		return 
 		'
-			<li id="Row_'.$Data["iditem"].'" style="display:none" class="dataitems collection-item avatar" pos="'.$Data["orden"].'">
-				<i class="material-icons left handler-class" style="cursor:move;margin-left:-100px;margin-top:10px">swap_vert</i>
-				<i class="material-icons circle'.(($Data["icono"]) ? '"' : ' tooltipped" data-position="bottom" data-delay="50" data-tooltip="No icono"').' style="background-color:#1665c1">'.(($Data["icono"]) ? $Data["icono"] : 'highlight_off').'</i>				
-				<a  class="black-text" href="#!">
-					<span class="title">'.$Data["itemmenu"].'</span>								
-				</a>                 
-				<p class="grey-text lighten-2 title">'.$Data["vinculo"].'</p>
-				<a class="">
-						'.GetDropDownSettingsRow($Data["iditem"],GetMenuArray()).'
-				</a> 																	
+			<li id="Row_'.$row["iditem"].'" style="display:none;padding-left: 90px; padding-right:0;" class="dataitems collection-item avatar" pos="'.$row["orden"].'">
+				<div>
+					<i class="material-icons left handler-class" style="cursor:move;margin-left:-85px;margin-top:10px">swap_vert</i>
+					<i class="material-icons circle'.(($row["icono"]) ? '"' : ' tooltipped" data-position="bottom" data-delay="50" data-tooltip="No icono"').' style="background-color:#1665c1; left:36px">'.(($row["icono"]) ? $row["icono"] : 'highlight_off').'</i>				
+					<a  class="black-text" href="#!">
+						<span class="title">'.$row["itemmenu"].'</span>								
+					</a>                 
+					<p class="grey-text lighten-2 title">'.$row["vinculo"].'</p>
+					'.GetDropDownSettingsRow($row["iditem"],GetMenuArray()).'												
+				</div>
+				'.GetChildsHTML($row,$stmt).'
 			</li>
 		';        
+    }
+	
+	function GetChildsHTML($row,$stmt)
+	{
+		if(!$row['submenus'] || $row['submenus'] == "" || !$stmt)
+			return '';
 		
-		/*
-		return 
-        '
-            <tr class="datarows1" id="Row_'.$Data["iditem"].'" style="display:none">
-                <td class="ordermenu" init="'.$Data["orden"].'">
-                    <i class="material-icons left handler-class" style="cursor:move">reorder</i> 
-                    <span>'.$Data["orden"].'</span>
-                </td>
-                <td><i class="material-icons">'.$Data["icono"].'</i></td>
-                <td>'.$Data["itemmenu"].'</td>
-                <td>'.$Data["vinculo"].'</td>
-                <td><div class="center">'.GetDropDownSettingsRow($Data["iditem"],GetMenuArray()).'</div></td>
-            </tr>        
-        ';
-		*/
-    }	
+		$JData = json_decode($row['submenus'],true); 
+		$Result = '';
+		
+		foreach ($JData as $key => $val) 		
+		{
+			$FilterData = 
+			array_filter($stmt, function($row) use($val) {
+				  return $row['iditem'] == $val['id'];
+			});
+			
+			foreach ($FilterData as $value) 
+				$Result .= GetDataHTML($value,$stmt,true);
+		}
+		
+		return '<ul>'.$Result.'</ul>';				
+		
+	}
+
+	/* Recursive function.
+	*/
+	function UpdateChildren($mysqli,$AChild,$IDMenu)
+	{
+		foreach ($AChild as $key => $val) 
+		{			
+			if(isset($val["children"]))
+			{
+				if(!UpdateChildren($mysqli,$val["children"],$IDMenu))
+					return false;				
+			}
+			else
+				$val["children"] = "";			
+				
+			$mysqli->update("menu_detalle",
+			[
+				"orden" => -1,
+				"(JSON) submenus" => $val["children"]
+			],
+			[
+				"AND" => 
+				[
+					"idmenu" => $IDMenu,
+					"iditem" => $val["id"]
+				]
+			]);
+			
+			if( CheckDBError($mysqli) ) return false;																																
+		}
+		
+		return true;		
+	}	
 ?>

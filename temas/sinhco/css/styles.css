@@ -27,6 +27,18 @@ nav {
     overflow-y: auto; 
 }
 
+.placeholder 
+{
+    outline: 1px dashed #4183C4;
+    background: repeating-linear-gradient(
+        45deg,
+        #E8EAF6,
+        #E8EAF6 10px,
+        #ccc 10px,
+        #ccc 20px
+    );
+}
+
 
 @media only screen and (min-width: 992px) {
     .modal.bottom-sheet{

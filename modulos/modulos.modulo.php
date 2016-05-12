@@ -15,31 +15,6 @@
 	}
 ?>
 
-<!--div class="card-content">
-	<h3>Administracion de Modulos</h3>			
-	<div class="row">
-		<div class="col s12">
-			<table id="tblModulos" class="highlight responsive-table centered">
-				<thead>
-					<tr>		
-						<th>Codigo</th>
-						<th>Titulo</th>
-						<th>Tipo</th>
-						<th>Acciones</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</div>
-	</div>
-	<div class="card-action">
-		<button id="btnCrearModulo" class="btn waves-effect waves-light" onclick="location.href='<?php echo GetURL("dashboard/crearmodulo")?>';"><i class="material-icons left">library_add</i>Crear Modulo</button>
-		<button id="btnSubirModulo" class="btn waves-effect waves-light" onclick="SubirModulo()"><i class="material-icons left">cloud_upload</i>Subir Modulo</button>
-	</div>
-</div-->
-
-
 <div class="row">
     <div class="container">
         <!--Module Title-->

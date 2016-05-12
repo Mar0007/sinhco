@@ -7,7 +7,7 @@
 		echo "<h1>Acceso denegado</h1>";
 		return;
 	}
-		
+	
 	if(!esadmin($mysqli))
 	{
 		echo "<h1>No tiene permisos para ver este modulo.</h1>";
@@ -15,60 +15,28 @@
 	}
 ?>
 
-<div class="card-content">
-	<h3>Administracion de Bloques</h3>
-	<div class="row">
-		<div class="col s12">	
-			<table id="tblBloques" class="highlight responsive-table centered">
-				<thead>
-					<tr>		
-						<th>Codigo</th>
-						<th>Titulo</th>
-						<th>Tipo</th>
-						<th>Acciones</th>
-					</tr>
-				</thead>
-				<tbody>
-				</tbody>
-			</table>
-		</div>
-	</div>
+<div class="row">
+    <div class="container">
+        <!--Module Title-->
+        <div class="row">
+            <h3 class="light center blue-grey-text text-darken-3">Administrar Bloques</h3>
+            <p class="center light">Cree, edite y organice los bloques.</p>
+            <div class="divider3"></div>
+        </div>
+        
+        <!--Module Data-->
+        <ul id="datacontainer" class="collection fixed-drop">
+			
+		</ul>
+    
+        <!--Module Action Button-->
+        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a id="btnCrear" href="crearbloque" class="btn-floating btn-large blue-grey darken-2 tooltipped" data-position="left" data-delay="50" data-tooltip="Crear Bloque">
+                <i class="large material-icons">mode_edit</i>
+            </a>
+        </div>   
+    </div>
 </div>
-	<div class="card-action">
-		<button id="btnCrearBloque" class="btn waves-effect waves-light" onclick="location.href='<?php echo GetURL("dashboard/crearbloque")?>';"><i class="material-icons left">library_add</i>Crear Bloque</button>
-		<button id="btnSubirBloque" class="btn waves-effect waves-light" onclick="SubirBloque()"><i class="material-icons left">cloud_upload</i>Subir Bloque</button>
-	</div>
-	
-<div id="frmModalAsignacion" class="modal modal-fixed-footer">
-	<div class="modal-content">
-		<h4>Asignacion de Bloques a modulos</h4>
-		<div class="divider"></div>
-		<div class="row center">
-			<div class="col s6 l6">	
-				<table id="ModulosDisponibles">
-					<thead><tr><th>Modulos Disponibles</th><tr></thead>
-					<tbody></tbody>
-				</table>
-			</div>
-			<div class="col s6 l6">
-				<table id="ModulosAsignados">
-					<thead><tr><th>Modulos Asignados</th><tr></thead>
-					<tbody></tbody>
-				</table>
-			</div>
-		</div>
-	</div>
-	<div class="modal-footer">		
-	<button id="btnCancelDialog" class="btn waves-effect waves-light red modal-action modal-close" name="action">Cancelar
-		<i class="material-icons left">close</i>
-	</button>
-	<button id="btnSaveDialog" class="btn waves-effect waves-light green" style="margin-right:10px" name="action">Guardar
-		<i class="material-icons left">save</i>
-	</button>
-	</div>
-</div>
-
-
 
 <script>
 	//Main
@@ -77,10 +45,11 @@
 		$.ajax({
 			url:"<?php echo GetURL("modulos/modbloques/servicebloques.php?accion=1")?>"
 		}).done(
-			function(data){
-				$("#tblBloques tbody").append(data);
-				$(".databloques").fadeIn();
+			function(data)
+			{
+				$("#datacontainer").append(data);
 				InitDropdown();
+				$(".dataitems").fadeIn();
 			}
 		);		
 	});
