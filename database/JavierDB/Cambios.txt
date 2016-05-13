@@ -1,4 +1,3 @@
-Tabla proveedores: campo nombre se cambio de int a varchar(50) y se agregaron dos proveedores
-Tabla modulos: se agrego el modulo admin de productos
-Tabla categoria_productos: se agregaron varias categorias
-Tabla productos: se agregaron dos productos
+Se agrego la tabla intermedia de proveedores_productos
+Se cambio el precio y el estado dentro de productos a nulo
+Se le deshabilito a los campos detro de productos la propiedad de unique
