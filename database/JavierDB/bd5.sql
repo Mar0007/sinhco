@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 09-05-2016 a las 19:51:44
+-- Tiempo de generación: 13-05-2016 a las 03:44:28
 -- Versión del servidor: 5.6.15-log
 -- Versión de PHP: 5.5.8
 
@@ -208,15 +208,21 @@ CREATE TABLE IF NOT EXISTS `productos` (
   `idproveedor` int(11) NOT NULL,
   `idcategoria` int(11) DEFAULT NULL,
   PRIMARY KEY (`idproducto`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=17 ;
 
 --
 -- Volcado de datos para la tabla `productos`
 --
 
 INSERT INTO `productos` (`idproducto`, `nombre`, `estado`, `precio`, `descripcion`, `idproveedor`, `idcategoria`) VALUES
-(1, 'Cisterna 1700L', NULL, NULL, 'Capacidad: 1700 litros de agua', 1, 1),
-(2, 'Planta purifiadora de agua', 1, 1, 'Purifica el agua', 2, 2);
+(14, 'asdas', 0, 0, 'aasdas', 1, 1),
+(12, 'Prueba', 1, 1, 'para las cat y prov', 2, 2),
+(13, 'Fosas septicas rotoplas', 0, 0, 'Para tu caquita chiquitita iita ita ita ita', 1, 4),
+(9, 'werwe', 1, 1, 'Ansatsu Kyoushitsu (TV) 2nd Season 1 - Nueva temporada de esta mítica serie en la que los alumnos deben matar a su profesor para evitar que destruya el mundo y conseguir así una recompensa millonaria.', 1, 1),
+(10, 'Muy bien y tu', 0, 0, 'Demasiado bien', 1, 1),
+(11, 'Maule', 1, 1, 'Borrador', 2, 2),
+(15, 'prueba rapida', 0, 0, 'asdas', 1, 1),
+(16, 'nuevo', 1, 1, 'zS', 1, 1);
 
 -- --------------------------------------------------------
 
