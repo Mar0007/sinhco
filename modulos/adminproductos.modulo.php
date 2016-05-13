@@ -17,19 +17,121 @@
     $idusuario= "aa";
 ?>
 <div class="container"> 
-  <!--Module Data-->
-  <div class="row ">
-		<div id="productocard">
-		</div>	
-  </div>
-  
-  <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+  <!--Module Data--> 
+        <div class="row">
+          <div class="col s5 left">                 
+          	<div class="slider">
+            	<ul class="slides">
+                	<li>
+                    	<img  src="/sinhco/recursos/img/proyect.jpg"> 
+                        <div class="caption center-align">
+                          
+                        </div>
+                      </li>
+                      <li>
+                        <img  src="/sinhco/recursos/img/proyect.jpg"> 
+                        <div class="caption left-align">
+                          
+                        </div>
+                      </li>
+                      <li>
+                        <img  src="/sinhco/recursos/img/proyect.jpg"> 
+                        <div class="caption right-align">
+                          
+                        </div>
+                      </li>
+                      
+                </ul>
+           	</div>
+                  
+         	<div id="Econtenido">
+					<form id="frmeditar" action="javascript:Editar()">
+						<div class="input-field col s12 m12 l12">
+						<i class="material-icons prefix">assignment_ind</i>
+						<input id="otronombre" type="text" class="validate" required>
+						<label for="otronombre">Nombre del producto</label>
+						</div>
+						
+						<div class="input-field col s12 m12 l12">
+						<i class="material-icons prefix">assignment_ind</i>
+						<textarea  id="otradescripcion" class="validate materialize-textarea"  required></textarea>
+						<label for="otradescripcion">Descripcion del producto</label>
+						</div>
+						<input type="submit" style="display:none">
+						
+						<div class="input-field col s12">
+						<!-- <i class="material-icons prefix">assignment_ind</i> -->	
+                        <select id="cbCategorias">
+                            <option value="" href="" disabled>Elija la categoria</option>
+                            <?php
+                            
+                                $stmt = $mysqli->select("categoria_producto",
+                                [
+                                    "idcategoria","nombre"
+                                ]);
+                                
+                                if($stmt)
+                                {
+                                    foreach($stmt as $row)
+                                        echo '<option value="'.$row["idcategoria"].'">'.$row["nombre"].'</option>';
+                                }
+                                                                          					
+                            ?>				
+                        </select>
+                        <label for="cbCategorias">Categorias</label>
+				    	</div>
+						
+						<div class="input-field col s12">
+						<!--<i class="material-icons prefix">assignment_ind</i> -->	
+                        <select id="cbProveedores">
+                            <option value="" href="" disabled>Elija la categoria</option>
+                            <?php
+                            
+                                $stmt = $mysqli->select("proveedores",
+                                [
+                                    "idproveedor","nombre"
+                                ]);
+                                
+                                if($stmt)
+                                {
+                                    foreach($stmt as $row)
+                                        echo '<option value="'.$row["idproveedor"].'">'.$row["nombre"].'</option>';
+                                }
+                                                                          					
+                            ?>				
+                        </select>
+                        <label for="cbProveedores">Categorias</label>
+				    	</div>
+						
+						<a class="waves-effect waves-light btn disabled"><i class="material-icons left">done</i>Aplicar Cambios</a>
+						<a class="waves-effect waves-light btn"><i class="material-icons right">cancel</i>Cancelar</a>
+						
+					</form>
+            </div>
+          </div>
+
+          <div class="col s7 right" id="productocard">	
+			  
+			  <ul class="pagination">
+				<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+				<li class="active" onClick="Paginar()"><a href="#!">1</a></li>
+				<li class="waves-effect"  onClick="Paginar()"><a href="#!">2</a></li>
+				<li class="waves-effect"><a href="#!">3</a></li>
+				<li class="waves-effect"><a href="#!">4</a></li>
+				<li class="waves-effect"><a href="#!">5</a></li>
+				<li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+			</ul>
+  		  </div>
+		</div>
+</div>
+
+  			<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
             <a id="crearProyecto" onclick="OpenModal()" class="btn-floating btn-large blue-grey darken-2 tooltipped" data-position="left" data-delay="50" data-tooltip="Nuevo producto">
                 <i class="large material-icons">mode_edit</i>
             </a>
-  
-</div>
-    
+			</div>
+
+    <!-- Agregar -->
 <div id="modalFrmAdd" class="modal modal-fixed-footer">
 	<div class="modal-content">
 		<h4>Agregar Productos</h4>
@@ -37,7 +139,7 @@
 		<form id="frmagregar" action="javascript:Agregar()">
 			<div class="input-field col s12 m12 l6">
 			<i class="material-icons prefix">assignment_ind</i>
-			<input id="Nombre" type="text" class="validate" maxlength="20" required>
+			<input id="Nombre" type="text" class="validate"  required  maxlength="50" length="50">
 			<label for="Nombre">Nombre del producto</label>
 			</div>		
 			<div class="input-field col s12 m12 l6">
@@ -47,17 +149,17 @@
 			</div>
             <div class="input-field col s12 m12 l6">
 			<i class="material-icons prefix">assignment_ind</i>
-			<input id="Estado" type="text" class="validate" maxlength="20" required>
+			<input id="Estado" type="text" >
 			<label for="Estado">Estado</label>
 			</div>		
 			<div class="input-field col s12 m12 l6">
 			<i class="material-icons prefix">perm_identity</i>
-			<input id="Precio" type="text" class="validate" required>
+			<input id="Precio" type="text" >
 			<label for="Precio">Precio</label>
 			</div>
             <div class="input-field col s12 m12 l6">
 			<i class="material-icons prefix">assignment_ind</i>
-			<input id="IdProveedor" type="text" class="validate" maxlength="20" required>
+			<input id="IdProveedor" type="text" class="validate"  required>
 			<label for="IdProveedor">IdProveedor</label>
 			</div>		
 			<div class="input-field col s12 m12 l6">
@@ -65,6 +167,50 @@
 			<input id="IdCategoria" type="text" class="validate" required>
 			<label for="IdCategoria">IdCategoria</label>
 			</div>
+			
+			<div class="input-field col s12">
+						<!-- <i class="material-icons prefix">assignment_ind</i> -->	
+                        <select id="IdCategoria">
+                            <option value="" href="" disabled>Elija la categoria</option>
+                            <?php
+                            
+                                $stmt = $mysqli->select("categoria_producto",
+                                [
+                                    "idcategoria","nombre"
+                                ]);
+                                
+                                if($stmt)
+                                {
+                                    foreach($stmt as $row)
+                                        echo '<option value="'.$row["idcategoria"].'">'.$row["nombre"].'</option>';
+                                }
+                                                                          					
+                            ?>				
+                        </select>
+                        <label for="IdCategoria">Categorias</label>
+				    	</div>
+						
+						<div class="input-field col s12">
+						<!--<i class="material-icons prefix">assignment_ind</i> -->	
+                        <select id="IdProveedor">
+                            <option value="" href="" disabled>Elija la categoria</option>
+                            <?php
+                            
+                                $stmt = $mysqli->select("proveedores",
+                                [
+                                    "idproveedor","nombre"
+                                ]);
+                                
+                                if($stmt)
+                                {
+                                    foreach($stmt as $row)
+                                        echo '<option value="'.$row["idproveedor"].'">'.$row["nombre"].'</option>';
+                                }
+                                                                          					
+                            ?>				
+                        </select>
+                        <label for="IdProveedor">Categorias</label>
+				    	</div>
 			
 			<input type="submit" value="Guardar" style="display:none">  						
 		</form>
@@ -78,7 +224,8 @@
   	  </button>
     </div>	
 </div>
-    
+
+ <!-- Editar -->  
 <div id="modalFrmEdit" class="modal modal-fixed-footer">
 	<div class="modal-content">
 		<h4>Editar Producto</h4>
@@ -86,13 +233,13 @@
 		<form id="frmeditar" action="javascript:Editar()">
 			<div class="input-field col s12 m12 l6">
 			<i class="material-icons prefix">assignment_ind</i>
-			<input id="ENombre" type="text" class="validate" maxlength="20" required>
+			<input id="ENombre" type="text" class="validate" required>
 			<label for="ENombre">Nombre del producto</label>
 			</div>
             
             <div class="input-field col s12 m12 l6">
 			<i class="material-icons prefix">assignment_ind</i>
-			<input id="EDescripcion" type="text" class="validate" maxlength="20" required>
+			<input id="EDescripcion" type="text" class="validate"  required>
 			<label for="EDescripcion">Descripcion del producto</label>
 			</div>
             <input type="submit" style="display:none">
@@ -113,7 +260,8 @@
 <script>
  
  $(document).ready(function(){
-      
+      $('.slider').slider({full_width: true});
+	   $('select').material_select();
         $.ajax({
 			url:"<?php echo GetURL("modulos/modadminproductos/serviceadminproductos.php?accion=1") ?>"
 		}).done(
@@ -122,8 +270,41 @@
 				
 			}
 		);
+		
+		
     }); 
     
+	function Paginar(){
+		//var a ="a";
+		//document.write(a);
+		var d=0;
+		var h=6;
+		var a=0;
+		var cells = $(".pagination").children();
+		var b=1;
+				
+			a=cells[2].getElementsByTagName("a")[0].innerHTML ;
+			h= a*6;
+			d=h-6;
+			$.ajax(
+			{
+			url:"<?php echo GetURL("modulos/modadminproductos/serviceadminproductos.php?accion=1")?>",
+			method: "POST",
+			data: {d:d,h:h,b:b}
+		}).done(function(data){
+			
+			$.ajax({
+			url:"<?php echo GetURL("modulos/modadminproductos/serviceadminproductos.php?accion=1") ?>"
+		}).done(
+			function(data){
+				$("#productocard").append(data);
+				
+			}
+		);
+		
+		});							
+			
+	}
   function OpenModal(ID)
 	{
         if(ID){
@@ -133,9 +314,11 @@
             //Get row cells
 				var cells = $("#Card_"+ID).children();
 				//Set Nombre
-				$("#ENombre").val(cells[0].children[1].getElementsByTagName("span")[0].innerHTML);
+				$("#ENombre").val(cells[0].children[1].children[0].innerHTML);
+				$("#otronombre").val(cells[0].children[1].children[0].innerHTML);
 				//Set descripcion
-                $("#EDescripcion").val(cells[0].children[3].children[2].innerHTML);
+                $("#EDescripcion").val(cells[0].children[1].children[1].innerHTML);
+				$("#otradescripcion").val(cells[0].children[1].children[1].innerHTML);
 				//cells[0].children[3].children[2].innerHTML
 				//Set Categoria
 				//cells[0].children[3].children[1].innerHTML
@@ -158,9 +341,26 @@
         }
 	}
     
+  function Seleccionar(ID)
+	{
+		 var frm = $('#modalFrmEdit').find('form');
+		 frm.trigger('reset');
+        
+            //Get row cells
+				var cells = $("#Card_"+ID).children();
+				//Set Nombre
+				
+				$("#otronombre").val(cells[0].children[1].children[0].innerHTML);
+				//Set descripcion
+                
+				$("#otradescripcion").val(cells[0].children[1].children[1].innerHTML);
+				
+                
+				
+       
+	}
     
-    
-    function Agregar()
+function Agregar()
 	{														
 					
 		
@@ -194,11 +394,11 @@
 		});								
 	}
     
-    function Editar(IdProductos)
+function Editar(IdProductos)
 	{
         
-		var Nombre        = $("#ENombre").val();
-		var Descripcion	  = $("#EDescripcion").val();
+		var Nombre        = $("#otronombre").val();
+		var Descripcion	  = $("#otradescripcion").val();
 
 		ShowLoadingSwal();
 		$.ajax
@@ -213,8 +413,9 @@
                 swal.close();
 				$("#Card_"+IdProductos).fadeOut(function()
 			{
-                var cells = $("#Card_"+IdProductos).children();
 				//Get row cells
+                var cells = $("#Card_"+IdProductos).children();
+				// Set Nombre
 				cells[0].children[1].getElementsByTagName("span")[0].innerHTML = Nombre;		
 				//Set Descripcion
 				cells[0].children[3].children[2].innerHTML = Descripcion;
@@ -225,7 +426,11 @@
 				swal("Error", data, "error");
 		});					
 	}
-  function Eliminar(id)
+	
+	
+	
+	
+function Eliminar(id)
   {
 	
 	var IdProductos= id;
