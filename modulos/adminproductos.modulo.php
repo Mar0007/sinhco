@@ -103,8 +103,8 @@
                         <label for="cbProveedores">Categorias</label>
 				    	</div>
 						
-						<a class="waves-effect waves-light btn disabled"><i class="material-icons left">done</i>Aplicar Cambios</a>
-						<a class="waves-effect waves-light btn"><i class="material-icons right">cancel</i>Cancelar</a>
+						<a id="a" class="waves-effect waves-light btn disabled" ><i class="material-icons left" >done</i>Aplicar Cambios</a>
+						<a id="b" class="waves-effect waves-light btn" ><i class="material-icons right" >cancel</i>Cancelar</a>
 						
 					</form>
             </div>
@@ -112,16 +112,21 @@
 
           <div class="col s7 right" id="productocard">	
 			  
-			  <ul class="pagination">
+			
+  		  </div>
+			
+			<div class="col s7 right" id="productocard1">	
+			  
+  		  </div>
+			<ul class="pagination">
 				<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
 				<li class="active" onClick="Paginar()"><a href="#!">1</a></li>
 				<li class="waves-effect"  onClick="Paginar()"><a href="#!">2</a></li>
-				<li class="waves-effect"><a href="#!">3</a></li>
+				<li class="waves-effect" onClick="Paginar()"><a href="#!">3</a></li>
 				<li class="waves-effect"><a href="#!">4</a></li>
 				<li class="waves-effect"><a href="#!">5</a></li>
 				<li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
 			</ul>
-  		  </div>
 		</div>
 </div>
 
@@ -275,8 +280,7 @@
     }); 
     
 	function Paginar(){
-		//var a ="a";
-		//document.write(a);
+		
 		var d=0;
 		var h=6;
 		var a=0;
@@ -286,23 +290,28 @@
 			a=cells[2].getElementsByTagName("a")[0].innerHTML ;
 			h= a*6;
 			d=h-6;
-			$.ajax(
-			{
-			url:"<?php echo GetURL("modulos/modadminproductos/serviceadminproductos.php?accion=1")?>",
-			method: "POST",
-			data: {d:d,h:h,b:b}
-		}).done(function(data){
 			
 			$.ajax({
-			url:"<?php echo GetURL("modulos/modadminproductos/serviceadminproductos.php?accion=1") ?>"
+			url:"<?php echo GetURL("modulos/modadminproductos/serviceadminproductos.php?accion=0") ?>",
+			method: "POST",
+			data: {d:d,h:h}
+			
 		}).done(
+			
 			function(data){
-				$("#productocard").append(data);
-				
+					
+				$("#productocard").fadeOut(function(){
+					$(this).remove();
+															
+				});	
+					
+				$("#productocard"+b).prepend(data);	
+						
+					
 			}
 		);
 		
-		});							
+							
 			
 	}
   function OpenModal(ID)
@@ -341,19 +350,32 @@
         }
 	}
     
-  function Seleccionar(ID)
+  function Seleccionar(IdProductos)
 	{
 		 var frm = $('#modalFrmEdit').find('form');
 		 frm.trigger('reset');
         
+		$("a").removeClass('disabled');
             //Get row cells
-				var cells = $("#Card_"+ID).children();
+				var cells = $("#Card_"+IdProductos).children();
 				//Set Nombre
 				
 				$("#otronombre").val(cells[0].children[1].children[0].innerHTML);
 				//Set descripcion
                 
 				$("#otradescripcion").val(cells[0].children[1].children[1].innerHTML);
+				
+				$("#a").unbind('click').click(function(){
+					Editar(IdProductos);
+				}
+				
+				);
+				
+				$("#b").unbind('click').click(function(){
+					Eliminar(IdProductos);
+				}
+				
+				);
 				
                 
 				
@@ -416,9 +438,9 @@ function Editar(IdProductos)
 				//Get row cells
                 var cells = $("#Card_"+IdProductos).children();
 				// Set Nombre
-				cells[0].children[1].getElementsByTagName("span")[0].innerHTML = Nombre;		
+				cells[0].children[1].children[0].innerHTML = Nombre;		
 				//Set Descripcion
-				cells[0].children[3].children[2].innerHTML = Descripcion;
+				cells[0].children[1].children[1].innerHTML = Descripcion;
 				$(this).fadeIn();								
 			});					
 			}				
@@ -452,7 +474,7 @@ function Eliminar(id)
 		}).done(function(data){
 			if(data == "0")
 			{
-				$("#Row_"+id).fadeOut(function(){
+				$("#Card_"+IdProductos).fadeOut(function(){
 					$(this).remove();
 															
 				});			

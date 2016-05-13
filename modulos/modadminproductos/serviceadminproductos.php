@@ -19,21 +19,105 @@
 	switch ($accion) {
         case 0: //paginacion
             # code...
-             $abc = $mysqli->select("productos",
-            [
-                "productos.idproducto",
-                    "productos.nombre"
-            ],
-            [
-                "LIMIT"=>[6,1] ,
-                 "ORDER" => "idproducto ASC"
-            ]);
             
-              
+            $h= $_POST["h"];
+            $d= $_POST["d"];
+            $stmt = $mysqli->select("productos",
+                [
+                    "[><]categoria_producto"=>"idcategoria",
+                    "[><]proveedores"=>"idproveedor"
+                    
+                ],
+                [
+                    "productos.idproducto",
+                    "productos.nombre",
+                    "productos.estado",
+                    "productos.precio",
+                    "productos.descripcion",
+                    "productos.idproveedor",
+                    "productos.idcategoria",
+                    "categoria_producto.nombre(Cnombre)",
+                    "proveedores.nombre(Pnombre)"
+                    
+                ],                
+                [   
+                    "LIMIT"=>[$d,$h] ,
+                    "ORDER" => "idproducto ASC"
+                ]);
+              /*  
                 // para ver el contenido de la consulta
                 echo"<pre>";
-                var_dump($abc);
+                var_dump($stmt);
                  echo "</pre>";
+            */
+                if(!$stmt)
+                {
+                    if($mysqli->error()[2] != "")
+                        echo "Error:".$mysqli->error()[2];
+                    
+                    return;
+                }
+                
+                foreach($stmt as $row){
+                    echo 
+                    /*
+					'
+                        <div id="Card_'.$row["idproducto"].'" class="col l4 s12 dataproductos">
+		                    
+                                
+                                    <div class="card " >
+                                        <div class="card-image waves-effect waves-block waves-light">
+                                            <img class="activator" src="/sinhco/recursos/img/proyect.jpg">
+                                        </div>
+                                        
+                                        <div class="card-content">
+                                            <span style="margin-bottom:50px" class="card-title activator grey-text text-darken-4">'.$row["nombre"].'</span>  
+                                            <h6>'.$row["Pnombre"].'</h6>            
+                                        </div>
+                                        <div class="card-action" style="position:relative" >
+                                            <a href="javascript:OpenModal('.$row["idproducto"].')"><i class="material-icons left">mode_edit</i>Editar</a>
+                                            <a href="javascript:Eliminar('.$row["idproducto"].')"><i class="material-icons ">delete</i>Borrar </a>
+                                            
+                                        </div>
+                                        
+                                        <div class="card-reveal"  style="margin-top:15px">
+                                            <span class="card-title grey-text text-darken-4">'.$row["nombre"].'<i class="material-icons right">close</i></span>
+                                            <p>'.$row["Cnombre"].'</p>
+                                            <p>'.$row["descripcion"].'</p>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                
+                            
+                         </div>
+                    
+          
+					';*/
+                    
+                    '<div id="Card_'.$row["idproducto"].'" class="col s4 dataproductos">
+                     
+                        <div class="card ">
+                            
+                            <div class="card-image waves-effect waves-block waves-light">
+                           
+                                <img  src="/sinhco/recursos/img/proyect.jpg">
+                            </div>
+                        
+                            <div class="card-content custom-content">                          
+                                <p >'.$row["nombre"].'</p>    
+                                 <p style="display:none">'.$row["descripcion"].'</p>                     
+                            </div>
+                            
+                            <div class="card-action-custom" style="position:relative" >
+                                <a href="javascript:Seleccionar('.$row["idproducto"].')" class="waves-effect waves-light btn">Seleccionar</a>                                            
+                            </div>
+                       
+                        </div>
+                    </div>
+              ';
+				}
+         
             break;
         case 1://Select
             # code...
@@ -60,13 +144,7 @@
            
          
          
-                
-               $d=0;
-               $h=6;
-           
-            
-            
-           
+  
             
             $stmt = $mysqli->select("productos",
                 [
@@ -87,7 +165,7 @@
                     
                 ],                
                 [   
-                    "LIMIT"=>[$d,$h] ,
+                    "LIMIT"=>[0,6] ,
                     "ORDER" => "idproducto ASC"
                 ]);
               /*  
