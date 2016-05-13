@@ -15,6 +15,42 @@
 		return;
 	}
 ?>
+<style>	
+	@media only screen and (max-width: 601px){
+		#datacontainer .collection-item{
+			/*color: red;*/
+			padding-left: 15px !important;
+		}
+		
+		#datacontainer .collection-item.avatar .circle {
+			width:28px;
+			height:28px;
+			left: -13px !important;
+		}
+		
+		#datacontainer .handler-class{
+			margin-left: 10px !important;
+		}
+		
+		#datacontainer .secondary-content{
+			top: 3px;
+			right: -19px;
+		}
+		
+		#datacontainer .collection-item.avatar i.circle {
+			line-height: 28px;
+		}
+	}
+	
+	/* Class Collection
+	*/		
+	#datacontainer > li > ul{
+		margin: 0.5rem 0 1rem 0;
+		border: 1px solid #e0e0e0;
+		border-radius: 2px;
+		position: relative;
+	}	
+</style>
 
 <div class="row">
     <div class="container">
@@ -32,7 +68,7 @@
         </div>		
         
         <!--Module Data-->
-        <ul id="datacontainer" class="collection fixed-drop">
+        <ul id="datacontainer" class="collection fixed-drop" style="margin-bottom:100px">
 			
 		</ul>
     
@@ -119,7 +155,7 @@
   	  </button>
 </div>
 </div>
-
+<script type="text/javascript" src="<?php echo GetURL("recursos/jquery.mjs.nestedSortable.js")?>"></script>
 
 <script>
   $(document).ready(function() {		
@@ -132,47 +168,50 @@
 		$(this).toggleClass("active");
 	});	
 	
-	
-	//Sortable from JQuery UI
-	$("#datacontainer").sortable({
-		handle: ".handler-class",		
-		helper: function(e, tr) 
-		{
-			var $originals = tr.children();
-			var $helper = tr.clone();
-			//Adds the shadow on selected.
-			$helper.addClass("z-depth-5");
-			return $helper;
-		},
-		//revert: true,
-		axis: "y",
-		tolerance: "pointer",
-		update: function(event, ui) 
-		{
-			var IDMenu = $("#maintabs").find("li").find("a.active").attr("menuid");
-			var data = $("#datacontainer").sortable('serialize') + "&IDMenu=" + IDMenu;
-			$.ajax({
-				url:"<?php echo GetURL("modulos/modadminmenu/serviceadminmenu.php?accion=5")?>",
-				method: "POST",
-				data: data
-			}).done(function(data){
-				if(data != "0")
+	$('#datacontainer').nestedSortable({
+				forcePlaceholderSize: true,
+				handle: '.handler-class',
+				listType: 'ul',
+				items: 'li',
+				opacity: .6,
+				placeholder: 'placeholder',
+				revert: 0,
+				tabSize: 10,
+				tolerance: 'pointer',
+				maxLevels: 2,
+				rootID: 'datacontainer',
+				isTree: true,
+				expandOnHover: 700,
+				startCollapsed: false,
+				helper: function(e, tr) 
 				{
-					Materialize.toast('Error al guardar las posiciones!', 4000);
-					console.error(data);
-				}
-				else
+					var $originals = tr.children();
+					var $helper = tr.clone();
+					//Adds the shadow on selected.
+					$helper.addClass("z-depth-5");
+					return $helper;
+				},				
+				update: function()
 				{
-					Materialize.toast('Guardado', 1000);	
+					var IDMenu = $("#maintabs").find("li").find("a.active").attr("menuid");					
+					var Data = JSON.stringify($('#datacontainer').nestedSortable('toHierarchy'));
+					
+					$.ajax({
+						url:"<?php echo GetURL("modulos/modadminmenu/serviceadminmenu.php?accion=5")?>",
+						method: "POST",
+						data: {'JSONData':Data,'IDMenu':IDMenu}
+					}).done(function(data)
+					{
+						if(data != "0")
+						{
+							Materialize.toast('Error al guardar las posiciones!', 4000);
+							console.error(data);
+						}
+						else
+							Materialize.toast('Guardado', 1000);
+					});			  
 				}
-			});			  
-		},
-		stop: function(event,ui) 
-		{
-			renumber_table('#datacontainer');
-		}   
-	}); //END Sortable
-	
+			}); //END sortable
   }); //END Main
   
   var ajax_request;
@@ -193,6 +232,7 @@
 			InitDropdown();
 			$(".dataitems").fadeIn();
 			$('.tooltipped').tooltip({delay: 50});
+			$('#datacontainer').nestedSortable('refresh')			
 		}
 	);			  
   }       
@@ -216,7 +256,7 @@
 	{
 		$('#modalFrmAdd').find('H4').html("Editar item");
 		//Get row cells
-		var cells = $("#Row_"+idEdit).children();		
+		var cells = $("#Row_"+idEdit+' div').children();		
 				
 		//Update form info
 		$('#txtTitulo').val(cells[2].children[0].innerHTML);	
@@ -305,9 +345,14 @@
 			$("#Row_"+id).fadeOut(function()
 			{
 				//Get row cells
-				var cells = $("#Row_"+id).children();
+				var cells = $("#Row_"+id+' div').children();
 				//Set Icon
-				cells[1].innerHTML = IDIcon;		
+				if(IDIcon == "")
+					 IDIcon = 'highlight_off';
+				else
+					$("#Row_"+id+" .circle").tooltip('remove');
+										
+				cells[1].innerHTML = IDIcon;	
 				//Set Titulo
 				cells[2].children[0].innerHTML = Titulo;
 				//Set Vinculo
@@ -323,7 +368,7 @@
   function Eliminar(id)
   {
 	var Posicion = $('#Row_'+id).attr('pos');
-	var Titulo = $('#Row_'+id).children()[2].children[0].innerHTML;
+	var Titulo = $('#Row_'+ id + ' div').children()[2].children[0].innerHTML;
 	var IDMenu 	 = $("#maintabs").find("li").find("a.active").attr("menuid");	
 	
 	swal({
@@ -362,8 +407,7 @@
 	$(ID).children().each(function() 
 	{         
 		//count = $(this).parent().children().index($(this));
-		//$FIX
-		$(this).removeAttr('style');
+		//$(this).removeAttr('style');
 		$(this).attr('pos',pos++);		
 	}); 
   }

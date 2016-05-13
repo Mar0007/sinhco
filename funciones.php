@@ -8,28 +8,25 @@
 // Main functions
 //-------------------------------------------------------------------------------------
     function menu($mysqli, $idmenu, $clasecss = "", $idcss = "",$BeginUL = "", $EndUL = "")
-    {
-		if($idcss != "")	$idcss 	  = "id=\"$idcss\"";
-		if($clasecss != "") $clasecss = "class=\"$clasecss\"";
-        
+    {        
         $Result = "";
+        $DropDowns = "";
         $stmt = $mysqli->select("menu_detalle",
         [
-            "itemmenu","vinculo","icono"
+            "iditem","itemmenu","vinculo","icono","submenus","orden"
         ],
         [
             "idmenu" => $idmenu,
             "ORDER" => "orden ASC"
         ]);
         
-        if($mysqli->error()[2] != "")
-        {
-            echo "Error al traer el menu->Menu():".$mysqli->error()[2];
-            return "";
-        }
+        if( CheckDBError($mysqli) ) return "";
         
         foreach ($stmt as $row)
         {
+            if($row["orden"] == -1)
+                continue;
+            
             if(strtolower($row["itemmenu"]) == "login" && login_check($mysqli))
             {
                 $Result .= 
@@ -38,28 +35,99 @@
                     "style=\"width:32px;height:32px;margin-top:15px;margin-right:10px\""
                     ." src=\"".GetUserImagePath($_SESSION['idusuario'])."\">".$_SESSION['idusuario']."</a>
                  </li>
-                 ";                    
+                 ";
+                 
+                 continue;                    
             }
-            else
-                $Result .= 
-                "<li>
-                    <a class=\"waves-effect waves-cyan\" href=\"".GetURL($row["vinculo"])."\">". 
-                    (($row["icono"] && $row["icono"] != "") ? 
-                    "<i class=\"material-icons left\" style=\"line-height: inherit;\">".$row["icono"].
-                    "</i>" : "" ) .
-                    $row["itemmenu"] . "</a>
-                </li>
-                ";
+            
+            if($row["submenus"] != "")
+            {                                                
+                //If side-nav then make it a collapsible
+                if(strpos($clasecss, 'side-nav') !== false)
+                {
+                     $Result .= 
+                     '
+                     <li class="no-padding">
+                        <ul class="collapsible collapsible-accordion">
+                            <li>
+                             <a class="collapsible-header">'.
+                            (($row["icono"] && $row["icono"] != "") ? 
+                            '<i class="material-icons left" style="line-height: inherit;">'.$row["icono"].'</i>' : "" )                             
+                             .$row["itemmenu"].
+                             '<i class="right mdi-navigation-arrow-drop-down"></i>
+                             </a>
+                             <div class="collapsible-body">
+                                <ul>
+                                '.GetMenuChildsHTML($row["submenus"],$stmt).'
+                                </ul>
+                             </div>
+                           </li>
+                        </ul>
+                     </li>
+                     ';
+                }
+                else
+                {
+                    //If nav-bar then make it a dropdown                
+                    $DPName = 'Menudp_' . $row["itemmenu"];
+                    $Result .=  GetMenuitemHTML($row,true,$DPName);
+                    $DropDowns .= 
+                    '<ul id="'.$DPName.'" class="dropdown-content">'
+                        .GetMenuChildsHTML($row["submenus"],$stmt).
+                    '</ul>';
+                }                
+                
+                continue;                
+            }
+            
+            //Default
+            $Result .= GetMenuitemHTML($row);
         }        
         
+		if($idcss != "")	$idcss 	  = "id=\"$idcss\"";
+		if($clasecss != "") $clasecss = "class=\"$clasecss\"";
         $Result = "<ul $clasecss $idcss>" .
                         $BeginUL . 
                         $Result .
                         $EndUL .
-                  "</ul>";                    
+                  "</ul>"
+                  .$DropDowns;                    
                                   
         return $Result;
     }
+    
+	function GetMenuChildsHTML($Submenus,$stmt)
+	{	
+		$JData = json_decode($Submenus,true); 
+		$Result = '';
+		
+		foreach ($JData as $key => $val) 		
+		{
+			$FilterData = 
+			array_filter($stmt, function($row) use($val) {
+				  return $row['iditem'] == $val['id'];
+			});
+			
+			foreach ($FilterData as $value)
+                $Result .= GetMenuitemHTML($value); 
+		}
+		
+		return $Result;						
+	}
+    
+    function GetMenuitemHTML($row,$bisDP = false,$DPName = "")
+    {        
+        return 
+        '
+            <li>
+                <a class="waves-effect waves-cyan'.((!$bisDP) ? '"' : ' dropdown-button" data-activates="'.$DPName.'"').' href="'.GetURL($row["vinculo"]).'">'.
+                    (($row["icono"] && $row["icono"] != "") ? 
+                    '<i class="material-icons left" style="line-height: inherit;">'.$row["icono"].'</i>' : "" ) 
+                    .$row["itemmenu"].
+                '</a>
+            </li>
+        ';        
+    }    
 
     function ShowSlider($mysqli, $idslider, $idmodulo, $clasecss = "", $idcss = "")
     {
@@ -139,9 +207,7 @@
         
         if(!$stmt)
         {
-            if($mysqli->error()[2] != "")
-                echo "<h3>Error en la base de datos: Module()</h3>";
-            else
+            if( !CheckDBError($mysqli) )
             {
                 if($bGetHTML) ob_end_clean();
                 return false;
@@ -191,7 +257,7 @@
 		session_name($nombre_sesion);
 		session_start();
 		
-        //Debug
+        /*
 		// Set last regen session variable first time
 		if (!isset($_SESSION['last_regen']))
 			$_SESSION['last_regen'] = time();		
@@ -200,7 +266,8 @@
 		if ($_SESSION['last_regen'] + $session_regen_time < time()){
 			$_SESSION['last_regen'] = time();
 			session_regenerate_id(true);   
-		}				
+		}
+        */				
 	}
     
 
@@ -217,7 +284,7 @@
         if(!$stmt)
         {
             //Error en la consulta
-            if($mysqli->error()[2] != "")
+            if( CheckDBError($mysqli,false) )
                 echo "Error en login()";
                 
             //Usuario no existe en la BD;
@@ -256,7 +323,7 @@
             if(!$stmt)
             {
                 //Error en la consulta.
-                if($mysqli->error()[2] != "")
+                if( CheckDBError($mysqli,false) )
                     echo "Error->LoginCheck():".$mysqli->error()[2];
                  
                 //No existe el usuario   
@@ -386,7 +453,7 @@
 			}
 			
 			$HTMLResult .= "<li". ((isset($Item["id"])) ? "id=\"".$Item["id"]."\"" : "" ) .">";
-			$HTMLResult .= "<a href=".((isset($Item["href"])) ? str_replace("%id",$id,$Item["href"]) : "" ) . ">";
+			$HTMLResult .= "<a class=\"truncate\" href=".((isset($Item["href"])) ? str_replace("%id",$id,$Item["href"]) : "" ) . ">";
 			if(isset($Item["icon"])) $HTMLResult .= "<i class=\"material-icons left\">".$Item["icon"]."</i>";
 			$HTMLResult .= $Item["contenido"] . "</a></li>";
 		}

@@ -17,8 +17,57 @@
     
     $accion = $_GET["accion"];
 	switch ($accion) {
+        case 0: //paginacion
+            # code...
+             $abc = $mysqli->select("productos",
+            [
+                "productos.idproducto",
+                    "productos.nombre"
+            ],
+            [
+                "LIMIT"=>[6,1] ,
+                 "ORDER" => "idproducto ASC"
+            ]);
+            
+              
+                // para ver el contenido de la consulta
+                echo"<pre>";
+                var_dump($abc);
+                 echo "</pre>";
+            break;
         case 1://Select
             # code...
+            /*
+            $abc = $mysqli->select("productos",
+            [
+                "productos.idproducto",
+                    "productos.nombre"
+            ],
+            [
+                // desde el registro 1 hasta el 6
+                "LIMIT"=>[0,6] ,
+                
+                 "ORDER" => "idproducto ASC"
+            ]);
+            
+              
+                // para ver el contenido de la consulta
+                echo"<pre>";
+                var_dump($abc);
+                 echo "</pre>";
+            
+            */
+           
+         
+         
+                
+               $d=0;
+               $h=6;
+           
+            
+            
+           
+            
             $stmt = $mysqli->select("productos",
                 [
                     "[><]categoria_producto"=>"idcategoria",
@@ -38,6 +87,7 @@
                     
                 ],                
                 [   
+                    "LIMIT"=>[$d,$h] ,
                     "ORDER" => "idproducto ASC"
                 ]);
               /*  
@@ -56,6 +106,7 @@
                 
                 foreach($stmt as $row){
                     echo 
+                    /*
 					'
                         <div id="Card_'.$row["idproducto"].'" class="col l4 s12 dataproductos">
 		                    
@@ -88,7 +139,29 @@
                          </div>
                     
           
-					';
+					';*/
+                    
+                    '<div id="Card_'.$row["idproducto"].'" class="col s4 dataproductos">
+                     
+                        <div class="card ">
+                            
+                            <div class="card-image waves-effect waves-block waves-light">
+                           
+                                <img  src="/sinhco/recursos/img/proyect.jpg">
+                            </div>
+                        
+                            <div class="card-content custom-content">                          
+                                <p >'.$row["nombre"].'</p>    
+                                 <p style="display:none">'.$row["descripcion"].'</p>                     
+                            </div>
+                            
+                            <div class="card-action-custom" style="position:relative" >
+                                <a href="javascript:Seleccionar('.$row["idproducto"].')" class="waves-effect waves-light btn">Seleccionar</a>                                            
+                            </div>
+                       
+                        </div>
+                    </div>
+              ';
 				}
             break;
         case 2://Insert
@@ -120,7 +193,8 @@
                         return;                        
                     }
                     
-            echo '
+            echo 
+            /*'
                         <div id="Card_'.$last_id.'" class="col l4 s12 dataproductos">
 		                    
                                 
@@ -152,7 +226,26 @@
                          </div>
                     
           
-					';
+					';*/
+                    '<div id="Card_'.$last_id.'" class="col s4 dataproductos">
+                        <div class="card">
+                            <div class="card-image waves-effect waves-block waves-light">
+                                <img  src="/sinhco/recursos/img/proyect.jpg">
+                            </div>
+                        
+                            <div class="card-content custom-content">                          
+                                <a >'.$Nombre.'</a>     
+                                 <p style="display:none">'.$Descripcion.'</p>                   
+                            </div>
+                            
+                             <div class="card-action-custom" style="position:relative" >
+                                <a href="javascript:Seleccionar('.$last_id.')" class="waves-effect waves-light btn">Seleccionar</a>                                            
+                            </div>
+                       
+                        </div>
+                    </div>
+              ';
+              
 				break;
         case 3:  //update
                 
