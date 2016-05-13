@@ -36,20 +36,20 @@
 					
 					if($DeleteData != "")
 					{																				
-						//$Values = array();
-						$Cont = 0;
-						$DeleteData = explode(",", $DeleteData);											
+						$Values = array();
+						$DeleteData = explode(",", $DeleteData);					
+						
 						foreach ($DeleteData as $Item) 
 						{						
-							//$TArray["OR"] = Array();
-							$TArray["OR"]["AND #".$Cont]["idmodulo"] = $Item;
-							$TArray["OR"]["AND #".$Cont++]["idslider"] = $IDSlider;							
-							//$TArray["idimagen"] = $IDImagen;						
-							//$TArray["orden"] = $Orden;
-							//array_push($Values,$TArray);
+							$TArray = Array();
+							$TArray["idmodulo"] = $Item;
+							$TArray["idimagen"] = $IDImagen;
+							$TArray["idslider"] = $IDSlider;						
+							$TArray["orden"] = $Orden;
+							array_push($Values,$TArray);
 						}			
 						
-						$mysqli->delete("slider_img_mod",$TArray);		
+						$mysqli->delete("slider_img_mod",$Values);		
 						if(CheckDBError($mysqli)) return false;				
 					}										
 					
@@ -165,16 +165,24 @@
 		case 8: // Consulta Modulos
 				$IDSlider = $_POST["IDSlider"];
 				$IDImagen  = $_POST["IDImage"];
-				
+				$resultado = "";
 				$strSQL = "SELECT idmodulo FROM modulos WHERE idmodulo 
 						   NOT IN ( SELECT idmodulo FROM slider_img_mod 
 						   WHERE idslider = ".$mysqli->quote($IDSlider)."and idimagen = ".$mysqli->quote($IDImagen).")";
 
 				$stmt = $mysqli->query($strSQL);
 				if(CheckDBError($mysqli)) return;
-																
-				$JSON["Disponibles"] = ($stmt != null) ? $stmt->fetchAll() : false;
-				$JSON["Asignados"] = $mysqli->select("slider_img_mod",["idmodulo"],
+												
+				if($stmt != null)				
+				{
+					$stmt = $stmt->fetchAll();													
+					foreach ($stmt as $row) 
+						$resultado .= $row["idmodulo"].",";
+						
+				    $resultado = substr_replace($resultado, "", -1).";";
+				}
+				
+				$stmt = $mysqli->select("slider_img_mod",["idmodulo"],
 				[
 					"AND" =>
 					[
@@ -182,12 +190,14 @@
 						"idimagen" => $IDImagen
 					]
 				]);
-				
 				if(CheckDBError($mysqli)) return;
 				
-				//echo $resultado;
-				//echo print_r($JSON);
-				echo json_encode($JSON);
+				foreach ($stmt as $row)
+					$resultado .= $row["idmodulo"].",";
+				
+				$resultado = substr_replace($resultado, "", -1).";";
+											
+				echo $resultado;
 				break;
 		case 9: //Get Images
 				$IDSlider = $_POST['IDSlider'];
@@ -286,23 +296,17 @@
 		
 		foreach ($stmt as $row) 
 		{
-			$strModulos = "";
+			echo "<tr class=\"datarows1\" id=\"Row_".$row["idimagen"]."\" style=\"display:none\">
+					<td class=\"orderrow\" init=\"".$row["orden"]."\"><i class=\"material-icons left handler-class\" style=\"cursor:move\">reorder</i> <span>".$row["orden"]."</span></td>						
+					<td idIMG=\"".$row["idimagen"]."\"><img src=\"".$row["ruta"]."\" style=\"width:90px;height:90px\"/></td>
+					<td>";		
+					
 			foreach(explode(",",$row["modulos"]) as $ID)
-				$strModulos .= '<div class="chip" style="margin-left:3px; margin-bottom: 3px;">'.$ID.'</div>';																				
+				echo "<div class=\"chip\" style=\"margin-left:3px; margin-bottom: 3px;\">$ID</div>";														
 			
-			echo 
-			'
-				<li id="Row_'.$row["idimagen"].'" style="display:none" class="dataitems collection-item avatar" pos="'.$row["orden"].'">
-					<i class="material-icons left handler-class" style="cursor:move;margin-left:-100px;margin-top:10px">swap_vert</i>
-					<img class="circle materialboxed" src="'.$row["ruta"].'" style=""/>									
-					<a  class="black-text" href="#!">
-						<span class="title">No titulo aun</span>								
-					</a>                 
-					<p class="grey-text lighten-2 title">Modulos:</p>
-					'.$strModulos.'
-					'.GetDropDownSettingsRow($row["idimagen"],GetMenuArray()).'			
-				</li>
-			';     	
+			echo "</td>
+					<td>".GetDropDownSettingsRow($row["idimagen"],GetMenuArray())."</td>
+					</tr>";				
 		}
 		
 	}

@@ -34,10 +34,41 @@
                     <div class="">
                         <a href="<?php echo GetURL("inicio");?>" class="brand-logo light-blue-text text-accent-4"><img class="logo responsive-img" src="<?php echo GetURL("uploads/static/logo.png");?>"></a>
                         <a href="#" data-activates="mobile-demo" class="button-collapse light-blue-text text-accent-4"><i class="material-icons">menu</i></a>
-                          <?php
-                            echo menu($mysqli,3,"right hide-on-med-and-down");
-                            echo menu($mysqli,3,"side-nav","mobile-demo");                            
-                          ?>                       
+                        <ul class="right hide-on-med-and-down">
+                            <li><a href="proyectos">Proyectos</a></li>
+                            <li><a class='dropdown-button' data-activates='drop-products' href="products.html">Productos</a></li>
+                            <li><a href="servicios.html">Servicios</a></li>
+                            <li><a href="about.html">Acerca de</a></li>
+                            <li><a href="contactanos.html">Contáctanos</a></li>
+                        </ul>
+                        <!-- Dropdown Products -->
+                          <ul id='drop-products' class='dropdown-content'>
+                            <li><a href="products.html">Rotoplas</a></li>
+                            <li><a href="products.html">Norweco</a></li>                            
+                            <li><a href="products.html">Fill-Rite</a></li>
+                          </ul>
+                        
+                        <ul class="side-nav" id="mobile-demo">
+                            <li><a href="<?php echo GetURL("inicio");?>">Inicio</a></li>
+                            <li><a href="proyectos.html">Proyectos</a></li>
+                            <li class="no-padding">
+                                <ul class="collapsible collapsible-accordion">
+                                  <li>
+                                    <a class="collapsible-header">Productos<i class="right mdi-navigation-arrow-drop-down"></i></a>
+                                    <div class="collapsible-body">
+                                      <ul>
+                                        <li><a href="products.html">Rotoplas</a></li>
+                                        <li><a href="products.html">Norweco</a></li>
+                                        <li><a href="products.html">Fill-Rite</a></li>                                                                          <li class="divider"></li>
+                                      </ul>
+                                    </div>
+                                  </li>
+                                </ul>
+                            </li>
+                            <li><a href="servicios.html">Servicios</a></li>                            
+                            <li><a href="about.html">Acerca de</a></li>                            
+                            <li><a href="contactanos.html">Contáctanos</a></li>
+                        </ul>
                     </div>
                 </div>
             </nav>
@@ -48,11 +79,13 @@
                 $Slider = ShowSlider($mysqli,"",$modulo,"fullscreen");
                 if($Slider != "")
                 { 
-                    echo '<div id="hero" style="position:relative; height:89vh;">'.
-                            $Slider .
-                         '</div>';
+                    echo '
+                        <div id="hero" style="position:relative; height:89vh;">'.
+                        $Slider.
+                        '</div>';
                 } 
-          ?>    
+          ?>
+    <!--/div-->    
     </section>
     <main>
         <?php echo $Modulo ?>
@@ -86,9 +119,10 @@
             
     
 </body> 
-    <script>        
-        $(document).ready(function()
-        {            
+    <script>
+        
+        $(document).ready(function(){
+            
             $('.slider').slider({full_width: true, indicators:true});
             $(".button-collapse").sideNav();            
 			$('.modal-trigger').leanModal();
@@ -105,5 +139,161 @@
               );            
         });
         
-    </script>    
+    </script>
+    <style>
+        @media only screen and (min-width: 992px) {
+            .modal.bottom-sheet{
+                width:80%;
+                margin:0 auto;
+                height: 55%
+            }
+        }
+        .logo {
+                max-height: 44px;
+                margin-top: 10px;
+                margin-left: 5%;
+        }
+        .logo-footer {
+                max-height: 44px;
+                margin-top: 10px;                
+        }
+        .slider.fullscreen{
+            height: 89%;
+        }
+        .slider .indicators .indicator-item.active{
+            background-color: #90caf9;
+        }
+        #hero-img {
+            position: relative;
+            height: 100vh;
+        }
+        .hero-bg{
+            background-image: url("../recursos/img/slide2.jpg");
+            background-size: cover;
+            background-position: center no-repeat;
+            max-height: 89vh;
+        }
+        #proyect-img {
+            position: relative;
+            height: 100vh;
+        }
+        .modal{
+            width:85%;            
+        }
+        .modal.bottom-sheet{
+            max-height: 70%;            
+        }
+        .modal .description{
+            padding: 24px;
+        }        
+        .float-btn{
+            bottom:-28px; 
+            z-index:2; 
+            position:absolute
+        }
+        
+        .indigo-bg{
+            background-color: #e8eaf6;
+        }
+        .blue-darken-bg{
+            background-color: #01579b;
+            color: white
+        }
+        .floating-btn{
+            position: absolute;
+            bottom: -28px;
+            right:32px;
+            z-index: 2;
+        }
+        .fab-btn{
+            position: absolute;
+            right:10%;
+        }
+        .banner-fab{
+            position:absolute;
+            right:80px;            
+            z-index: 2;
+        }
+        .card-floating-btn{
+            position: absolute;
+            bottom: -12px;
+            right:12px;
+            z-index: 2;
+        }
+        .card-fab-btn{
+            position: absolute;
+            right:2%;
+        }
+        
+        .no-mar-bot{
+            margin-bottom: 0;
+        }
+        .tabs .indicator{
+            background-color: #1e88e5;
+        }
+        .tabs{
+            background-color: #e8eaf6;
+        }
+        .tabs .tab a{
+            color:#1e88e5;
+        }
+        .tabs .tab a:hover{
+            color: #90caf9;
+        }
+        .banner{
+            background-color: #01579b;
+            color:white;
+        }
+        .banner-pad{
+            padding-bottom: 80px;
+            padding-top: 80px
+        }
+        .banner-pad-bot{
+            padding-bottom: 2rem;
+        }        
+        nav ul a{
+            color:#455a64;
+            font-weight: 400;
+            text-transform: uppercase;
+            
+        }
+        nav ul li a:hover, nav ul a.active{
+            color: #01579b;
+            background-color: transparent;
+            font-weight: 500;
+        }
+        nav ul li.active{
+            background-color: transparent;
+            color: #01579b;
+        }
+        .fix-icon{
+            position: relative;
+            top:7px
+        }        
+        .dropdown-content li a{
+            color:#039be5;
+        }
+        
+        .brand-list{
+            list-style-type: none
+        }
+        .brand-list li{
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .brand-list li img{
+            margin: 0 auto;
+            max-height: 80px;
+            max-width: 160px;
+        }
+        
+        .overlay {            
+            background:transparent; 
+            position:relative; 
+            width:100%;
+            height:620px; 
+            top:620px; 
+            margin-top:-620px;  
+        }
+        </style>
 </html>

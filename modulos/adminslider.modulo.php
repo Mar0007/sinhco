@@ -15,65 +15,7 @@
 	}
 ?>
 
-
 <div class="row">
-    <div class="container">
-        <!--Module Title-->
-        <div class="row">
-            <h3 class="light center blue-grey-text text-darken-3">Administrar Sliders</h3>
-            <p class="center light">Cree, edite y organice los sliders.</p>
-            <div class="divider3"></div>
-			<div class="col s9 m10 l10" style="">
-				<div class="input-field col s12">
-					<select id="cbSlider">
-						<option value="" href="" disabled>Escoge el Slider</option>
-						<?php
-							$stmt = $mysqli->select("slider",["idslider","nombre"]);						
-							
-							if(CheckDBError($mysqli))
-								echo "<option value=\"\">Error al traer Sliders</option>";
-							else
-							{
-								if(!$stmt)
-									echo "<option value=\"\">No hay Sliders disponible</option>";
-								else
-								{
-									foreach ($stmt as $row) 
-										echo '<option value='.$row["idslider"].'">'.$row["nombre"].'</option>';
-								}
-							}															
-						?>				
-					</select>
-					<label>Slider</label>
-				</div>
-			</div>
-			<div class="col s1 m1 l1">
-				<a class="btn tooltipped dropdown-button" href='#' data-activates='HSettings' style="margin-top:15px" data-position="bottom" data-delay="50" data-tooltip="Herramientas">			
-				<i class="material-icons">build</i>
-				</a>
-				<ul id='HSettings' class='dropdown-content'>
-					<li><a href="javascript:AddNewSlider()"><i class="material-icons left">playlist_add</i>Agregar Slider</a></li>
-					<li class="divider"></li>
-					<li><a href="javascript:DeleteSlider()"><i class="material-icons left">delete</i>Eliminar Slider</a></li>
-				</ul>					
-			</div>
-						
-        </div>		
-        
-        <!--Module Data-->
-        <ul id="datacontainer" class="collection fixed-drop">
-			
-		</ul>
-    
-        <!--Module Action Button-->
-        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-            <a id="btnCrear" class="btn-floating btn-large blue-grey darken-2 tooltipped"  onclick="OpenModal()" data-position="left" data-delay="50" data-tooltip="Crear item">
-                <i class="large material-icons">mode_edit</i>
-            </a>
-        </div>   
-    </div>
-
-<!--div class="row">
 		<h3>Administracion de Sliders</h3>		
 		<div class="col s9 m10 l6" style="margin-left:-20px;">
 			<div class="input-field col s12">
@@ -126,7 +68,7 @@
 		<button id="btnagregar" class="btn waves-effect waves-light" onclick="OpenModal()">
 			<i class="material-icons left">library_add</i>Agregar Item
 		</button>
-	</div-->
+	</div>
 
     <!-- Modal -->
     <div id="modalFrmAdd" class="modal modal-fixed-footer">
@@ -218,23 +160,23 @@
 	GetAjaxData($('#cbSlider').val());
 	
 	//Sortable from JQuery UI
-	$("#datacontainer").sortable({
+	$("#tblSliders tbody").sortable({
 		handle: ".handler-class",		
 		helper: function(e, tr) 
 		{
 			//Fix for drag not keeping size
 			var $originals = tr.children();
 			var $helper = tr.clone();
-			//Adds the shadow on selected.
-			$helper.addClass("z-depth-5");			
+			$helper.children().each(function(index)
+			{
+				$(this).width($originals.eq(index).width())
+			});
 			return $helper;
 		},
-		//axis: "y",
-		tolerance: "pointer",		
 		update: function(event, ui) 
 		{
-			var IDSlider = $("#datacontainer").val();
-			var data = $("#datacontainer").sortable('serialize') + "&IDSlider=" + IDSlider;
+			var IDSlider = $('#cbSlider').val();
+			var data = $("#tblSliders tbody").sortable('serialize') + "&IDSlider=" + IDSlider;
 			$.ajax({
 				url:"<?php echo GetURL("modulos/modadminslider/serviceadminslider.php?accion=5") ?>",
 				method: "POST",
@@ -245,15 +187,11 @@
 					Materialize.toast('Error al guardar las posiciones!', 4000);
 					console.error(data);
 				}
-				else
-				{
-					Materialize.toast('Guardado', 1000);
-				}
 			});			  
 		},
 		stop: function(event,ui) 
 		{
-			renumber_table("#datacontainer");
+			renumber_table('#tblSliders');
 		}   
 	}); //END Sortable	
 	
@@ -264,8 +202,8 @@
   {
 	//Prevent parallel execution of ajax.
 	if(ajax_request) ajax_request.abort();
-	//Clear
-	$("#datacontainer").empty();
+	//Clear table
+	$("#tblSliders tbody").empty();
 	//Get data
 	ajax_request = $.ajax({
 		url:"<?php echo GetURL("modulos/modadminslider/serviceadminslider.php?accion=1") ?>",
@@ -273,27 +211,57 @@
 		data: {IDSlider:id}		
 	}).done(
 		function(data){
-			$("#datacontainer").append(data);
+			$("#tblSliders tbody").append(data);
 			InitDropdown();
-			$(".dataitems").fadeIn();
-			$('.materialboxed').materialbox();
+			$(".datarows1").fadeIn();
 		}
 	);			  
   }
   
-  //Renumber rows
-  function renumber_table(ID) 
+  //Renumber table rows 
+  function renumber_table(tableID) 
   {     
-	var pos = 0;	
-	$(ID).children().each(function() 
+	$(tableID + " tr").each(function() 
 	{         
-		//count = $(this).parent().children().index($(this));
+		count = $(this).parent().children().index($(this));
 		//$FIX
 		$(this).removeAttr('style');
-		$(this).attr('pos',pos++);		
+		$(this).find('.orderrow').find('span').html(count);
 	}); 
   }
-
+  
+  function GetRowIDByOrder(idOrder)
+  {
+	var Rowid;
+	$("#tblSliders tr").each(function(){		
+		order = $(this).find('.orderrow').find('span').html();
+		if(order == idOrder)
+		{
+			Rowid = $(this).attr('id');
+			return false;
+		}
+	});
+	
+	return Rowid;
+  }
+  
+  function MoveRow(id,Posicion)
+  {
+	//Update Position on table
+	var cells = $("#Row_"+id).children();
+	var OtherID = GetRowIDByOrder(Posicion);
+	if(OtherID)
+		if(Posicion < cells[0].children[1].innerHTML)
+		$("#Row_"+id).insertBefore($('#'+OtherID));
+		else
+		$("#Row_"+id).insertAfter($('#'+OtherID));
+	else
+		$("#tblSliders tbody").append($("#Row_"+id));
+						
+	cells[0].children[1].innerHTML = Posicion;
+	$("#tblSliders tbody").sortable("option", "stop")();
+	$("#tblSliders tbody").sortable("option", "update")();	  
+  }  
   
   function OpenModal(idEdit)
   {	
@@ -311,7 +279,7 @@
 
 	$("#btnSaveDialog").unbind('click').click(function(){		
 		//PreCheck
-		if(!$("#ColImgs .collection-item.active").length)
+		if(!$(".collection-item.active").length)
 		{
 			swal("Error", "Seleccione una imagen", "error");
 			return;
@@ -366,9 +334,9 @@
 	}).done(function(data){
 		$("#TabImg").find('.TabLoader').remove();
 		$("#TabImg").find('#ColImgs').html(data);
-		$('#ColImgs .collection-item').unbind('click').click(function()
+		$('.collection-item').unbind('click').click(function()
 		{
-			$("#ColImgs .collection-item").not(this).removeClass("active");
+			$(".collection-item").not(this).removeClass("active");
 			$(this).toggleClass("active");
 		});	
 		
@@ -378,7 +346,7 @@
   
   function Agregar()
   {		
-	IDImagen = $("#ColImgs .collection-item.active").attr('value');
+	IDImagen = $(".collection-item.active").attr('value');
 	IDSlider = $('#cbSlider').val();
 	Orden = 0;
 	ShowLoadingSwal();
@@ -393,12 +361,12 @@
 			   DataRemove:Changes[1].toString()}
 	}).done(function(data){
 		$("#modalFrmAdd").closeModal();		
-		if(data.indexOf("<li") > -1)
+		if(data.indexOf("<tr") > -1)
 		{			
 			//Close loading swal.
 			swal.close();
 			
-			$("#datacontainer").append(data);						
+			$("#tblSliders tbody").append(data);						
 			//Get ID item from incoming data
 			var IDItem = $(data).attr('id');
 			$("#"+IDItem).fadeIn();						
@@ -407,8 +375,8 @@
 			InitDropdown();
 			
 			//Activate sortable events
-			$("#datacontainer").sortable("option", "stop")();
-			$("#datacontainer").sortable("option", "update")();	  			
+			$("#tblSliders tbody").sortable("option", "stop")();
+			$("#tblSliders tbody").sortable("option", "update")();	  			
 		}
 		else
 			swal("Error", data, "error");
@@ -418,10 +386,10 @@
   function Editar(id)
   {
 	var cells 	 = $("#Row_"+id).children();
-	IDImagen 	 = $("#ColImgs .collection-item.active").attr('value');
-	IDImgInit 	 = $("#ColImgs .collection-item.Initial").attr('value');
+	IDImagen 	 = $(".collection-item.active").attr('value');
+	IDImgInit 	 = $(".collection-item.Initial").attr('value');
 	IDSlider 	 = $('#cbSlider').val();
-	Orden 		 = $("#Row_"+id).attr("pos");
+	Orden 		 = cells[0].children[1].innerHTML;
 	
 	ShowLoadingSwal();
 	
@@ -436,7 +404,7 @@
 			   DataRemove:Changes[1].toString()}
 	}).done(function(data){
 		$("#modalFrmAdd").closeModal();		
-		if(data.indexOf("<li") > -1)
+		if(data.indexOf("<tr") > -1)
 		{			
 			//Close loading swal.
 			swal.close();
@@ -482,8 +450,8 @@
 			{
 				$("#Row_"+id).fadeOut(function(){
 					$(this).remove();
-					$("#datacontainer").sortable("option", "stop")();
-					$("#datacontainer").sortable("option", "update")();													
+					$("#tblSliders tbody").sortable("option", "stop")();
+					$("#tblSliders tbody").sortable("option", "update")();													
 				});				  				
 				swal("Borrado", "Se borro exitosamente.", "success");
 			}
@@ -569,11 +537,11 @@
 	var Changes = [[],[]];	
 	function LoadModulos(id)
 	{
-		$('#ModulosDisponibles tbody').empty();
-		$('#ModulosAsignados tbody').empty();
+		$('#ModulosDisponibles tbody').html("");
+		$('#ModulosAsignados tbody').html("");
 		CleanChanges();
 		
-		if($("#Modulos .TabLoader").length < 0);
+		if(!$("#Modulos").find('.TabLoader').length);
 			$("#Modulos").append(HTMLLoader);
 		
 		var IDImage = (id ? id : -1);	
@@ -584,57 +552,53 @@
 		ajax_request = $.ajax({
 			url:"<?php echo GetURL("modulos/modadminslider/serviceadminslider.php?accion=8")?>",
 			method: "POST",
-			dataType: "JSON",
 			data: {IDImage:IDImage,IDSlider:IDSlider}
-		});
-						
-		ajax_request.done(function(data)
-		{
-			if(data["Disponibles"])
+		}).done(function(data){
+			if(data != "1" && data != "")
 			{
-				//console.log("-----------------------------");
-				//console.log("-> Disponibles");
-				//console.log("-----------------------------");
-				$.each(data["Disponibles"],function( key, val)
-				{
-					//console.log("Val->" + val["idmodulo"]);
-					$("<tr>",
-					{
-						"id":"mod_"+val["idmodulo"],
-						"class":"modaldata",
-						"style":"display:none",
-						html:"<td><a href=\"javascript:agregarmod('"+val["idmodulo"]+"')\">"+val["idmodulo"]+"</a></td>"
-					}).appendTo("#ModulosDisponibles tbody");
+				
+				var datos = data.split(";"),
+					tbody = $('#ModulosDisponibles tbody'),
+					modulos = datos[0].split(","); // Modulos disponibles
+					
+				$.each(modulos, function(i, modulo){
+					var tr = $('<tr>'),
+						a = $('<a>');
+					tr.attr("id", "mod_"+modulo);
+					tr.attr("class", "modaldata");
+					tr.attr("style", "display:none");
+					a.attr("href","javascript:agregarmod('"+modulo+"')");
+					a.html(modulo);
+					$('<td>').html(a).appendTo(tr);
+					tbody.append(tr);
 				});
+				
+				if(datos[1].length > 0)
+				{
+					var datos = data.split(";"),
+						tbody = $('#ModulosAsignados tbody'),
+						modulos = datos[1].split(","); // Modulos disponibles
+					$.each(modulos, function(i, modulo){		
+						var tr = $('<tr>'),
+							a = $('<a>');
+						tr.attr("id", "mod_"+modulo);
+						tr.attr("class", "modaldata");
+						tr.attr("style", "display:none");
+						a.attr("href","javascript:quitarmod('"+modulo+"')");
+						a.html(modulo);
+						$('<td>').html(a).appendTo(tr);
+						tbody.append(tr);
+					});
+				}
+				
+				$("#Modulos").find('.TabLoader').remove();
+				$(".modaldata").fadeIn();
+				$('.modal-content').scrollTop(1);
 			}
-			
-			if(data["Asignados"])
+			else
 			{
-				//console.log("-----------------------------");
-				//console.log("-> Asignados");
-				//console.log("-----------------------------");
-				$.each(data["Asignados"],function( key, val)
-				{
-					//console.log("Val->" + val["idmodulo"]);
-					$("<tr>",
-					{
-						"id":"mod_"+val["idmodulo"],
-						"class":"modaldata",
-						"style":"display:none",
-						html:"<td><a href=\"javascript:quitarmod('"+val["idmodulo"]+"')\">"+val["idmodulo"]+"</a></td>"
-					}).appendTo("#ModulosAsignados tbody");
-				});
-			}			
-									
-			$("#Modulos").find('.TabLoader').remove();
-			$(".modaldata").fadeIn();
-			$('.modal-content').scrollTop(1);			
-		});
-		
-		ajax_request.fail(function(AjaxObject)
-		{
-			sweetAlert("Error", "Error al obtener modulos del perfil.", "error");
-			console.error("Ajax JSON-> "+AjaxObject.responseText);
+				sweetAlert("Error", "Error al obtener modulos del perfil. ::"+data, "error");
+			}
 		});		
 	}
 		
@@ -652,7 +616,8 @@
             $(this).remove();
             tbody.append($(this));
             $("a", this).attr("href","javascript:quitarmod('"+idmodulo+"')");
-            $(this).fadeIn("fast");            
+            $(this).fadeIn("fast");
+            
         });
         
     }
@@ -720,9 +685,9 @@
 			{
 				//$("#TabImg").find('.TabLoader').remove();
 				$("#TabImg").find('#ColImgs').append(data);
-				$('#ColImgs .collection-item').unbind('click').click(function()
+				$('.collection-item').unbind('click').click(function()
 				{
-					$("#ColImgs .collection-item").not(this).removeClass("active");
+					$(".collection-item").not(this).removeClass("active");
 					$(this).toggleClass("active");
 				});	
 				$("#frmUpload").trigger('reset');
