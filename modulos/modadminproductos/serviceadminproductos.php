@@ -74,7 +74,7 @@
                                 <img  src="/sinhco/recursos/img/proyect.jpg">
                             </div>
                         
-                            <div class="card-content custom-content">                          
+                            <div class="card-content card-title-small">                          
                                 <p >'.$row["nombre"].'</p>    
                                  <p style="display:none">'.$row["descripcion"].'</p>                     
                             </div>
@@ -158,7 +158,7 @@
                     
                     
                     '<div id="Card_'.$row["idproducto"].'" class="col s4 dataproductos">
-                     
+                     <a`
                         <div class="card ">
                             
                             <div class="card-image waves-effect waves-block waves-light">
@@ -166,7 +166,7 @@
                                 <img  src="/sinhco/recursos/img/proyect.jpg">
                             </div>
                         
-                            <div class="card-content custom-content">                          
+                            <div class="card-content card-title-small">                          
                                 <p >'.$row["nombre"].'</p>    
                                  <p style="display:none">'.$row["descripcion"].'</p>                     
                             </div>
@@ -289,15 +289,19 @@
            $count = $mysqli->count("productos");
           
                 $count /=6;
-              //  echo $count;
-            for ($i=0; $i <= $count ; $i++) { 
+                $count=round_up($count,1);
+                echo $count;
+            for ($i=1; $i <= $count ; $i++) { 
                 # code...  
                 echo 
              '
-                <li class="waves-effect active"  onClick="Paginar(this)"><a href="#!">'.($i+1).'</a></li>
+                <li class="waves-effect active"  onClick="Paginar(this)"><a href="#!">'.($i).'</a></li>
              ';
             }
             
           break;
     } 
+    
+    
+    
     

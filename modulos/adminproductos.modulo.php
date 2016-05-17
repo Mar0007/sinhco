@@ -302,6 +302,9 @@
 		//var cells = $(".pagination").children();
 		 a=ll.innerText;
 		
+		
+		$(".pagination li").not(ll).addClass("active");	
+		
 				
 		//	a=$(this).getElementsByTagName("a")[0].innerHTML ;
 			a= a*6;
