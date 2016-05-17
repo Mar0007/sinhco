@@ -12,15 +12,7 @@
         max-width: 253px;
         width: calc(50% - 18px);    
     }
-    
-    .card .custom-content{
-       height:70px;
-    }
-    
-    .card .card-action-custom{
-        padding: 20px;
-        padding-top: 0px;
-    }
+ 
     /**left Sidebar for item information**/
     .sidebar-left{
         position: fixed;
@@ -53,6 +45,8 @@
     .modal{
         width:95% !important;
     }
+    
+    
 }
 
 

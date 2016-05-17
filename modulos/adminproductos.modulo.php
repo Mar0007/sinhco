@@ -110,26 +110,30 @@
             </div>
           </div>
 
-          <div class="col s7 right" id="productocard">	
-			  
+			<div class="col s7 right" id="productocard">	
+				
+				
+			</div>
+				<ul class="pagination">
+				
+                
+				</ul>
+				
 			
-  		  </div>
-			
-			<div class="col s7 right" id="productocard1">	
-			  
-  		  </div>
-			<ul class="pagination">
-				<li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-				<li class="active" onClick="Paginar()"><a href="#!">1</a></li>
-				<li class="waves-effect"  onClick="Paginar()"><a href="#!">2</a></li>
-				<li class="waves-effect" onClick="Paginar()"><a href="#!">3</a></li>
-				<li class="waves-effect"><a href="#!">4</a></li>
-				<li class="waves-effect"><a href="#!">5</a></li>
-				<li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
-			</ul>
 		</div>
 </div>
-
+	<style>
+		     
+    .card .card-action-custom{
+        padding: 20px;
+        padding-top: 0px;
+    }
+		.card .custom-content{
+        height: 70px;
+       max-height:70px;
+    }
+	
+	</style>
   			<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
             <a id="crearProyecto" onclick="OpenModal()" class="btn-floating btn-large blue-grey darken-2 tooltipped" data-position="left" data-delay="50" data-tooltip="Nuevo producto">
                 <i class="large material-icons">mode_edit</i>
@@ -276,20 +280,32 @@
 			}
 		);
 		
+		 $.ajax({
+			url:"<?php echo GetURL("modulos/modadminproductos/serviceadminproductos.php?accion=5") ?>"
+		}).done(
+			function(data){
+				$(".pagination").append(data);
+				
+			}
+		);
 		
     }); 
     
-	function Paginar(){
-		
+	function Paginar(ll){
+	
+	
+    $(ll).removeClass('active');
+
 		var d=0;
 		var h=6;
 		var a=0;
-		var cells = $(".pagination").children();
-		var b=1;
+		//var cells = $(".pagination").children();
+		 a=ll.innerText;
+		
 				
-			a=cells[2].getElementsByTagName("a")[0].innerHTML ;
-			h= a*6;
-			d=h-6;
+		//	a=$(this).getElementsByTagName("a")[0].innerHTML ;
+			a= a*6;
+			d= a-6;
 			
 			$.ajax({
 			url:"<?php echo GetURL("modulos/modadminproductos/serviceadminproductos.php?accion=0") ?>",
@@ -301,17 +317,20 @@
 			function(data){
 					
 				$("#productocard").fadeOut(function(){
-					$(this).remove();
-															
+					
+					$(this).empty();
+				$("#productocard").prepend(data);	
+						$(this).fadeIn();		
+														
 				});	
 					
-				$("#productocard"+b).prepend(data);	
-						
-					
+			//ll.setAttribute("class", "active");
+			
 			}
+			
 		);
 		
-							
+						
 			
 	}
   function OpenModal(ID)
