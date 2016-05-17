@@ -9,17 +9,11 @@
 		case 1: // Consulta
 				$stmt = $mysqli->select("proyectos",
                 [
-                    "[>]proyectos_img" => [
-                        "idproyecto" => "idproyecto"
-                    ]                    
-                    
-                ],[
-                    "proyectos.idproyecto",
-                    "proyectos_img.ruta",
-                    "nombre",
-                    "lugar",
-                    "contenido",
-                    "fecha"
+                    "proyectos.idproyecto",                    
+                    "proyectos.nombre",
+                    "proyectos.lugar",
+                    "proyectos.contenido",
+                    "proyectos.fecha"
                 ],[
                     "ORDER" => "proyectos.fecha DESC",
                    
@@ -39,7 +33,7 @@
 						<li id="'.$row["idproyecto"].'" class="dataproyectos col s12 m6 ">
 							<div class="card medium hoverable">
                                 <div class="card-image waves-effect waves-block waves-light">
-                                    <img class="responsive-img" src="'.$row["ruta"].'">      
+                                    <img class="responsive-img" src="'.GetProyectImagePath($row["idproyecto"], true).'">      
                                     <span class="card-title">'.$row["nombre"].'</span>
                                 </div>
                                 <div class="card-content">
@@ -47,7 +41,7 @@
                                     <p class="truncate">'.$row["contenido"].'</p>
                                 </div>
                                 <div class="card-action">
-                                  <a href="#">Ver Proyecto</a>
+                                  <a href="'.$row["idproyecto"].'">Ver Proyecto</a>
                                 </div>
                             </div>           
 						</li>
