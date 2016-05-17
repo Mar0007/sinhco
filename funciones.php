@@ -421,6 +421,16 @@
 			return GetURL("uploads/avatars/default.png");		
 	}
     
+    function GetProyectImagePath($idproyecto, $bIsService = false)
+	{        
+        $Prefix = ($bIsService) ? "../../" : "";
+        $result = glob($Prefix . "uploads/images/".$idproyecto.".*");
+		if(count($result) > 0 )
+			return GetURL(ltrim($result[0],"/."));
+		else
+			return GetURL("uploads/images/proyect-default.jpg");		
+	}
+
 	function GetStrWithRange($str)
 	{				
 		$result = "";

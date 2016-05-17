@@ -55,12 +55,17 @@
     .sidebar-left{
         position: relative;        
         bottom: 0;
-        width: 100%
+        width: 100%;
+        text-align: center
     }
     .content-right{        
         width: 100%;        
         margin-top: 24px;
         position: relative;
+    }
+    .image-header{
+        max-height: 360px;
+        object-fit: cover;
     }
 }
 
@@ -104,7 +109,7 @@ nav {
 
 #main {
     position: absolute; 
-    top: 64px;
+    top: 56px;
     bottom: 0px; 
     width: 100%; 
     overflow-y: auto; 
@@ -311,7 +316,7 @@ nav {
     position: absolute;
     right: 0;
     left: 0;
-    top: 0;
+    top: 0;    
     background-image: -moz-linear-gradient(to bottom,rgba(0,0,0,.5),rgba(0,0,0,0));
     background-image: linear-gradient(to bottom,rgba(0,0,0,.5),rgba(0,0,0,0));
     z-index: 1;
@@ -322,6 +327,17 @@ nav {
     align-items: center;
 }
 
+.menu-panel .dropdown-button {
+    font-size: 1.9rem !important;    
+    padding-right: 1rem !important;
+    color: white !important;
+}
+
+.dropdown-button.btn-flat i{
+    padding: 0px;
+    font: 1.9rem !important;
+    font-weight: 700 !important;
+}
 /*** End Menu shadow***/
 
 /** Upper right corner menu **/
@@ -354,8 +370,22 @@ nav {
     width: 28px;
 }
 
+.input-secondary-menu{
+    height: 36px;
+    position: absolute;
+    right: 8px;
+    top: 10px;
+    width: 36px;
+    padding: 2px;
+    background-color: rgba(0,0,0,0.26);
+}
+
 /** END upper right corner menu**/
 
+.image-header{
+    max-height: 220px;
+    object-fit: cover;
+}
 
 
 .no-mar-bot{

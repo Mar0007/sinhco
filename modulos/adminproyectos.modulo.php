@@ -44,88 +44,261 @@
         <!--Module Title-->
         <div class="row">
             <h3 class="light center blue-grey-text text-darken-3">Administrar Proyectos</h3>
-            <p class="center light">Cree, edite y organice los proyectos.</p>
-            <div class="divider3"></div>
+            <p class="center light">Cree y organice los proyectos.</p>            
         </div>
+        <!--END Module Title-->
         
         <!--Module Data-->
-        <ul id="proyectostb" class="collection"></ul>
+        <div class="">
+            <ul id="proyectostb" class="fixed-drop no-margin"></ul>
+        </div>
+        <!--END Module Data-->
     
         <!--Module Action Button-->
         <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-            <a id="crearProyecto" href="crearproyecto" class="btn-floating btn-large blue-grey darken-2 tooltipped" data-position="left" data-delay="50" data-tooltip="Nuevo proyecto">
-                <i class="large material-icons">mode_edit</i>
-            </a>
-            <!--<ul>
-              <li>
-                  <a id="crearArticulo" href="?mod=creararticulo" class="btn-floating green tooltipped" data-position="left" data-delay="50" data-tooltip="Nuevo proyecto">
-                      <i class="material-icons">add</i>
-                  </a>
-              </li>
-              <li><a class="btn-floating blue"><i class="material-icons">attach_file</i></a></li>
-        </ul>
-    </div>-->      
-        </div>   
+            <a id="crearProyecto" onclick="mostrarfrmagregar()" data-target="frmagregar" class="btn-floating btn-large blue-grey darken-2 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Nuevo proyecto">
+                <i class="large material-icons">add</i>
+            </a>               
+        </div>
+        <!--END Module Action Button-->
     </div>
 </div>
-
-    <!-- Confirm Delete Modal -->
-    <div id="confirmar-eliminar" class="modal">
-        <div class="modal-content">
-            <h4>¿Eliminar proyecto?</h4>
-            <p class="flow-text">Se eliminará el proyecto de la lista. Esta acción no se puede regresar. </p>
-        </div>
-        <div class="modal-footer">
-            <button type="submit" value="SI" id="delete-yes"  class=" modal-action modal-close btn-flat waves-effect waves-light">eliminar</button>
-            <button type="submit" value="NO" id="delete-no"  class=" modal-action modal-close btn-flat waves-effect waves-light">cancelar</button>
-        </div>        
+   
+<!--CREATE PROYECT MODAL-->
+<div id="nuevo-proyecto" class="modal create-item">
+    <div class="modal-content">
+        <h5>Crear un proyecto</h5>
+        
+        <form id="frmnewproyect" autocomplete="off" action="javascript:crearProyecto()">
+            <div class="row card-content">               
+                <div class="input-field col s12">
+                    <input id="nombre" name="nombre" type="text" class="validate" length ="50">
+                    <label for="nombre">Nombre</label>
+                </div>
+                <div class="input-field col s12">
+                    <input id="lugar" name="lugar" type="text" class="validate" length="25">
+                    <label for="lugar">Lugar</label>
+                </div>               
+                <input  id="sendForm" type="submit" style="visibility:hidden" disabled="disabled">
+            </div>           
+        </form>       
+        
     </div>
-    <!-- Confirm Delete Modal -->
+    
+    <div class="modal-footer">
+        <a id="guardar" onclick="$('#frmnewproyect').find(':submit').click();"  class="disabled modal-action  btn-flat  waves-effect waves-light">Crear</a>
+        
+        <a id="cancel" class="btn-flat modal-action modal-close waves-effect waves-light">Cancelar<i class="material-icons right"></i></a>           
+    </div>        
+
+</div>
+<!--END CREATE PROYECT MODAL-->
+
+<!-------------------------------------------- MODAL EDITAR INFO PROYECTO ------------------------------------->
+<div    id="custom-proyecto" class="modal modal-fixed-footer custom-item">
+    <div class="modal-content no-padding">
+        <form id="frmcustomproyect" autocomplete="off" method="POST" enctype="multipart/form-data" action="javascript:editar()">
+            <a class="" action="">
+            <div id="proyectimg" class="card-image">
+                <?php               
+                    echo "<img id=\"Proyect-Image\" class=\"image-header\" style=\"height:auto;width:100%\" src=\"".GetProyectImagePath(0)."\">";
+                ?>
+                <input style="display:none" type="file" name="imagen" id="FileInput" accept=".png,.jpg"/>
+            </div>           
+            <span><a id="" onclick="$('#proyectimg').find('#FileInput').click();" class="waves-effect waves-circle input-secondary-menu white-text"><i class="material-icons" style="padding:4px">camera_alt</i></a></span>
+                <input type="hidden" id="id-proyecto" name="idproyecto">
+            </a>
+            <div class="description">
+                <div class="row card-content">               
+                    <div class="input-field col s12">
+                        <input id="nombre-proyecto" length="50" name="nombre-proyecto" type="text" class="validate" > 
+                        <label for="nombre-proyecto">Proyecto</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input id="lugar-proyecto" length="25" name="lugar-proyecto" type="text" class="validate"  >
+                        <label for="lugar-proyecto">Lugar</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <input id="fecha-proyecto" name="fecha-proyecto" type="date"  class=" datepicker validate"  >
+                        <label class="active" for="fecha-proyecto">Fecha</label>
+                    </div>
+                    <div class="input-field col s12">
+                        <textarea id="contenido-proyecto" name="contenido-proyecto" length="300" class="materialize-textarea"></textarea>
+                        <label for="contenido-proyecto">Descripción</label>
+                    </div> 
+                    <input  type="submit" style="display:none">
+                </div> 
+            </div>
+        </form>       
+    </div>
+    <div class="modal-footer">
+           <a id="update-yes" onclick="$('#frmcustomproyect').find(':submit').click();" class="btn-flat blue-text text-darken-1 waves-effect ">Salvar<i class="material-icons right"></i></a>
+           <a id="update-no"  class="btn-flat modal-action modal-close  waves-effect waves-light">Cancelar<i class="material-icons right"></i></a>           
+        </div>        
+</div>
+<!-------------------------------------------- MODAL EDITAR INFO PROYECTO ------------------------------------->
 
 
 <script>
     
-    
-    $(document).ready(function(){
-      
+     
+    $(document).ready(function(){  
+        
+        //initialize datepicker
+        
+        $('.datepicker').pickadate({
+            selectMonths: true, // Creates a dropdown to control month
+            selectYears: 15, // Creates a dropdown of 15 years to control year
+            format: 'yyyy-mm-dd'    
+        });
+        
+        //end datepicker
+        
+        //FOR IMAGE PREVIEW
+        function readURL(input) 
+        {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#Proyect-Image').attr('src', e.target.result);
+
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#FileInput").change(function(){
+              readURL(this);
+        });
+                
+        //toggle submit button in modal
+         $('#nombre').keyup(function() {
+
+            var empty = false;
+            $('#nombre').each(function() {
+                if ($(this).val().length == 0) {
+                    empty = true;
+                }
+            });
+
+            if (empty) {
+                $('#guardar').addClass("disabled");
+                $('#guardar').removeClass("modal-close");
+                $('#guardar').removeClass("blue-text");
+                $('#sendForm').attr('disabled', 'disabled');
+            } else {
+                $('#guardar').removeClass("disabled");
+                $('#guardar').addClass("modal-close");
+                $('#guardar').addClass("blue-text");
+                $('#sendForm').attr('disabled', false);
+            }
+        });
+        
+        //end toggle
+        
+        //reset form at cancel
+        $("#cancel").click(function(){
+            $("#frmnewproyect").trigger("reset");
+            Materialize.updateTextFields();   
+        });        
+        //end reset
+        
+        //get data
         $.ajax({
 			url:"<?php echo GetURL("modulos/modadminproyectos/serviceadminproyectos.php?accion=1") ?>"
 		}).done(
 			function(data){
-				$("#proyectostb").append(data);	
-                InitDropdown();
-				$(".dataproyectos").fadeIn();
+				$("#proyectostb").append(data);	                
+                $(".dataproyectos").fadeIn();
+				//Materialize.showStaggeredList("#proyectostb");
 			}
 		);
-    });
-    function eliminar (idproyecto){              
-        $("#confirmar-eliminar").openModal();
-        $( "#delete-yes" ).click(function() {
-                $.ajax({
-				    url:"<?php echo GetURL("modulos/modadminproyectos/serviceadminproyectos.php?accion=4") ?>",
-				    method: "POST",
-				    data: {idproyecto:idproyecto}
-			    }).done(
-                        function(data){
-                            if(data=="0"){
-                                $("#"+idproyecto).fadeOut(function(){
-                                    $(this).remove();
-                                });
-                                $("#confirmar-eliminar").closeModal();
-                            }
-                            else{
-                                alert(data);
-                            }
-                        }
-                    );
+        
+        //end get data       
   
-});
-        $( "#delete-no" ).click(function() {
-                 $("#confirmar-eliminar").closeModal();
+        
+    }); //end document ready
+    
+    
+    //Opening new Proyect modal
+    function mostrarfrmagregar (){
+        $("#nuevo-proyecto").openModal();
+    }
+    
+    //end opening modal
+    
+    //Creating a Proyect
+    function crearProyecto (){
+        var nombre = $("#nombre").val();        
+        var lugar = $("#lugar").val();    
+        
+             $.ajax({
+                url:"<?php echo GetURL("modulos/modadminproyectos/serviceadminproyectos.php?accion=2") ?>",
+                method: 'POST',
+                data: {nombre:nombre,lugar:lugar}
+              }).done(function(last_id){                 
+                 Materialize.toast('Creando el proyecto...', 3000);
+                 if(last_id != "0"){
+                    $("#nuevo-proyecto").closeModal();                    
+                    OpenModal(last_id);    
+                 }
+                 else{
+                     Materialize.toast('Hubo un error al crear el proyecto...', 3000);
+                 }
+                 //location.href= "crearproyecto/"+last_id;                       
+              });
+    } //end creating
+    
+    //Open edit modal
+    function OpenModal(idproyecto)
+    { 	
+        $( "#update-yes" ).unbind('click').click(function() {
+            editar(idproyecto);							
         });
-   
+        $( "#update-no" ).click(function() {
+            location.href= "crearproyecto/"+idproyecto; 						
+        });
+        
+        //get values from previous form
+        document.getElementById('id-proyecto').value = idproyecto;
+        
+        $("#nombre-proyecto").val($("#nombre").val());
+        $("#lugar-proyecto").val($("#lugar").val());
        
-    }   
+        Materialize.updateTextFields();  
+        
+        $('#custom-proyecto').openModal();
+    }
+    
+    
+    function editar (idproyecto){   
+        var formData = new FormData($('#frmcustomproyect')[0]);
+        
+        /*var newnombre = $("#nombre-proyecto").val();
+        var newlugar = $("#lugar-proyecto").val();
+        var newcontenido = $("#contenido-proyecto").val();
+        var newfecha = $("#fecha-proyecto").val();*/
+        
+        $.ajax({
+            url:"<?php echo GetURL("modulos/modadminproyectos/serviceadminproyectos.php?accion=3")?>",
+            method: "POST",
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false
+            /*method: "POST",
+            data: {idproyecto:idproyecto,newnombre:newnombre,newlugar:newlugar, newcontenido:newcontenido, newfecha:newfecha}		*/
+        }).done(function(idproyecto){
+            Materialize.toast('Guardando...', 3000);
+            $("#custom-proyecto").closeModal();
+            if(idproyecto != "0"){                
+                location.href= "crearproyecto/"+idproyecto;                
+            }
+			
+        });
+                 
+    }
     
     
     
