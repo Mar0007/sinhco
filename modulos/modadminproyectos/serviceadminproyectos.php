@@ -47,10 +47,10 @@
 					'   <li    id="'.$row["idproyecto"].'" class="dataproyectos">
                             <a href="crearproyecto/'.$row["idproyecto"].'">';
                     echo'
-                                <div class="col s12 m4 l4">                                    
+                                <div class="col s12 m4 four-cards">                                    
                                     <div class="card custom-small">
                                         <div class="card-image">   
-                                            <img id="ProyectImage" class="responsive-img" style="height:120px;width:100%" src="'.GetProyectImagePath($row["idproyecto"], true).'">
+                                            <img id="ProyectImage" class="responsive-img" style="height:120px;width:100%; object-fit:cover" src="'.GetProyectImagePath($row["idproyecto"], true).'">
                                         </div>
 
                                         <div id="proyect-overview'.$row["idproyecto"].'" class="card-content-custom">                                            
@@ -65,17 +65,42 @@
 				}
 				break;		
 		case 2: // Insertar	
-            $nombre      	  = $_POST["nombre"];
-            $lugar   	      = $_POST["lugar"];
-           // $fecharealizacion = $_POST["fecharealizacion"];
-            
+            $newnombre = $_POST['nombre-proyecto'];
+            $newlugar = $_POST['lugar-proyecto'];
+            $newcontenido = $_POST['contenido-proyecto'];
+            $newfecha = $_POST['fecha-proyecto'];
+            $imagen		= $_FILES['imagen']['tmp_name'];
             
             $last_id = $mysqli->insert("proyectos",
                 [
-                    "nombre"    => $nombre,
-                    "lugar"     => $lugar                    
+                    "nombre"    => $newnombre,
+                    "lugar"     => $newlugar,
+                    "contenido" => $newcontenido,
+                    "fecha" => $newfecha
                    
                 ]);
+
+        if($imagen != "")
+        {
+            $target_dir = "../../uploads/images/";
+            $imageFileType = pathinfo($_FILES['imagen']['name'],PATHINFO_EXTENSION);  										
+            $target_file = $target_dir.$last_id.".".$imageFileType;
+            //echo "Imagen->".$target_file."<br>";
+            if(!move_uploaded_file($imagen,$target_file))
+            {
+                echo "<h5> Imagen no fue actualizada </h5>";
+            }
+            else
+            {
+                foreach(glob("../../uploads/images/".$last_id.".*") as $Img)
+                {
+                    if($Img != $target_file)
+                        unlink($Img);
+                }
+            }
+        }	
+            
+            
                 
                      
             if(!$last_id)
@@ -88,54 +113,7 @@
                 echo $last_id;
 				break;
 		case 3: //Actualizar                                
-            $mysqli->action(function($mysqli)
-				{				
-					$idproyecto = $_POST['idproyecto'];				
-					$newnombre = $_POST['nombre-proyecto'];
-                    $newlugar = $_POST['lugar-proyecto'];
-                    $newcontenido = $_POST['contenido-proyecto'];
-                    $newfecha = $_POST['fecha-proyecto'];
-                    $imagen		= $_FILES['imagen']['tmp_name'];
-								
-				if($imagen != "")
-				{
-					$target_dir = "../../uploads/images/";
-					$imageFileType = pathinfo($_FILES['imagen']['name'],PATHINFO_EXTENSION);  										
-					$target_file = $target_dir.$idproyecto.".".$imageFileType;
-					//echo "Imagen->".$target_file."<br>";
-					if(!move_uploaded_file($imagen,$target_file))
-					{
-						echo "<h5> Imagen no fue actualizada </h5>";
-					}
-					else
-					{
-						foreach(glob("../../uploads/images/".$idproyecto.".*") as $Img)
-						{
-							if($Img != $target_file)
-								unlink($Img);
-						}
-					}
-				}	
-					
-					$mysqli->update("proyectos",
-						[
-                            "nombre" => $newnombre,
-                            "lugar"  => $newlugar,
-                            "contenido" => $newcontenido,
-                            "fecha" => $newfecha
-                        ],[
-							"AND" => 
-							[
-								"idproyecto" => $idproyecto
-								
-							]
-						]);
-						
-						if( CheckDBError($mysqli) ) return false;
-				echo $idproyecto;      
-                });
-										
-					
+            
 				break;
 								
 		case 4: //Eliminar	

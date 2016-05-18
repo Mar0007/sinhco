@@ -31,12 +31,56 @@
             
             <div class="row container"> <!-- SECTION CONTENT -->
                 <div class="col s12">
-                    <ul id="project-list"></ul>
+                    <ul id="project-list">
+                        <?php
+                            $stmt = $mysqli->select("proyectos",
+                            [
+                                "proyectos.idproyecto",                    
+                                "proyectos.nombre",
+                                "proyectos.lugar",
+                                "proyectos.contenido",
+                                "proyectos.fecha"
+                            ],[
+                                "ORDER" => "proyectos.fecha DESC",
+                                "LIMIT"=> 4
+                            ]);
+                            
+                            if(!$stmt)
+                            {
+                                if($mysqli->error()[2] != "")
+                                    echo "Error:".$mysqli->error()[2];
+
+                                return;
+                            }
+
+                            foreach($stmt as $row){
+                                $content=substr(strip_tags($row["contenido"]), 0, 100) . "...";
+                                echo 
+                                '
+                                    <li id="'.$row["idproyecto"].'" class="dataproyectos col s12 m6 ">
+                                        <div class="card medium hoverable">
+                                            <div class="card-image waves-effect waves-block waves-light">
+                                                <img class="responsive-img" src="'.GetProyectImagePath($row["idproyecto"], false).'">      
+                                                <span class="card-title">'.$row["nombre"].'</span>
+                                            </div>
+                                            <div class="card-content">
+                                                <p class="grey-text ">'.$row["lugar"].'</p>
+                                                <p class="">'.$content.'</p>
+                                            </div>
+                                            <div class="card-action">
+                                              <a href="proyectview/'.$row["idproyecto"].'">VER PROYECTO</a>
+                                            </div>
+                                        </div>           
+                                    </li>
+                                ';
+                            }
+                        ?>
+                    </ul>
                 </div>
             </div>
             
             <div class="section center-align">
-            <a class="btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect  waves-circle">
+            <a id="loadMore" onclick="javascript:lastAddedLiveFunc()" class="btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect  waves-circle">
                 <span><i class="material-icons">add</i></span>
             </a>
         </div>
@@ -44,14 +88,19 @@
     </main>
 
 <script>
+    
     $(document).ready(function(){
-            $.ajax({
+       
+        /*$.ajax({
                 url:"<?php echo GetURL("modulos/modproyectos/serviceproyectos.php?accion=1") ?>"
             }).done(
                 function(data){
                     $("#project-list").append(data);		                
                     $(".dataproyectos").fadeIn();
                 }
-            );
+            );*/
+        
+        
         });
+     
 </script>

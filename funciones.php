@@ -178,6 +178,55 @@
         
         return $Result;        
     }
+
+    function ShowProyectSlider($mysqli, $idproyecto, $clasecss = "", $idcss = "")
+    {
+        if($idcss != "") $idcss = " id=\"$idcss\"";        
+        $Result = "";        
+        
+        $stmt = $mysqli->select("proyectos_img",
+        [
+            "[><]imagenes" => "idimagen"
+        ],
+        [
+            "imagenes.img","imagenes.ruta", "imagenes.descripcion"
+        ],
+        [
+            "AND" =>
+            [
+                "proyectos_img.idproyecto" => $idproyecto,
+                
+            ]
+        ]);
+        
+        
+        if(!$stmt)
+        {
+			if($mysqli->error()[2] != "")
+                echo "Error on -> ShowSlider():". $mysqli->error()[2];
+                
+			return "";            
+        }                
+        
+        foreach ($stmt as $row)
+        {
+            $Result .= 
+            "<li>
+                <img src=\"". $row['ruta'] ."\">
+                <div class=\"caption right-align\">
+                    <h3>".$row['descripcion']."</h3>
+                </div>
+             </li>";
+        }
+        
+        $Result = '<div'.$idcss.' class="slider '. $clasecss .'">
+                      <ul class="slides">'.
+                        $Result.
+                     '</ul>
+                   </div>';
+        
+        return $Result;        
+    }
     
 	//function mostrarpanel($bloques,$idmodulo,$mysqli){}	
 	//function panel($bloques, $idmodulo, $mysqli) {}    

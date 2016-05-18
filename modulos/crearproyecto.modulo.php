@@ -242,12 +242,12 @@
 <script>
 
     $('input:checkbox').change(function(){
-    if($(this).is(":checked")) {
-        $('#delete-yes').removeClass("disabled");
-    } else {
-        $('#delete-yes').addClass("disabled");
-    }
-});
+        if($(this).is(":checked")) {
+            $('#delete-yes').removeClass("disabled");        
+        } else {
+            $('#delete-yes').addClass("disabled");        
+        }
+    });
    
     $(document).ready(function(){
         //INITIALIZE DATEPICKER
@@ -310,6 +310,7 @@
         }
         $('#custom-proyecto').openModal();	
     }
+    
     
     function ModalAdd(){
         $('#modalFrmAdd').openModal();
@@ -449,6 +450,7 @@
     
     function eliminar(idproyecto){              
         $("#confirmar-eliminar").openModal();
+        
         $( "#delete-yes" ).click(function() {
                 $.ajax({
 				    url:"<?php echo GetURL("modulos/modcrearproyecto/servicecrearproyecto.php?accion=4") ?>",
@@ -456,7 +458,7 @@
 				    data: {idproyecto:idproyecto}
 			    }).done(function(data){
                             if(data=="0"){
-                                //location.href="dashboard/adminproyectos"
+                                
                             }
                             else{
                                 alert(data);

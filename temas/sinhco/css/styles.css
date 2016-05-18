@@ -6,6 +6,10 @@
         height: 55%
     }
     
+    .col.four-cards{
+        width: 253px !important;
+       
+    }
     /**custom card small size**/
     .card .custom-small{
         height: 262px;
@@ -192,9 +196,7 @@ nav {
     height: 100vh;
 }
 .hero-bg{
-    background-image: url("../recursos/img/slide2.jpg");
-    background-size: cover;
-    background-position: center no-repeat;
+    object-fit: cover;
     max-height: 89vh;
 }
 #proyect-img {

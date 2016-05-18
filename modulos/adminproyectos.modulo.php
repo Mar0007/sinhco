@@ -69,7 +69,7 @@
     <div class="modal-content">
         <h5>Crear un proyecto</h5>
         
-        <form id="frmnewproyect" autocomplete="off" action="javascript:crearProyecto()">
+        <form id="frmnewproyect" autocomplete="off">
             <div class="row card-content">               
                 <div class="input-field col s12">
                     <input id="nombre" name="nombre" type="text" class="validate" length ="50">
@@ -79,14 +79,14 @@
                     <input id="lugar" name="lugar" type="text" class="validate" length="25">
                     <label for="lugar">Lugar</label>
                 </div>               
-                <input  id="sendForm" type="submit" style="visibility:hidden" disabled="disabled">
+               <!-- <input  id="sendForm" type="submit" style="visibility:hidden" disabled="disabled">-->
             </div>           
         </form>       
         
     </div>
     
     <div class="modal-footer">
-        <a id="guardar" onclick="$('#frmnewproyect').find(':submit').click();"  class="disabled modal-action  btn-flat  waves-effect waves-light">Crear</a>
+        <a id="guardar" onclick="javascript:OpenModal()"  class="disabled modal-action  btn-flat  waves-effect waves-light">Crear</a>
         
         <a id="cancel" class="btn-flat modal-action modal-close waves-effect waves-light">Cancelar<i class="material-icons right"></i></a>           
     </div>        
@@ -97,7 +97,7 @@
 <!-------------------------------------------- MODAL EDITAR INFO PROYECTO ------------------------------------->
 <div    id="custom-proyecto" class="modal modal-fixed-footer custom-item">
     <div class="modal-content no-padding">
-        <form id="frmcustomproyect" autocomplete="off" method="POST" enctype="multipart/form-data" action="javascript:editar()">
+        <form id="frmcustomproyect" autocomplete="off" method="POST" enctype="multipart/form-data" action="javascript:CrearProyecto()">
             <a class="" action="">
             <div id="proyectimg" class="card-image">
                 <?php               
@@ -106,7 +106,6 @@
                 <input style="display:none" type="file" name="imagen" id="FileInput" accept=".png,.jpg"/>
             </div>           
             <span><a id="" onclick="$('#proyectimg').find('#FileInput').click();" class="waves-effect waves-circle input-secondary-menu white-text"><i class="material-icons" style="padding:4px">camera_alt</i></a></span>
-                <input type="hidden" id="id-proyecto" name="idproyecto">
             </a>
             <div class="description">
                 <div class="row card-content">               
@@ -186,12 +185,12 @@
                 $('#guardar').addClass("disabled");
                 $('#guardar').removeClass("modal-close");
                 $('#guardar').removeClass("blue-text");
-                $('#sendForm').attr('disabled', 'disabled');
+               // $('#sendForm').attr('disabled', 'disabled');
             } else {
                 $('#guardar').removeClass("disabled");
                 $('#guardar').addClass("modal-close");
                 $('#guardar').addClass("blue-text");
-                $('#sendForm').attr('disabled', false);
+               // $('#sendForm').attr('disabled', false);
             }
         });
         
@@ -228,41 +227,20 @@
     
     //end opening modal
     
-    //Creating a Proyect
-    function crearProyecto (){
-        var nombre = $("#nombre").val();        
-        var lugar = $("#lugar").val();    
-        
-             $.ajax({
-                url:"<?php echo GetURL("modulos/modadminproyectos/serviceadminproyectos.php?accion=2") ?>",
-                method: 'POST',
-                data: {nombre:nombre,lugar:lugar}
-              }).done(function(last_id){                 
-                 Materialize.toast('Creando el proyecto...', 3000);
-                 if(last_id != "0"){
-                    $("#nuevo-proyecto").closeModal();                    
-                    OpenModal(last_id);    
-                 }
-                 else{
-                     Materialize.toast('Hubo un error al crear el proyecto...', 3000);
-                 }
-                 //location.href= "crearproyecto/"+last_id;                       
-              });
-    } //end creating
     
     //Open edit modal
-    function OpenModal(idproyecto)
+    function OpenModal()
     { 	
-        $( "#update-yes" ).unbind('click').click(function() {
-            editar(idproyecto);							
-        });
+        $("#nuevo-proyecto").closeModal(function(){
+            $("#frmnewproyect").trigger("reset");
+            Materialize.updateTextFields();      
+        }); 
+       
         $( "#update-no" ).click(function() {
-            location.href= "crearproyecto/"+idproyecto; 						
+           // location.href= "crearproyecto/"+idproyecto; 						
         });
         
-        //get values from previous form
-        document.getElementById('id-proyecto').value = idproyecto;
-        
+                
         $("#nombre-proyecto").val($("#nombre").val());
         $("#lugar-proyecto").val($("#lugar").val());
        
@@ -272,28 +250,21 @@
     }
     
     
-    function editar (idproyecto){   
+    function CrearProyecto (){   
         var formData = new FormData($('#frmcustomproyect')[0]);
-        
-        /*var newnombre = $("#nombre-proyecto").val();
-        var newlugar = $("#lugar-proyecto").val();
-        var newcontenido = $("#contenido-proyecto").val();
-        var newfecha = $("#fecha-proyecto").val();*/
-        
+     
         $.ajax({
-            url:"<?php echo GetURL("modulos/modadminproyectos/serviceadminproyectos.php?accion=3")?>",
+            url:"<?php echo GetURL("modulos/modadminproyectos/serviceadminproyectos.php?accion=2")?>",
             method: "POST",
 			data: formData,
 			cache: false,
 			contentType: false,
-			processData: false
-            /*method: "POST",
-            data: {idproyecto:idproyecto,newnombre:newnombre,newlugar:newlugar, newcontenido:newcontenido, newfecha:newfecha}		*/
-        }).done(function(idproyecto){
+			processData: false           
+        }).done(function(last_id){
             Materialize.toast('Guardando...', 3000);
             $("#custom-proyecto").closeModal();
-            if(idproyecto != "0"){                
-                location.href= "crearproyecto/"+idproyecto;                
+            if(last_id != "0"){                
+                location.href= "crearproyecto/"+last_id;                
             }
 			
         });
