@@ -196,7 +196,9 @@ nav {
     height: 100vh;
 }
 .hero-bg{
-    object-fit: cover;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     max-height: 89vh;
 }
 #proyect-img {

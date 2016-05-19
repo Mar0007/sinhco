@@ -164,8 +164,8 @@
             $Result .= 
             "<li>
                 <img src=\"". $row['ruta'] ."\">
-                <div class=\"caption center-align\">
-                    <h3>".$row['img']."</h3>
+                <div class=\"caption right-align\">
+                    <p class=\"flow-text\">".$row['img']."</p>
                 </div>
              </li>";
         }
@@ -214,7 +214,7 @@
             "<li>
                 <img src=\"". $row['ruta'] ."\">
                 <div class=\"caption right-align\">
-                    <h3>".$row['descripcion']."</h3>
+                    <p class=\"flow-text\">".$row['descripcion']."</p>
                 </div>
              </li>";
         }

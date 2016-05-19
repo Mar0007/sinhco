@@ -38,13 +38,8 @@
 	}	
 ?>			
 <section id="hero-slider">     
-    <div id="hero-img" class="hero-bg ">
-        <?php
-            echo
-                "
-                    <img id=".$idproyecto." class=\"\" style=\"width:100%;height:auto; max-height:89vh; object-fit:cover\" src=\"".GetProyectImagePath($idproyecto)."\">
-                ";
-        ?>   
+    <div id="hero-img" class="hero-bg " style="background-image:url(<?php echo GetProyectImagePath($idproyecto)?>)">
+        
     </div>
         <div class="section banner banner-pad-bot z-depth-1">
             <div class="container">
