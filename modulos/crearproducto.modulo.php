@@ -71,7 +71,7 @@
                         }
                         echo 
                         "
-                            <img id=".$idproducto." class=\"image-header\" style=\"width:100%;height:auto\" src=\"".GetProyectImagePath($idproducto)."\">
+                            <img id=".$idproducto." class=\"image-header\" style=\"width:100%;height:auto\" src=\"".GetProductImagePath($idproducto)."\">
                             <div style=\"font-size:2.3rem\" class=\"menu-panel white-text\">"
                                     .GetDropDownSettingsRow($idproducto,GetMenuArray())."
                             </div> 

@@ -479,6 +479,16 @@
 		else
 			return GetURL("uploads/images/proyect-default.jpg");		
 	}
+    
+    function GetProductImagePath($idproducto, $bIsService = false)
+	{        
+        $Prefix = ($bIsService) ? "../../" : "";
+        $result = glob($Prefix . "uploads/images/productos/".$idproducto.".*");
+		if(count($result) > 0 )
+			return GetURL(ltrim($result[0],"/."));
+		else
+			return GetURL("uploads/images/Rotoplas.jpg");		
+	}
 
 	function GetStrWithRange($str)
 	{				

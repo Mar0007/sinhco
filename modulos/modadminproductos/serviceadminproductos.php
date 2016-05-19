@@ -71,7 +71,7 @@
                         <div class="card custom-small">
                             
                             <div class="card-image">
-                                 <img  class="responsive-img"  style="height:120px;width:100%" src="/sinhco/recursos/img/proyect.jpg">
+                                <img id="ProyectImage" class="responsive-img" style="height:120px;width:100%; object-fit:cover" src="'.GetProductImagePath($row["idproducto"], true).'">
                             </div>
                         
                             <div class="card-content-custom">                          
@@ -89,14 +89,19 @@
                  
             break;
         case 2://Insert
-            $Nombre      = $_POST["Nombre"];
-            $Descripcion = $_POST["Descripcion"];
+           		
+			$newnombre = $_POST['nombre-producto'];
+            $newdescripcion = $_POST['descripcion-producto'];
+            $newcategoria = $_POST['categoria-producto'];
+            $newproveedor = $_POST['proveedores-producto'];
            
            
            $last_id = $mysqli->insert("productos",
                 [
-                    "nombre"    => $Nombre,
-                    "descripcion"     => $Descripcion                    
+                    "nombre" => $newnombre,
+                     "descripcion"  => $newdescripcion,
+                     "idcategoria" => $newcategoria,
+                     "idproveedor" => $newproveedor                 
                    
                 ]);
                 
@@ -113,36 +118,7 @@
         case 3:  //update
                 
                
-            $mysqli->action(function($mysqli)
-				{				
-					$idproducto = $_POST['idproducto'];				
-					$newnombre = $_POST['nombre-producto'];
-                    $newdescripcion = $_POST['descripcion-producto'];
-                    $newcategoria = $_POST['categoria-producto'];
-                    $newproveedor = $_POST['proveedores-producto'];
-                   
-								
-				
-					
-					$mysqli->update("productos",
-						[
-                            "nombre" => $newnombre,
-                            "descripcion"  => $newdescripcion,
-                            "idcategoria" => $newcategoria,
-                            "idproveedor" => $newproveedor
-                          
-                        ],[
-							"AND" => 
-							[
-								"idproducto" => $idproducto
-								
-							]
-						]);
-						
-						if( CheckDBError($mysqli) ) return false;
-				echo $idproducto;      
-                });
-            
+          
             break;
             
             
