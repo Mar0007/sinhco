@@ -46,14 +46,14 @@
                 <h1 class="no-mar-bot thin"><?php echo $stmt[0]["nombre"] ?></h1>
                 <h5 class="medium"><?php echo $stmt[0]["lugar"] ?></h5>
             </div>
-            <a href="#services" class="fab-btn right banner-fab hide-on-med-and-down btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect wave-light">
+            <a href="#background" class="smoothScroll fab-btn right banner-fab hide-on-med-and-down btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect wave-light">
                     <span><i class="material-icons">expand_more</i></span>
                 </a>
         </div>
 </section>
 
 <main>
-        <div id="services" class="indigo-bg section"></div>
+        <div id="background" class="indigo-bg section"></div>
         
         <div class="section indigo-bg"><!-- FOR CONTAINER end -->
             <div class="row container"> <!-- SECTION TITLE -->
@@ -89,5 +89,19 @@
     </main>
 
 <script>
+    $(function() {  
+      $('.smoothScroll').click(function() {
+        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+          var target = $(this.hash);
+          target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+          if (target.length) {
+            $('html,body').animate({
+              scrollTop: target.offset().top
+            }, 800); 
+            return false;
+          }
+        }
+      });
+    });
    
 </script>

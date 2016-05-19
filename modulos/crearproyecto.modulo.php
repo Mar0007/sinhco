@@ -68,7 +68,7 @@
                         }
                         echo 
                         "
-                            <img id=".$idproyecto." class=\"image-header\" style=\"width:100%;height:auto\" src=\"".GetProyectImagePath($idproyecto)."\">
+                            <img id=".$idproyecto." class=\"image-header\" style=\"width:100%;\" src=\"".GetProyectImagePath($idproyecto)."\">
                             <div style=\"font-size:2.3rem\" class=\"menu-panel white-text\">"
                                     .GetDropDownSettingsRow($idproyecto,GetMenuArray())."
                             </div> 
@@ -112,7 +112,7 @@
             <div id="contentUploads">				
                 <form id="frmUpload" method="post" enctype="multipart/form-data" style="max-height:120px">
                     <div id="img-preview">
-                        <img id="proyect-img" style="width:100%;height:auto" class="responsive-img" ></img>
+                        <img id="proyect-img" style="width:100%;object-fit:cover; height:220px;" class="responsive-img" ></img>
                     </div>
                     <div id="imgpreview-loader"></div>
                     <div id="ColImgs" class="collection" style="border-style: none;">
@@ -172,9 +172,9 @@
                 <?php               
                     echo "<img id=\"Proyect-Image\" class=\"image-header\" style=\"height:auto;width:100%\" src=\"".GetProyectImagePath($idproyecto)."\">";
                 ?>
-                <input style="display:none" type="file" name="imagen-proyecto" id="FileInput" accept=".png,.jpg"/>
+                <input style="display:none" type="file" name="imagen-proyecto" id="FileInput2" accept=".png,.jpg"/>
             </div>           
-            <span><a id="" onclick="$('#proyectimg').find('#FileInput').click();" class="waves-effect waves-circle input-secondary-menu white-text"><i class="material-icons" style="padding:4px">camera_alt</i></a></span>
+            <span><a id="" onclick="$('#proyectimg').find('#FileInput2').click();" class="waves-effect waves-circle input-secondary-menu white-text"><i class="material-icons" style="padding:4px">camera_alt</i></a></span>
                 <input type="hidden" id="id-proyecto" name="idproyecto" required value="<?php echo $idproyecto ?>">
             </a>
             <div class="description">
@@ -264,17 +264,26 @@
         function readURL(input) 
         {
             if (input.files && input.files[0]) {
-                var reader = new FileReader();
+                var reader1 = new FileReader();
+                var reader2 = new FileReader();
 
-                reader.onload = function (e) {
+                reader1.onload = function (e) {
                     $('#proyect-img').attr('src', e.target.result);
 
                 }
+                 reader2.onload = function (e) {
+                    $('#Proyect-Image').attr('src', e.target.result);
 
-                reader.readAsDataURL(input.files[0]);
+                }
+
+                reader1.readAsDataURL(input.files[0]);
+                reader2.readAsDataURL(input.files[0]);
             }
         }
         $("#FileInput").change(function(){
+              readURL(this);
+        });
+        $("#FileInput2").change(function(){
               readURL(this);
         });
         
@@ -308,7 +317,16 @@
                     editar(idproyecto);							
                });
         }
-        $('#custom-proyecto').openModal();	
+        $( "#update-no" ).click(function(){ 
+            $("#custom-proyecto").closeModal();                                
+           // location.href= "crearproyecto/"+idproyecto; 						
+        });
+        $('#custom-proyecto').openModal({
+            complete: function() { 
+                document.getElementById("custom-proyecto").reset();                                
+                Materialize.updateTextFields();                      
+            }
+        });	
     }
     
     

@@ -15,14 +15,14 @@
                 <h1 class="no-mar-bot thin">Proyectos</h1>
                 <h5 class="medium">Brindando soluciones reales y prácticas.</h5>
             </div>
-            <a href="#services" class="fab-btn right banner-fab hide-on-med-and-down btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect wave-light">
+            <a href="#proyectos" class="smoothScroll fab-btn right banner-fab hide-on-med-and-down btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect wave-light">
                     <span><i class="material-icons">expand_more</i></span>
                 </a>
         </div>
 </section>
 
 <main>
-        <div id="services" class="indigo-bg section"></div>
+        <div id="proyectos" class="indigo-bg section"></div>
         
         <div class="section indigo-bg"><!-- FOR CONTAINER end -->
             <div class="row"> <!-- SECTION TITLE -->
@@ -89,19 +89,21 @@
 
 <script>
     
-    $(document).ready(function(){
-       
-        /*$.ajax({
-                url:"<?php echo GetURL("modulos/modproyectos/serviceproyectos.php?accion=1") ?>"
-            }).done(
-                function(data){
-                    $("#project-list").append(data);		                
-                    $(".dataproyectos").fadeIn();
-                }
-            );*/
-        
-        
-        });
+    $(function() {  
+      $('.smoothScroll').click(function() {
+        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+          var target = $(this.hash);
+          target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+          if (target.length) {
+            $('html,body').animate({
+              scrollTop: target.offset().top
+            }, 800); 
+            return false;
+          }
+        }
+      });
+    });
+    
     function loadmore()
     {
       var val = document.getElementById("result_no").value;
@@ -113,10 +115,7 @@
       },
       success: function (response) {
         var content = document.getElementById("project-list");
-        content.innerHTML = content.innerHTML+response;
-          if(!response){
-              $("#loadMore").hide;
-          }
+        content.innerHTML = content.innerHTML+response;         
         // We increase the value by 2 because we limit the results by 2
         document.getElementById("result_no").value = Number(val)+6;
       }

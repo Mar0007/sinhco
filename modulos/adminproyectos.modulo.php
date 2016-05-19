@@ -101,7 +101,7 @@
             <a class="" action="">
             <div id="proyectimg" class="card-image">
                 <?php               
-                    echo "<img id=\"Proyect-Image\" class=\"image-header\" style=\"height:auto;width:100%\" src=\"".GetProyectImagePath(0)."\">";
+                    echo "<img id=\"Proyect-Image\" class=\"\" style=\"object-fit:cover; height:220px;width:100%\" src=\"".GetProyectImagePath(0)."\">";
                 ?>
                 <input style="display:none" type="file" name="imagen" id="FileInput" accept=".png,.jpg"/>
             </div>           
@@ -110,19 +110,19 @@
             <div class="description">
                 <div class="row card-content">               
                     <div class="input-field col s12">
-                        <input id="nombre-proyecto" length="50" name="nombre-proyecto" type="text" class="validate" > 
+                        <input id="nombre-proyecto" length="50" name="nombre-proyecto" type="text" class="validate" required> 
                         <label for="nombre-proyecto">Proyecto</label>
                     </div>
                     <div class="input-field col s12">
-                        <input id="lugar-proyecto" length="25" name="lugar-proyecto" type="text" class="validate"  >
+                        <input id="lugar-proyecto" length="25" name="lugar-proyecto" type="text" class="validate" required>
                         <label for="lugar-proyecto">Lugar</label>
                     </div>
                     <div class="input-field col s12">
-                        <input id="fecha-proyecto" name="fecha-proyecto" type="date"  class=" datepicker validate"  >
+                        <input id="fecha-proyecto" name="fecha-proyecto" type="date"  class="datepicker validate" required>
                         <label class="active" for="fecha-proyecto">Fecha</label>
                     </div>
                     <div class="input-field col s12">
-                        <textarea id="contenido-proyecto" name="contenido-proyecto" length="300" class="materialize-textarea"></textarea>
+                        <textarea id="contenido-proyecto" name="contenido-proyecto" length="300" class="materialize-textarea" required></textarea>
                         <label for="contenido-proyecto">Descripción</label>
                     </div> 
                     <input  type="submit" style="display:none">
@@ -153,6 +153,8 @@
         
         //end datepicker
         
+      
+
         //FOR IMAGE PREVIEW
         function readURL(input) 
         {
@@ -194,14 +196,8 @@
             }
         });
         
-        //end toggle
-        
-        //reset form at cancel
-        $("#cancel").click(function(){
-            $("#frmnewproyect").trigger("reset");
-            Materialize.updateTextFields();   
-        });        
-        //end reset
+        //end toggle        
+       
         
         //get data
         $.ajax({
@@ -222,7 +218,21 @@
     
     //Opening new Proyect modal
     function mostrarfrmagregar (){
-        $("#nuevo-proyecto").openModal();
+        document.getElementById("frmnewproyect").reset();                
+        Materialize.updateTextFields(); 
+        $('#guardar').addClass("disabled");
+        $('#guardar').removeClass("modal-close");
+        $('#guardar').removeClass("blue-text");
+        
+        $("#nuevo-proyecto").openModal({                    
+            complete: function() { 
+                document.getElementById("frmnewproyect").reset();                
+                Materialize.updateTextFields();  
+                $('#guardar').addClass("disabled");
+                $('#guardar').removeClass("modal-close");
+                $('#guardar').removeClass("blue-text");
+            }
+        });
     }
     
     //end opening modal
@@ -231,22 +241,27 @@
     //Open edit modal
     function OpenModal()
     { 	
-        $("#nuevo-proyecto").closeModal(function(){
-            $("#frmnewproyect").trigger("reset");
-            Materialize.updateTextFields();      
-        }); 
+        $("#nuevo-proyecto").closeModal(); 
        
-        $( "#update-no" ).click(function() {
+        $( "#update-no" ).click(function(){ 
+            $("#custom-proyecto").closeModal();                                
            // location.href= "crearproyecto/"+idproyecto; 						
         });
         
-                
-        $("#nombre-proyecto").val($("#nombre").val());
-        $("#lugar-proyecto").val($("#lugar").val());
-       
-        Materialize.updateTextFields();  
-        
-        $('#custom-proyecto').openModal();
+        $('#custom-proyecto').openModal({
+            dismissible: false,
+            ready: function() {
+                $("#nombre-proyecto").val($("#nombre").val());
+                $("#lugar-proyecto").val($("#lugar").val());
+
+                Materialize.updateTextFields();
+            },
+            complete: function() { 
+                document.getElementById("custom-proyecto").reset(); 
+                document.getElementById("frmnewproyect").reset();                
+                Materialize.updateTextFields();                      
+            }
+        });
     }
     
     
