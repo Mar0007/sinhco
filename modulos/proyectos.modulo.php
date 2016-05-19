@@ -42,7 +42,7 @@
                                 "proyectos.fecha"
                             ],[
                                 "ORDER" => "proyectos.fecha DESC",
-                                "LIMIT"=> 4
+                                "LIMIT"=> 6
                             ]);
                             
                             if(!$stmt)
@@ -78,9 +78,9 @@
                     </ul>
                 </div>
             </div>
-            
+            <input type="hidden" id="result_no" value="6">
             <div class="section center-align">
-            <a id="loadMore" onclick="javascript:lastAddedLiveFunc()" class="btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect  waves-circle">
+            <a id="loadMore" onclick="javascript:loadmore()" class="btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect  waves-circle">
                 <span><i class="material-icons">add</i></span>
             </a>
         </div>
@@ -102,5 +102,25 @@
         
         
         });
+    function loadmore()
+    {
+      var val = document.getElementById("result_no").value;
+      $.ajax({
+      type: 'post',
+      url: "<?php echo GetURL("modulos/modproyectos/serviceproyectos.php") ?>",
+      data: {
+        getresult:val
+      },
+      success: function (response) {
+        var content = document.getElementById("project-list");
+        content.innerHTML = content.innerHTML+response;
+          if(!response){
+              $("#loadMore").hide;
+          }
+        // We increase the value by 2 because we limit the results by 2
+        document.getElementById("result_no").value = Number(val)+6;
+      }
+      });
+    }
      
 </script>

@@ -81,7 +81,7 @@
             </div>
             
             <div class="section center-align">
-            <a href="#!" class="btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect  waves-circle">
+            <a href="/sinhco/proyectos" class="btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect  waves-circle">
                 <span><i class="material-icons">arrow_back</i></span>
             </a>
         </div>
