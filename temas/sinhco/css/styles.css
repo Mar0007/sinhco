@@ -1,3 +1,8 @@
+@media only screen and (max-width: 1600px) {
+    .modal.custom-item{
+        top:20% !important;
+    }
+}
 @media only screen and (min-width: 992px) {
     /**adjust width and height modal bottom sheet in MODULO SERVICIOS **/
     .modal.bottom-sheet{
@@ -30,13 +35,18 @@
         margin-left: calc((100% - 24px)/3);
         margin-top: 24px;
     }
+    .modal.custom-item{
+        top:4px !important;
+    }
+    
 }
 
 
 @media only screen and (max-width: 550px) {
     /**adjust all modals width in smaller screens**/
     .modal.custom-item{        
-        width: 100% !important;        
+        width: 100% !important; 
+        top: 4px !important;
     }
     .modal.create-item{
         width: 100% !important;
@@ -150,8 +160,7 @@ nav {
 }  
 
 /**edit item modal**/
-.modal.custom-item{
-    top: 4px !important;
+.modal.custom-item{    
     width: 393px;
     height: 627px;
     max-height: 100%
