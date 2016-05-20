@@ -47,14 +47,14 @@
     <div class="modal-content">
         <h5>Crear un Producto</h5>
         
-        <form id="frmnewproyect" autocomplete="off" action="javascript:crearProducto()">
+        <form id="frmnewproyect" autocomplete="off" >
             <div class="row card-content">               
                 <div class="input-field col s12">
                     <input id="Nombre" name="Nombre" type="text" class="validate" length ="50">
                     <label for="Nombre">Nombre</label>
                 </div>
                 <div class="input-field col s12">
-                    <input id="Descripcion" name="Descripcion" type="text" class="validate" length="25">
+                    <input id="Descripcion" name="Descripcion" type="text" class="validate" length="750">
                     <label for="Descripcion">Descripcion</label>
                 </div>               
                 <input  id="sendForm" type="submit" style="visibility:hidden" disabled="disabled">
@@ -64,7 +64,7 @@
     </div>
     
     <div class="modal-footer">
-        <a id="guardar" onclick="$('#frmnewproyect').find(':submit').click();"  class="disabled modal-action  btn-flat  waves-effect waves-light">Crear</a>
+        <a id="guardar" onclick="javascript:OpenModal()"  class="disabled modal-action  btn-flat  waves-effect waves-light">Crear</a>
         
         <a id="cancel" class="btn-flat modal-action modal-close waves-effect waves-light">Cancelar<i class="material-icons right"></i></a>           
     </div>        
@@ -75,11 +75,11 @@
 <!-------------------------------------------- MODAL EDITAR INFO producto ------------------------------------->
 <div    id="custom-producto" class="modal modal-fixed-footer custom-item">
     <div class="modal-content no-padding">
-        <form id="frmcustomproducto" autocomplete="off" method="POST" enctype="multipart/form-data" action="javascript:editar()">
+        <form id="frmcustomproducto" autocomplete="off" method="POST" enctype="multipart/form-data" action="javascript:CrearProducto()">
             <a class="" action="">
             <div id="proyectimg" class="card-image">
                 <?php               
-                    echo "<img id=\"Proyect-Image\" class=\"image-header\" style=\"height:auto;width:100%\" src=\"".GetProyectImagePath(0)."\">";
+                    echo "<img id=\"Proyect-Image\" class=\"image-header\" style=\"height:auto;width:100%\" src=\"".GetProductImagePath(0)."\">";
                 ?>
                 <input style="display:none" type="file" name="imagen" id="FileInput" accept=".png,.jpg"/>
             </div>           
@@ -93,19 +93,10 @@
                         <label for="nombre-producto">Producto</label>
                     </div>
                     <div class="input-field col s12">
-                        <input id="descripcion-producto" length="25" name="descripcion-producto" type="text" class="validate"  >
+                        <input id="descripcion-producto" length="750" name="descripcion-producto" type="text" class="validate"  >
                         <label for="descripcion-producto">Descripcion</label>
                     </div>
-					<!--
-                    <div class="input-field col s12">
-                        <input id="fecha-producto" name="fecha-producto" type="date"  class=" datepicker validate"  >
-                        <label class="active" for="fecha-producto">Fecha</label>
-                    </div>
-                    <div class="input-field col s12">
-                        <textarea id="contenido-producto" name="contenido-producto" length="300" class="materialize-textarea"></textarea>
-                        <label for="contenido-producto">Descripción</label>
-                    </div> -->
-                    
+			
                     <div class="input-field col s12">
 						<!-- <i class="material-icons prefix">assignment_ind</i> -->	
                         <select id="categoria-producto" name="categoria-producto">
@@ -208,19 +199,21 @@
     
 
   
-function crearProducto (){
-        var Nombre = $("#Nombre").val();        
-        var Descripcion = $("#Descripcion").val();    
+function CrearProducto (){
+        var formData = new FormData($('#frmcustomproducto')[0]);
         
              $.ajax({
                 url:"<?php echo GetURL("modulos/modadminproductos/serviceadminproductos.php?accion=2") ?>",
                 method: 'POST',
-                data: {Nombre:Nombre,Descripcion:Descripcion}
+                data:formData,
+                cache: false,
+                contentType: false,
+                processData: false
               }).done(function(last_id){                 
                  Materialize.toast('Creando el producto...', 3000);
+                 $("#custom-producto").closeModal();
                  if(last_id != "0"){
-                    $("#nuevo-producto").closeModal();                    
-                    OpenModal(last_id);    
+                   location.href= "crearproducto/"+last_id;
                  }
                  else{
                      Materialize.toast('Hubo un error al crear el producto...', 3000);
@@ -231,59 +224,47 @@ function crearProducto (){
 	
 	//Opening new Proyect modal
 function mostrarfrmagregar (){
-        $("#nuevo-producto").openModal();
- }
- //Open edit modal
- function OpenModal(idproducto)
-    { 	
-        $( "#update-yes" ).unbind('click').click(function() {
-            editar(idproducto);							
+        document.getElementById("frmnewproyect").reset();                
+        Materialize.updateTextFields(); 
+        $('#guardar').addClass("disabled");
+        $('#guardar').removeClass("modal-close");
+        $('#guardar').removeClass("blue-text");
+        
+        $("#nuevo-producto").openModal({                    
+            complete: function() { 
+                document.getElementById("frmnewproyect").reset();                
+                Materialize.updateTextFields();  
+                $('#guardar').addClass("disabled");
+                $('#guardar').removeClass("modal-close");
+                $('#guardar').removeClass("blue-text");
+            }
         });
-        $( "#update-no" ).click(function() {
-            location.href= "crearproducto/"+idproducto; 						
-        });
-        
-        //get values from previous form
-        document.getElementById('id-producto').value = idproducto;
-        
-        $("#nombre-producto").val($("#Nombre").val());
-        $("#descripcion-producto").val($("#Descripcion").val());
-       
-        Materialize.updateTextFields();  
-        
-        $('#custom-producto').openModal();
     }
     
-function editar (idproducto){   
-        var formData = new FormData($('#frmcustomproducto')[0]);
+ //Open edit modal
+ function OpenModal()
+    { 	
+        $("#nuevo-producto").closeModal(); 
         
-        /*var newnombre = $("#nombre-producto").val();
-        var newlugar = $("#lugar-producto").val();
-        var newcontenido = $("#contenido-producto").val();
-        var newfecha = $("#fecha-producto").val();*/
         
-        //	var cells = $(".description").children();
-            //cells[1].innerText=nombre-producto;
-        
-        $.ajax({
-            url:"<?php echo GetURL("modulos/modadminproductos/serviceadminproductos.php?accion=3")?>",
-            method: "POST",
-			data: formData,
-			cache: false,
-			contentType: false,
-			processData: false
-            /*method: "POST",
-            data: {idproducto:idproducto,newnombre:newnombre,newlugar:newlugar, newcontenido:newcontenido, newfecha:newfecha}		*/
-        }).done(function(idproducto){
-            Materialize.toast('Guardando...', 3000);
-            $("#custom-producto").closeModal();
-            if(idproducto != "0"){                
-               location.href= "crearproducto/"+idproducto;
-                         
-            }
-			
+        $( "#update-no" ).click(function() {
+           $("#custom-producto").closeModal();						
         });
-                 
-    }	
-	
+        
+         $('#custom-producto').openModal({
+            dismissible: false,
+            ready: function() {
+               $("#nombre-producto").val($("#Nombre").val());
+               $("#descripcion-producto").val($("#Descripcion").val());
+                Materialize.updateTextFields();
+            },
+            complete: function() { 
+                document.getElementById("custom-producto").reset(); 
+                document.getElementById("frmnewproyect").reset();                
+                Materialize.updateTextFields();                      
+            }
+        });
+    }
+     
+
 </script>
