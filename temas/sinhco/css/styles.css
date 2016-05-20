@@ -1,8 +1,3 @@
-@media only screen and (max-width: 1600px) {
-    .modal.custom-item{
-        top:20% !important;
-    }
-}
 @media only screen and (min-width: 992px) {
     /**adjust width and height modal bottom sheet in MODULO SERVICIOS **/
     .modal.bottom-sheet{
@@ -41,6 +36,11 @@
     
 }
 
+@media only screen and (min-width: 1600px) {
+    .modal.custom-item{
+        top:20% !important;
+    }
+}
 
 @media only screen and (max-width: 550px) {
     /**adjust all modals width in smaller screens**/
