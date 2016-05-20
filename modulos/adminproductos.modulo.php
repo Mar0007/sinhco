@@ -100,7 +100,7 @@
                     <div class="input-field col s12">
 						<!-- <i class="material-icons prefix">assignment_ind</i> -->	
                         <select id="categoria-producto" name="categoria-producto">
-                            <option value="" href="" disabled>Elija la categoria</option>
+                            <option value="" href="" disabled selected>Elija la categoria</option>
                             <?php
                             
                                 $stmt = $mysqli->select("categoria_producto",
@@ -122,7 +122,7 @@
 						<div class="input-field col s12">
 						<!--<i class="material-icons prefix">assignment_ind</i> -->	
                         <select id="proveedores-producto" name="proveedores-producto">
-                            <option value="" href="" disabled>Elija la categoria</option>
+                            <option value="" href="" disabled selected>Elija el Proveedor</option>
                             <?php
                             
                                 $stmt = $mysqli->select("proveedores",
@@ -138,7 +138,7 @@
                                                                           					
                             ?>				
                         </select>
-                        <label for="proveedores-producto">Categorias</label>
+                        <label for="proveedores-producto">Proveedores</label>
 				    	</div>
                     <input  type="submit" style="display:none">
                 </div> 
@@ -168,7 +168,23 @@
 			}
 		);
 		
-		 
+		 //FOR IMAGE PREVIEW
+        function readURL(input) 
+        {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#Proyect-Image').attr('src', e.target.result);
+
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        $("#FileInput").change(function(){
+              readURL(this);
+        });
 		
 		 //toggle submit button in modal
          $('#Nombre').keyup(function() {

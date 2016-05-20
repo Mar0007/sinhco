@@ -483,7 +483,7 @@
     function GetProductImagePath($idproducto, $bIsService = false)
 	{        
         $Prefix = ($bIsService) ? "../../" : "";
-        $result = glob($Prefix . "uploads/images/productos/".$idproducto.".*");
+        $result = glob($Prefix . "uploads/images/productos/Producto-".$idproducto.".*");
 		if(count($result) > 0 )
 			return GetURL(ltrim($result[0],"/."));
 		else

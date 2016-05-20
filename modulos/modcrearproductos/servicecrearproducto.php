@@ -21,7 +21,7 @@
 	{
 		case 1: // Consulta
 				$IDproducto = $_POST['IDproducto'];																
-				//ProyectCard($mysqli,$IDproducto);												
+				ProyectCard($mysqli,$IDproducto);												
 				break;		
 		case 2: // Insertar				
             $nombre      	= $_POST["nombre"];
@@ -55,9 +55,28 @@
 					$newnombre = $_POST['nombre-producto'];
                     $newdescripcion = $_POST['descripcion-producto'];
                     $newcategoria = $_POST['categoria-producto'];
-                    $newproveedor = $_POST['proveedores-producto'];
-                   
-								
+                    $newproveedor = $_POST['proveedor-producto'];
+                    $imagen		= $_FILES['imagen-producto']['tmp_name'];
+					
+				if($imagen != "")
+				{
+					$target_dir = "../../uploads/images/productos/";
+					$imageFileType = pathinfo($_FILES['imagen-producto']['name'],PATHINFO_EXTENSION);  										
+					$target_file = $target_dir.$idproducto.".".$imageFileType;
+					//echo "Imagen->".$target_file."<br>";
+					if(!move_uploaded_file($imagen,$target_file))
+					{
+						echo "<h5> Imagen no fue actualizada </h5>";
+					}
+					else
+					{
+						foreach(glob("../../uploads/images/productos/".$idproducto.".*") as $Img)
+						{
+							if($Img != $target_file)
+								unlink($Img);
+						}
+					}
+				}					
 				
 					
 					$mysqli->update("productos",
@@ -76,7 +95,7 @@
 						]);
 						
 						if( CheckDBError($mysqli) ) return false;
-				echo $idproducto;      
+				     echo "0"; 
                 });
             
             break;
@@ -100,8 +119,8 @@
                 $IMGDescripcion = $_POST['img-descripcion'];
                 $sourcePath = $_FILES['file']['tmp_name'];
 				$targetExt  = "." . pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
-				$targetPath = "uploads/images/". uniqid('producto-', true) . $targetExt;
-            $targetName = basename($_POST['img-title'] , $targetExt);
+				$targetPath = "uploads/images/productos/". uniqid('Producto-', true) . $targetExt;
+            	$targetName = basename($_POST['img-title'] , $targetExt);
 //				$targetName = basename($_FILES['file']['name'] , $targetExt);
 				move_uploaded_file($sourcePath,"../../" . $targetPath);
 								
@@ -109,7 +128,7 @@
 				[
 					"img"  => $targetName,
 					"ruta" => GetURL($targetPath),
-					"categoria" => "producto",
+					"categoria" => "Producto",
                     "descripcion" => $IMGDescripcion
 				]
 				);

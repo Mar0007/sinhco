@@ -77,7 +77,7 @@
                                     <li id="'.$row["idproducto"].'" class="dataproductos col s12 m6 l6">
                                         <div class="card medium z-depth-1 ">
                                             <div class="card-image waves-effect waves-block waves-light" style="object-fit:cover">
-                                                <img class="responsive-img"  src="'.GetProyectImagePath($row["idproducto"], false).'">      
+                                                <img class="responsive-img"  src="'.GetProductImagePath($row["idproducto"], false).'">      
                                                 
                                             </div>
                                             <div class="card-content">

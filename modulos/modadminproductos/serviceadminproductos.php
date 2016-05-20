@@ -94,7 +94,8 @@
             $newdescripcion = $_POST['descripcion-producto'];
             $newcategoria = $_POST['categoria-producto'];
             $newproveedor = $_POST['proveedores-producto'];
-           
+            $imagen		= $_FILES['imagen']['tmp_name'];
+          
            
            $last_id = $mysqli->insert("productos",
                 [
@@ -105,7 +106,27 @@
                    
                 ]);
                 
-                     
+                  if($imagen != "")
+        {
+            $target_dir = "../../uploads/images/productos/";
+            $imageFileType = pathinfo($_FILES['imagen']['name'],PATHINFO_EXTENSION);  										
+            $target_file = $target_dir."Producto-".$last_id.".".$imageFileType;
+            //echo "Imagen->".$target_file."<br>";
+            if(!move_uploaded_file($imagen,$target_file))
+            {
+                echo "<h5> Imagen no fue actualizada </h5>";
+            }
+            else
+            {
+                foreach(glob("../../uploads/images/productos/Producto-".$last_id.".*") as $Img)
+                {
+                    if($Img != $target_file)
+                        unlink($Img);
+                }
+            }
+        }	
+        
+             
             if(!$last_id)
                 {
                     if($mysqli->error()[2] != "")
