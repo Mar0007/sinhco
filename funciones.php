@@ -487,7 +487,7 @@
 		if(count($result) > 0 )
 			return GetURL(ltrim($result[0],"/."));
 		else
-			return GetURL("uploads/images/Rotoplas.jpg");		
+			return GetURL("uploads/images/productos/Rotoplas.jpg");		
 	}
 
 	function GetStrWithRange($str)
