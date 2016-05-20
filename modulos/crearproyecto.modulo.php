@@ -362,7 +362,9 @@
             {			
                  $("#project-list").prepend(data);
                   $("#frmUpload").trigger("reset");
+                Materialize.updateTextFields(); 
                 $('#proyect-img').removeAttr('src');
+                $('.uploaded-img').attr('value',"");
                     $("#img-preview").show();
             }
             
@@ -426,7 +428,7 @@
 //               $("#imgpreview-loader").hide();
 				//$("#ColImgs").show();
 				//$("#img-preview").hide();
-				Materialize.toast('Imagen cargada', 3000);  
+				Materialize.toast('Agregando imagen...', 3000);  
                 Agregar();
 			}
             
