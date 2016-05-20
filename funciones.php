@@ -473,7 +473,7 @@
     function GetProyectImagePath($idproyecto, $bIsService = false)
 	{        
         $Prefix = ($bIsService) ? "../../" : "";
-        $result = glob($Prefix . "uploads/images/".$idproyecto.".*");
+        $result = glob($Prefix . "uploads/images/Proyecto-".$idproyecto.".*");
 		if(count($result) > 0 )
 			return GetURL(ltrim($result[0],"/."));
 		else

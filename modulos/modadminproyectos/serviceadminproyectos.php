@@ -84,7 +84,7 @@
         {
             $target_dir = "../../uploads/images/";
             $imageFileType = pathinfo($_FILES['imagen']['name'],PATHINFO_EXTENSION);  										
-            $target_file = $target_dir.$last_id.".".$imageFileType;
+            $target_file = $target_dir."Proyecto-".$last_id.".".$imageFileType;
             //echo "Imagen->".$target_file."<br>";
             if(!move_uploaded_file($imagen,$target_file))
             {
@@ -92,7 +92,7 @@
             }
             else
             {
-                foreach(glob("../../uploads/images/".$last_id.".*") as $Img)
+                foreach(glob("../../uploads/images/Proyecto-".$last_id.".*") as $Img)
                 {
                     if($Img != $target_file)
                         unlink($Img);
