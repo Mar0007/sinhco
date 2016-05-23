@@ -75,7 +75,7 @@
     
     <!--Import materialize.css-->
     <link type="text/css" rel="stylesheet" href="<?php echo GetURL($tema."css/materialize.min.css")?>" media="screen,projection">
-    <script type="text/javascript" src="<?php echo GetURL($tema."js/materialize.min.js")?>"></script>
+    <script type="text/javascript" src="<?php echo GetURL($tema."js/materialize.min.js")?>"></script>    
     
     <!--Let browser know website is optimized for mobile-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -88,6 +88,9 @@
     <link type="text/css" rel="stylesheet" href="<?php echo GetURL($tema."css/styles.css")?>" media="screen,projection">
     <link type="text/css" rel="stylesheet" href="<?php echo GetURL($tema."css/stylesgk.css")?>" media="screen,projection">
     <link type="text/css" rel="stylesheet" href="<?php echo GetURL("recursos/iconfont.css")?>">
+    
+    <!-- Custom JS -->
+    <script type="text/javascript" src="<?php echo GetURL($tema."js/customscripts.js")?>"></script>
     
     <!-- Perfect Scroll -->
     <link rel='stylesheet' href="<?php echo GetURL("recursos/perfect-scrollbar/css/perfect-scrollbar.css")?>" />
@@ -121,64 +124,6 @@
                 suppressScrollX: true
             });                         
         });
-        
-        function InitDropdown()
-        {
-            $('.dropdown-button').dropdown({
-                inDuration: 100,
-                outDuration: 100,
-                constrain_width: false,
-                gutter: 0,
-                belowOrigin: true,
-                alignment: 'right'
-                }
-            );			  
-        }
-        
-        function ShowLoadingSwal()
-        {
-            swal({
-                title: "Cargando...",
-                text: "<div class=\"preloader-wrapper big active\">"+
-                    "<div class=\"spinner-layer spinner-blue-only\">"+
-                        "<div class=\"circle-clipper left\">"+
-                        "<div class=\"circle\"></div>"+
-                        "</div><div class=\"gap-patch\">"+
-                        "<div class=\"circle\"></div>"+
-                        "</div><div class=\"circle-clipper right\">"+
-                        "<div class=\"circle\"></div>"+
-                        "</div></div></div>",
-                html: true,
-                allowEscapeKey:false,
-                showConfirmButton: false
-            });		  
-        }
-        
-        function toggleFullScreen() 
-        {
-            if (!document.fullscreenElement &&    // alternative standard method
-                !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement ) {  // current working methods
-                if (document.documentElement.requestFullscreen) {
-                document.documentElement.requestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) {
-                document.documentElement.msRequestFullscreen();
-                } else if (document.documentElement.mozRequestFullScreen) {
-                document.documentElement.mozRequestFullScreen();
-                } else if (document.documentElement.webkitRequestFullscreen) {
-                document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-                }
-            } else {
-                if (document.exitFullscreen) {
-                document.exitFullscreen();
-                } else if (document.msExitFullscreen) {
-                document.msExitFullscreen();
-                } else if (document.mozCancelFullScreen) {
-                document.mozCancelFullScreen();
-                } else if (document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
-                }
-            }
-        }                
 
     </script>
     
