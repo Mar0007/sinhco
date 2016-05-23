@@ -37,10 +37,23 @@
     </style>
 </head>
 <body>    
-    <div class="container" style="margin-top: 50px">
-        <?php
-            modulo('login',$mysqli,"bloque card-panel hoverable");
-        ?>
+    <div class="row center " style="margin-top: 50px">
+        <div class="col s12">
+            <img src="/sinhco/recursos/img/sinhco.png">
+        </div>  
+    </div>
+    <div class="row center ">
+        <div class="col s12">
+            <h4 class="light">Brindando soluciones reales y prácticas.</h4>
+            
+        </div>  
+    </div>
+    <div class="container center-wrapper" style="margin-top: 50px">        
+        <div class="row">
+            <?php
+                modulo('login',$mysqli,"bloque card-panel ");
+            ?>
+        </div>
     </div>
 </body>
 </html>

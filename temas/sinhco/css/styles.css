@@ -181,6 +181,11 @@ nav {
 
 /************/
      
+.center-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .logo {
         max-height: 44px;
@@ -221,6 +226,10 @@ nav {
     position:absolute
 }
 
+.right-top-margin{
+    margin-right: 3%;
+    margin-top: 5%;
+}
 .indigo-bg{
     background-color: #e8eaf6;
 }
