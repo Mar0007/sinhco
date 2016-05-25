@@ -67,7 +67,7 @@
                         <a href="crearproducto/'.$row["idproducto"].'">';                                             
                        
                         echo ' 
-                        <div class="col s12 m4 l4"> 
+                        <div class="col s12 m4 four-cards"> 
                         <div class="card custom-small">
                             
                             <div class="card-image">

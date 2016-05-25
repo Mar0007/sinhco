@@ -1,3 +1,7 @@
+
+
+
+
 <?php
 	global $mysqli;	
 	global $OnDashboard;
@@ -52,11 +56,49 @@
 		
 		return;
 	}	
-    
+
+
+
     
 ?>	
-
-
+<style>
+    
+    .CornerShadow 
+    {
+        position:absolute;
+        top:0;
+        right:0;
+        width:156px;
+        height:40px;
+        background:linear-gradient(
+                15deg,
+                transparent 0%,
+                transparent 50%,
+                rgba(0, 0, 0, 0.3)70%,
+                rgba(0, 0, 0, 0.71)100%
+            )
+            
+      /*
+       Original
+       background:linear-gradient(15deg,transparent 0%,transparent 45%,rgba(0,0,0,.12)70%,rgba(0,0,0,.33)100%)
+      */
+    }
+    
+    #CoverThumbnails li
+    {
+        display: inline-block;
+    }
+    
+    #CoverThumbnails img 
+    {
+        width:32px;
+        height:32px;
+        margin-right:5px
+    }
+    
+</style>
+<input type="hidden" id="idproducto" value="<?php echo $idproducto ?>">
+<input type="hidden" id="maxsize" value="<?php echo parse_size(ini_get('upload_max_filesize')) ?>">
     <div class="sidebar-left blue darken-2  ">
         <div class="no-padding" style="">
             <div class="" style="height:100%;position:relative">            
@@ -87,12 +129,35 @@
                                     .GetDropDownSettingsRow($idproducto,GetMenuArray())."
                             </div> 
                         ";
+                        
+                        $stmtImg = $mysqli->select("productos_img",
+                        [
+                            "[><]imagenes"=>"idimagen"                    
+                        ],
+                        [
+                            "idimagen","ruta"                    
+                        ],
+                        [
+                            "idproducto" => $idproducto,
+                            "GROUP" => "idimagen"
+                            //,"ORDER" => "orden ASC"
+                        ]);   
+            
+                        
                     ?>   
                 <input style="display:none" type = "file" id = "imagen" name = "imagen"/>
                 <div class="description">
                     <h6 id="hope"class="white-text light" style=" display:none;margin-top:4%; padding-left:4%;padding-bottom:1%"><?php echo $idproducto ?></h6>
                     <h5 id="sidename" class="white-text " style="overflow:hidden;margin:0px; padding-left:4%"><?php echo $stmt[0]["nombre"] ?></h5>
-                    
+                    <h6 id="sideplace" class="white-text light" style="margin-top:2%; padding-left:4%;padding-bottom:1%"><span id="TotalImgs"><?php echo count($stmtImg) ?></span> <?php echo ( (count($stmtImg) > 1 ) ? "imágenes" : "imagen") . " en este producto" ?></h6>
+                    <ul id="CoverThumbnails" style="padding-left:4%;list-style-type: none; margin: auto;">                    
+                    <?php
+                        foreach ($stmtImg as $key => $row)                         
+                        {
+                            echo '<li id="CImg_'.$row["idimagen"].'" style="opacity:0;"><img src="'.$row["ruta"].'" class="circle"></li>';    
+                        }                    
+                    ?>
+                    </ul>
                     <h6 id="sidecontent" class="white-text medium" style="margin-top:4%; padding-left:4%;padding-bottom:1%"><?php echo $stmt[0]["descripcion"] ?></h6>
                     <h6 id="sidecategoria" class="white-text medium" style="margin-top:4%; padding-left:4%;padding-bottom:1%"><?php echo $stmt[0]["Cnombre"] ?></h6>
                     <h6 id="sideproveedor" class="white-text medium" style="margin-top:4%; padding-left:4%;padding-bottom:1%"><?php echo $stmt[0]["Pnombre"] ?></h6>
@@ -112,7 +177,7 @@
                 <div id="img-loader"></div>
             </div>
             <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-                <a id="crearproducto" onclick="ModalAdd()" data-target="frmagregar" class="btn-floating btn-large blue-grey darken-2 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Agregar imagen">
+                <a id="crearproducto" onclick="ItemModal()" data-target="frmagregar" class="btn-floating btn-large blue-grey darken-2 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Agregar imagen">
                                 <i class="large material-icons">add</i>
                 </a>                 
             </div> 
@@ -127,52 +192,32 @@
             <h5 class="light">Agregar una imagen</h5>
             <div id="contentUploads">				
                 <form id="frmUpload" method="post" enctype="multipart/form-data" style="max-height:120px">
-                    <div id="img-preview">
-                        <img id="proyect-img" style="width:100%;object-fit:cover; height:220px;" class="responsive-img" ></img>
+                    <div style="position:relative">
+                        <img id="proyect-img" src="<?php echo GetURL("uploads/covers/camerabg.png")?>" style="width:100%; object-fit:cover; height:220px;" class="responsive-img"></img>
+                        <div class="CornerShadow">
+                            <div class="btn-floating btn-small transparent z-depth-0 waves-effect waves-circle file-field input-field" style="position:absolute;right:2px;top:-15px">
+                                <i class="material-icons white-text">camera_alt</i>
+                                <input id="FileInput" required name="file" type="file" accept=".jpg,.png">
+                            </div>                        
+                        </div>
                     </div>
                     <div id="imgpreview-loader"></div>
-                    <div id="ColImgs" class="collection" style="border-style: none;">
-                    </div>
+                        <span class="right grey-text">Tamaño maximo: <?php echo ini_get('upload_max_filesize') ?></span>
+                    <div id="ColImgs" class="collection" style="border-style: none;"></div>
                     <div class="input-field col s12">
                         <input id="img-title" length="50" name="img-title" type="text" class="validate"> 
                         <label for="img-title">Título de la imagen</label>
                     </div>
-                    <div class="input-field col s12 top-content-text">
-                        <textarea id="img-descripcion" name="img-descripcion" length= "140" placeholder="Descripción de la imagen" style="max-height:120px" id="proveedor-producto" class="materialize-textarea"></textarea>
-                    </div> 
-                    <div class="file-field" style="display:none">
-                        <div class="btn waves-effect waves-light blue darken">                            
-                            <span><i class="material-icons left">camera_alt</i>Buscar</span>
-                            <input id="FileInput" name="file" type="file" accept=".jpg,.png">
-                        </div>
-                    </div>
-                    <div id="img-preview">
-                <img id="proyect-img" style="width:100%;height:auto" class="responsive-img" ></img>
-            </div>
-            <div id="imgpreview-loader"></div>
-            <div id="ColImgs" class="collection" style="border-style: none;">
-            </div>
+                    <input type="submit" style="display:none">
                 </form>
-                <button id="btnUpload" style="display:none" onclick="AgregarImagen()">
-                                <i class="material-icons">file_upload</i>                            
-                </button>
             </div>
             
         </div>
        
-        <div id="botones" class="" style="position:absolute; bottom:10%; padding-bottom:25%">
-            <a id="input-img" style="bottom:10%;position:absolute" onclick="$('#frmUpload').find('#FileInput').click();" class="btn-floating btn-large transparent z-depth-0 waves-effect waves-circle">
-                <i class="material-icons grey-text">camera_alt</i>
-            </a> 
-            <div style="position:initial;margin-left:50px">
-                <a id="input-img" style="bottom:10%;position:absolute; padding-right:5%" onclick="$('#contentUploads').find('#btnUpload').click();" class="btn-floating btn-large transparent z-depth-0 waves-effect waves-circle">
-                <i class="material-icons grey-text">file_upload</i>
-            </a> 
-            </div>
-        </div>
+        
         
         <div class="modal-footer">
-            <a id="guardar" onclick="AgregarImagen()" class="btn blue darken-1 waves-effect ">Agregar<i class="material-icons right"></i></a>
+            <a id="guardar" class="btn blue darken-1 waves-effect ">Agregar<i class="material-icons right"></i></a>
             <a id="cancel" class="btn-flat modal-action modal-close waves-effect waves-light">Cancelar<i class="material-icons right"></i></a>           
         </div>        
 </div>
@@ -191,7 +236,6 @@
                 <input style="display:none" type="file" name="imagen-producto" id="FileInput2" accept=".png,.jpg"/>
             </div>           
             <span><a id="" onclick="$('#proyectimg').find('#FileInput2').click();" class="waves-effect waves-circle input-secondary-menu white-text"><i class="material-icons" style="padding:4px">camera_alt</i></a></span>
-                <input type="hidden" id="id-producto" name="idproducto" required value="<?php echo $idproducto ?>">
             </a>
             <div class="description">
                 <div class="row card-content">               
@@ -278,7 +322,7 @@
 <!-------------------------------------------- Confirm Delete Modal ------------------------------------------->
 
 <!-------------------------------------------- Confirm Delete ITEM Modal ------------------------------------------->
-    <div id="eliminar-item" class="modal delete-item">
+    <div id="confirmar-item" class="modal delete-item">
         <div class="modal-content">
             <h5>Eliminar foto</h5>
             <p class="">¿Estás seguro de que quieres borrar la foto?</p>            
@@ -292,6 +336,8 @@
 
 
 <script>
+    
+    Materialize.showStaggeredList("#CoverThumbnails");
 
     $('input:checkbox').change(function(){
     if($(this).is(":checked")) {
@@ -303,36 +349,10 @@
    
     $(document).ready(function(){
         
-        
+         $("#FileInput").change(handleFileSelect);
         //UPDATE INPUTS
         Materialize.updateTextFields();        
         
-        //FOR IMAGE PREVIEW
-      function readURL(input) 
-        {
-            if (input.files && input.files[0]) {
-                var reader1 = new FileReader();
-                var reader2 = new FileReader();
-
-                reader1.onload = function (e) {
-                    $('#proyect-img').attr('src', e.target.result);
-
-                }
-                 reader2.onload = function (e) {
-                    $('#Proyect-Image').attr('src', e.target.result);
-
-                }
-
-                reader1.readAsDataURL(input.files[0]);
-                reader2.readAsDataURL(input.files[0]);
-            }
-        }
-        $("#FileInput").change(function(){
-              readURL(this);
-        });
-         $("#FileInput2").change(function(){
-              readURL(this);
-        });
         
         //GET DATA
         IDproducto = $("#hope").text();
@@ -350,9 +370,151 @@
             }
         );
     });
+
+    //FOR IMAGE PREVIEW
+    function readURL(input) 
+        {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#proyect-img').attr('src', e.target.result);
+                    //$('#proyect-img').show();
+                }
+                                        
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
     
+     function ItemModal(id)
+    {
+        $("#modalFrmAdd").find("form").trigger("reset");
+        if(!id)
+        {
+            $("#modalFrmAdd").find("img").attr('src','<?php echo GetURL("uploads/covers/camerabg.png")?>');
+            $("#InitImage").attr('src','<?php echo GetURL("uploads/covers/camerabg.png")?>');
+            $("#guardar").text('Agregar');
+        }
+        else 
+        {
+            $("#modalFrmAdd").find("img").attr('src', $("#IMG_"+id).find('img').attr('src') );
+            $("#InitImage").attr('src',$("#IMG_"+id).find('img').attr('src'));
+            $("#img-title").val( $("#IMG_"+id).find('.card-title').text() );
+            $("#guardar").text('Editar');
+        }
+        
+        
+        //Set Action on btnSaveDialog
+        $("#guardar").unbind('click').click(function()
+        {
+            if (!$("#frmUpload")[0].checkValidity() && !id)
+            {
+                $("#frmUpload").find(':submit').click();
+                Materialize.toast('La imagen es requerida.', 3000,"red");
+                return;
+            }			         
+            
+            if(!id)
+            {
+                Agregar2();
+                return;
+            }
+            
+            Editar(id);                        
+        });
+        
+       
+        Materialize.updateTextFields();
+        $("#modalFrmAdd").openModal();
+                  
+    }
+	var ajax_request;	
     
-	
+     //Check for filezise
+    function handleFileSelect(evt) 
+    {
+      var files = evt.target.files; // FileList object
+      var max_size = $("#maxsize").val(); // Max file size
+
+      // files is a FileList of File objects. List some properties.
+      var output = [];
+      for (var i = 0, f; f = files[i]; i++) 
+      {
+        //console.log("FileSize->"+f.size);
+        if(f.size > max_size) 
+        { // Check if file size is larger than max_size
+          //Reset preview
+          $("#modalFrmAdd").find("img").attr('src',$("#InitImage").attr('src'));
+          //Clear input:file
+          $(this).val('');
+          //Notify          
+          alert("Error: La imagen sobrepasa el tamaño maximo.\nTamaño maximo: " + bytesToSize(max_size) + ".\nTamaño de su imagen: "+bytesToSize(f.size));          
+          return false;
+        }
+      }
+      
+      //Set preview.
+      readURL(this);
+    }
+    
+    function Agregar2()
+    {
+        var formData = new FormData($('#frmUpload')[0]);
+        //formData.append("DataAdd",Changes[0].toString());
+        //formData.append("DataRemove",Changes[1].toString());
+        formData.append("idproducto",$("#idproducto").val());
+        
+        //console.table(Array.from(formData.entries()));
+        
+        //Show loading animation
+        ShowLoadingSwal();
+        
+        $.ajax({
+                url: "<?php echo GetURL("modulos/modcrearproductos/servicecrearproducto.php?accion=2")?>",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false            
+        }).done(function(data)
+        {                
+            if(data.indexOf("<li") > -1)
+            {
+                //Close modal
+                $("#modalFrmAdd").closeModal();                                
+                
+                //Add data                
+                $("#project-list").prepend(data);
+                
+                var IncomingID = $(data).attr("data-id");
+                
+                $("#IMG_" + IncomingID ).css({
+                    "display": "none",
+                    "opacity": "1"
+                });                
+                
+                //Add to Thumbnails
+                $("#CoverThumbnails").prepend(
+                    '<li id="CImg_'+IncomingID+'" style="display: none;"><img src="'+$(data).find('img').attr('src')+'" class="circle"></li>'
+                );
+                
+                //Renumber imgs
+                $("#TotalImgs").text($("#CoverThumbnails li").length);
+                
+                //Show them.
+                $("#CImg_" + IncomingID).fadeIn();
+                $("#IMG_"  + IncomingID).fadeIn();                                                            
+            }        
+            else
+            {
+                Materialize.toast('Error, no se pudo agregar la imagen.', 3000,"red");
+                console.error("Error en Agregar()->"+data);
+            }
+            
+            //Close loading swal.
+            swal.close();
+        });		      
+    } 
+    
     //OPEN EDIT MODAL
     function OpenModal(idproducto)
     { 	
@@ -363,11 +525,13 @@
               $( "#update-yes" ).unbind('click').click(function() {
                     editar(idproducto);							
                });
-        }
-         $( "#update-no" ).click(function(){ 
+              }
+              
+        $( "#update-no" ).click(function(){ 
             $("#custom-producto").closeModal();                                
            // location.href= "crearproducto/"+idproducto; 						
         });
+        
         $('#custom-producto').openModal({
             complete: function() { 
                 document.getElementById("custom-producto").reset();                                
@@ -393,27 +557,7 @@
   "<div class=\"circle\"></div>"+
   "</div></div></div></div>";
     
-    function Agregar(){		
-        IDImagen = $(".uploaded-img").attr('value');
-        IDproducto = $("#hope").text();                
-
-
-        $.ajax({
-            url:"<?php echo GetURL("modulos/modcrearproductos/servicecrearproducto.php?accion=13")?>",
-            method: "POST",
-            data: {IDImagen:IDImagen,IDproducto:IDproducto}                   
-        }).done(function(data){
-            $("#modalFrmAdd").closeModal();		
-            if(data.indexOf("<li") > -1)
-            {			
-                 $("#project-list").prepend(data);
-                  $("#frmUpload").trigger("reset");
-                $('#proyect-img').removeAttr('src');
-                    $("#img-preview").show();
-            }
-            
-        });					 
-   }
+   
 
     function editar (idproducto){        
         
@@ -444,83 +588,45 @@
         });
     }
     
-    function AgregarImagen()
-	{
-     
-		
-		$("#img-preview").hide();
-        $("#imgpreview-loader").append(HTMLLoader);
-        
-		var formData = new FormData($('#frmUpload')[0]);
-        
-		$.ajax({
-				url: "<?php echo GetURL("modulos/modcrearproductos/servicecrearproducto.php?accion=10")?>",
-				type: "POST",
-				data: new FormData($(frmUpload)[0]),
-				contentType: false,
-				cache: false,
-				processData:false
-		}).done(function(data){
-			if(data.indexOf("<a") > -1)
-			{
-				
-                //$("#TabImg").find('.TabLoader').remove();
-                $("#ColImgs").hide();
-				$('#ColImgs').append(data);
-                 $("#imgpreview-loader").hide();
-				$('.collection-item').unbind('click').click(function()
-				{
-					$(".collection-item").not(this).removeClass("active");
-					$(this).toggleClass("active");
-				});	
-                
-				//$("#frmUpload").trigger('reset');
-//               $("#imgpreview-loader").hide();
-				//$("#ColImgs").show();
-				//$("#img-preview").hide();
-				Materialize.toast('Imagen cargada', 3000);  
-                Agregar();
-                var cells2 = $("#img-preview").children();
-                var cells = $(".image-header").setAttribute('src',(cells2[0].getAttribute('src')));
-                 
-                
-			}
+    
+	
+	function DeleteImage2(id)
+    {
+        var idproducto = $("#idproducto").val();
+               
+        ConfirmDelete("Borrar imagen","¿Esta seguro de borrar la imagen?","",
+        function()
+        {
+            //Show loading animation
+            ShowLoadingSwal();        
             
-			else
-				swal("Error", data, "error");
-		});		
-	}
-	
-	function DeleteImage(id)
-	{
-        
-        $("#eliminar-item").openModal();	
-        
-        $( "#delete-img-yes" ).click(function() {
-
-				$.ajax({
-					url:"<?php echo GetURL("modulos/modcrearproductos/servicecrearproducto.php?accion=11") ?>",
-					method: "POST",
-					data: {IDImagen:id}
-				}).done(function(IDImagen){
-					
-					
-						$("#IMG_"+ IDImagen).fadeOut(function(){
-							$(this).remove();                            
-						});		
-                        
-						Materialize.toast("Image eliminada", 3000);                
-					
-					
-						
-				});	
-            });
-        $( "#delete-img-no" ).click(function() {
-                 $("#eliminar-item").closeModal();
+            $.ajax({
+                url:"<?php echo GetURL("modulos/modcrearproductos/servicecrearproducto.php?accion=11")?>",
+                method: "POST",
+                data: {idproducto:idproducto,IDImagen:id}
+            }).done(function(data){
+                if(data == "0")
+                {
+                    $("#IMG_"+id).fadeOut(function(){
+                        $(this).remove();
+                    });
+                    
+                    $("#CImg_"+id).fadeOut(function(){
+                        $(this).remove();
+                        //Renumber imgs
+                        $("#TotalImgs").text($("#CoverThumbnails li").length);	                    		  				                        
+                    });
+                                        
+                    swal("Borrado", "Se borro exitosamente.", "success");
+                }
+                else
+                {
+                    swal("Error", data, "error");
+                    console.error("Error->"+data);
+                }
+            });            
         });
-		}		  		
-	
-		
+    }	
     
     function eliminar(idproducto){              
         $("#confirmar-eliminar").openModal();
