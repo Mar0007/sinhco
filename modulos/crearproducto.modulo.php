@@ -303,8 +303,8 @@
         </div>        
 </div>
 <!-------------------------------------------- MODAL EDITAR INFO producto ------------------------------------->
-
-<!-------------------------------------------- Confirm Delete Modal ------------------------------------------->
+<!--
+<!-------------------------------------------- Confirm Delete Modal -------------------------------------------
     <div id="confirmar-eliminar" class="modal">
         <div class="modal-content">
             <h4>Borrar el producto</h4>
@@ -321,7 +321,7 @@
     </div>
 <!-------------------------------------------- Confirm Delete Modal ------------------------------------------->
 
-<!-------------------------------------------- Confirm Delete ITEM Modal ------------------------------------------->
+<!-------------------------------------------- Confirm Delete ITEM Modal -------------------------------------------
     <div id="confirmar-item" class="modal delete-item">
         <div class="modal-content">
             <h5>Eliminar foto</h5>
@@ -332,8 +332,8 @@
             <button type="submit" value="NO" id="delete-img-no"  class=" modal-action modal-close btn-flat waves-effect waves-light">cancelar</button>
         </div>        
     </div>
-<!-------------------------------------------- Confirm Delete ITEM Modal ------------------------------------------->
-
+<!-------------------------------------------- Confirm Delete ITEM Modal -------------------------------------------
+-->
 
 <script>
     
@@ -594,7 +594,7 @@
     {
         var idproducto = $("#idproducto").val();
                
-        ConfirmDelete("Borrar imagen","¿Esta seguro de borrar la imagen?","",
+        ConfirmDelete2("Borrar imagen","¿Esta seguro de borrar la imagen?","",
         function()
         {
             //Show loading animation
@@ -653,5 +653,52 @@
        
     } 
      
-	
+function ConfirmDelete2(title,content,ckMessage = "",YesCallback,strDelete = "borrar", strCancel = "cancelar")
+{
+    var HTML = 
+    '<div id="confirmar-item" class="modal delete-item">'+
+        '<div class="modal-content">'+
+            '<h5>'+title+'</h5>'+
+            '<p class="">'+content+'</p>'+
+            ((ckMessage != "" ) ? 
+            '<p><input type="checkbox" id="chkbx-confirmar"/>'+
+            '<label for="chkbx-confirmar">'+ckMessage+'</label></p>' : '') + 
+        '</div>'+
+        '<div class="modal-footer">'+
+            '<button type="submit" value="SI" id="delete-yes" class="'+ ((ckMessage != "") ? 'disabled ' : '') +'modal-action btn-flat waves-effect waves-light">'+strDelete+'</button>'+
+            '<button type="submit" value="NO" id="delete-no" class=" modal-action modal-close btn-flat waves-effect waves-light">'+strCancel+'</button>'+
+        '</div>'+
+    '</div>';
+    
+    //console.log("Data->"+HTML);
+    
+    //Append to Body
+    $('body').append(HTML);
+    
+    //CheckBox events.
+    $('#confirmar-item input:checkbox').unbind('change').change(function()
+    {
+        if($(this).is(":checked")) 
+            $('#delete-yes').removeClass("disabled");
+        else 
+            $('#delete-yes').addClass("disabled");
+    });    
+    
+    //Set Events
+    if (YesCallback && typeof(YesCallback) === "function") 
+        $('#delete-yes').unbind('click').click(function()
+        {
+            if(!$(this).hasClass("disabled"))
+            {
+                YesCallback();
+                $("#confirmar-item").closeModal({
+                    complete: function(){
+                      $("#confirmar-item").remove();  
+                    }
+                });                
+            }
+        });
+        
+    $("#confirmar-item").openModal();    
+}	
 </script>
