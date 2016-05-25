@@ -89,7 +89,7 @@
 					
 				if($imagen != "")
 				{
-					$target_dir = "../../uploads/images/productos/Producto-";
+					$target_dir = "../../uploads/images/productos/";
 					$imageFileType = pathinfo($_FILES['imagen-producto']['name'],PATHINFO_EXTENSION);  										
 					$target_file = $target_dir.$idproducto.".".$imageFileType;
 					//echo "Imagen->".$target_file."<br>";
@@ -219,28 +219,15 @@
 				$mysqli->action(function($mysqli)
 				{
 					$idproducto = $_POST["idproducto"];
-					$IDImagen = $_POST["IDImagen"];
-					
-					
-					
-					$Orden = $mysqli->get("productos_img",
-					[
-						"AND" => 
-					[
-							"idproducto" => $idproducto,
-							"idimagen" => $IDImagen							
-					]
-					]);
-					
-				
-				 					
-					
+					$IDImagen = $_POST["IDImagen"];	
+						
 					$OldFilename = basename($mysqli->get("imagenes","ruta",["idimagen" => $IDImagen]));					
 					if(CheckDBError($mysqli)) return false;
 														
 					$mysqli->delete("imagenes",["idimagen" => $IDImagen]);								
 					
 					@unlink('../../uploads/images/productos/'.$OldFilename);								
+					
 					echo "0";					
 				});
 				break;
@@ -289,9 +276,84 @@
 						
 				});
 				break;
+				
+		case 14: //Actualizar Cards
+				$bSuccess = false;
+				$targetExt  = "." . pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+				$FileName = uniqid('Productos-', true) . $targetExt;				
+								
+				//Only bSuccess is passed by reference*
+				$mysqli->action(function($mysqli) use ($FileName,&$bSuccess)
+				{									
+					$IDImagen = $_POST["IDImagen"];
+					$ImageTitle = $_POST['img-title'];
+					
+					//First upload image and update it on DB
+					//If he uploaded a file
+					if($_FILES['file']['error'] == UPLOAD_ERR_OK)
+					{
+						$sourcePath = $_FILES['file']['tmp_name'];					
+						$targetPath = "uploads/images/productos/". $FileName;
+						$ImageTitle = $_POST['img-title'];
+						move_uploaded_file($sourcePath,"../../" . $targetPath);
+						
+						if(!file_exists("../../" . $targetPath))
+						{
+							echo "Error when moving file.";
+							return false;
+						}
+						
+						//Get filename for deletion. -> See end of case for actual deletion.
+						$OldImageName = basename($mysqli->get("imagenes","ruta",["idimagen" => $IDImagen]));										
+						
+						$mysqli->update("imagenes",
+						[
+							"img"  => $ImageTitle,
+							"ruta" => GetURL($targetPath),
+							"categoria" => "Producto",
+							"descripcion" => ""
+						],
+						[
+							"idimagen" => $IDImagen
+						]);
+						
+						if(CheckDBError($mysqli)) return false;
+					}
+					else 
+					//If didnt uploaded a file just update name
+						$mysqli->update("imagenes",["img" => $ImageTitle],["idimagen" => $IDImagen]);
+														
+					$idproducto = $_POST["idproducto"];
+					$mysqli->update("productos_img",
+						[
+							"idproducto"  => $idproducto,
+							
+						],
+						[
+							"idimagen" => $IDImagen
+						]);
+								
+				
+
+					//At last if everyting is fine delete old image
+					if(isset($OldImageName) && $OldImageName != "")
+						@unlink("../../uploads/images/productos/".$OldImageName);
+										
+					//Return card
+					ProyectCard($mysqli,$idproducto,$IDImagen);
+					$bSuccess = true;						
+				});
+				
+				//If rollback, then delete the uploaded file
+				if(!$bSuccess)
+					@unlink("../../uploads/images/productos/".$FileName);
+				
+				break;	
 		
     
 	}
+	
+	
 function ProyectCard($mysqli, $IDproducto, $IDImagen = null)
 	{
 		
@@ -318,7 +380,8 @@ function ProyectCard($mysqli, $IDproducto, $IDImagen = null)
                                    <p class=\"\">".$row["descripcion"]."</p>
                                 </div>
                                 <div class=\"card-action\">
-                                  <a style=\"cursor:pointer;\" onclick=\"DeleteImage2(".$row["idimagen"].")\">eliminar</a>
+									<a style=\"cursor:pointer;\" onclick=\"ItemModal(".$row["idimagen"].")\">Editar</a>
+                                  	<a style=\"cursor:pointer;\" onclick=\"DeleteImage2(".$row["idimagen"].")\">eliminar</a>
                                 </div>
                             </div>           
 						</li>
@@ -329,4 +392,3 @@ function ProyectCard($mysqli, $IDproducto, $IDImagen = null)
 		
 	}
 ?>
-

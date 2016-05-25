@@ -203,6 +203,7 @@
                     </div>
                     <div id="imgpreview-loader"></div>
                         <span class="right grey-text">Tamaño maximo: <?php echo ini_get('upload_max_filesize') ?></span>
+                        <input id="InitImage" type="hidden" value="">
                     <div id="ColImgs" class="collection" style="border-style: none;"></div>
                     <div class="input-field col s12">
                         <input id="img-title" length="50" name="img-title" type="text" class="validate"> 
@@ -420,7 +421,7 @@
                 return;
             }
             
-            Editar(id);                        
+            Editar2(id);                        
         });
         
        
@@ -594,7 +595,7 @@
     {
         var idproducto = $("#idproducto").val();
                
-        ConfirmDelete2("Borrar imagen","¿Esta seguro de borrar la imagen?","",
+        ConfirmDelete("Borrar imagen","¿Esta seguro de borrar la imagen?","",
         function()
         {
             //Show loading animation
@@ -627,6 +628,62 @@
             });            
         });
     }	
+    
+    
+     function Editar2(id)
+    {
+        var formData = new FormData($('#frmUpload')[0]);
+        //formData.append("DataAdd",Changes[0].toString());
+        //formData.append("DataRemove",Changes[1].toString());
+        formData.append("idproducto",$("#idproducto").val());
+        formData.append("IDImagen",id);        
+        
+        //Show loading animation
+        ShowLoadingSwal();
+        
+        $.ajax({
+                url: "<?php echo GetURL("modulos/modcrearproductos/servicecrearproducto.php?accion=14")?>",
+                type: "POST",
+                data: formData,
+                processData: false,
+                contentType: false            
+        }).done(function(data)
+        {                
+            if(data.indexOf("<li") > -1)
+            {
+                //Close modal
+                $("#modalFrmAdd").closeModal();
+                
+                //Update cover Thumbnails
+                $("#CImg_"+id).fadeOut(function(){                                        
+                    $(this).find('img').attr('src',$(data).find('img').attr('src'));
+                    $(this).fadeIn();
+                });
+                
+                //Add data                
+                $("#IMG_"+id).fadeOut(function(){
+                    //Insert before the faded row.
+                    $(data).insertBefore($(this));
+                    $(this).remove();
+                    
+                    $("#IMG_"+id).css({
+                        "display": "none",
+                        "opacity": "1"
+                    });
+                    
+                    $("#IMG_"+id).fadeIn();                    
+                });			                            
+            }        
+            else
+            {
+                Materialize.toast('Error, no se pudo editar la imagen.', 3000,"red");
+                console.error("Error en Editar()->"+data);
+            }
+            
+            //Close loading swal.
+            swal.close();
+        });		      
+    }
     
     function eliminar(idproducto){              
         $("#confirmar-eliminar").openModal();

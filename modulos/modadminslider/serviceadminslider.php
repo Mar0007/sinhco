@@ -198,7 +198,8 @@
 						@unlink("../../uploads/images/".$OldImageName);
 										
 					//Return card
-					SliderCard($mysqli,$IDSlider,$IDImagen);					
+					SliderCard($mysqli,$IDSlider,$IDImagen);
+					$bSuccess = true;					
 				});
 				
 				//If rollback, then delete the uploaded file
