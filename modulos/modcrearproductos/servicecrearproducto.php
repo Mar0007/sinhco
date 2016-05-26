@@ -89,7 +89,7 @@
 					
 				if($imagen != "")
 				{
-					$target_dir = "../../uploads/images/productos/";
+					$target_dir = "../../uploads/images/productos/Producto-";
 					$imageFileType = pathinfo($_FILES['imagen-producto']['name'],PATHINFO_EXTENSION);  										
 					$target_file = $target_dir.$idproducto.".".$imageFileType;
 					
@@ -121,7 +121,7 @@
 								"idproducto" => $idproducto
 								
 							]
-						]);
+						]);				
 						
 						if( CheckDBError($mysqli) ) return false;
 				     echo "0"; 

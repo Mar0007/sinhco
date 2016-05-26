@@ -240,13 +240,12 @@
             </a>
             <div class="description">
                 <div class="row card-content">   
-                                
+                        
                     <div class="input-field col s12">
                         <input id="nombre-producto" length="50" name="nombre-producto" type="text" class="validate" required value="<?php echo $stmt[0]["nombre"] ?>"> 
                         <label for="nombre-producto">Producto</label>
                     </div>
                     <div class="input-field col s12">
-                         <input type="hidden" id="idproducto" value="<?php echo $idproducto ?>">
                         <textarea id="descripcion-producto" name="descripcion-producto" length="750" class="materialize-textarea"><?php echo $stmt[0]["descripcion"] ?></textarea>
                         <label for="descripcion-producto">Descripcion</label>
                     </div> 
@@ -342,15 +341,24 @@
         {
             if (input.files && input.files[0]) {
                 var reader = new FileReader();
+                var reader2 = new FileReader();
 
                 reader.onload = function (e) {
                     $('#proyect-img').attr('src', e.target.result);
                     //$('#proyect-img').show();
                 }
-                                        
+                reader2.onload = function (e) {
+                    $('#Proyect-Image').attr('src', e.target.result);
+                }
+                        
                 reader.readAsDataURL(input.files[0]);
+                reader2.readAsDataURL(input.files[0]);
             }
         }
+        
+        $("#FileInput2").change(function(){
+              readURL(this);
+        });
     
      function ItemModal(id)
     {
@@ -479,16 +487,8 @@
     
     //OPEN EDIT MODAL
     function OpenModal(idproducto)
-    { 	
-          if(!idproducto){
-              //
-          }
-          else{
-              $( "#update-yes" ).unbind('click').click(function() {
-                    editar(idproducto);							
-               });
-              }
-              
+    {   
+         
         $( "#update-no" ).click(function(){ 
             $("#custom-producto").closeModal();                                
            // location.href= "crearproducto/"+idproducto; 						
@@ -510,11 +510,11 @@
     
    
 
-    function editar(idproducto){        
+    function editar(){        
         
-                 
+          
         var formData = new FormData($('#frmcustomproyect')[0]);
-        
+        formData.append("idproducto",$("#idproducto").val());       
         $.ajax({
            url:"<?php echo GetURL("modulos/modcrearproductos/servicecrearproducto.php?accion=3")?>",
             method: "POST",
@@ -526,6 +526,7 @@
             
             Materialize.toast('Guardando...', 3000);
             $("#custom-producto").closeModal();
+            location.href= "../crearproducto/"+$("#idproducto").val();
                  
                
                     
