@@ -114,31 +114,60 @@
 												
 				break;
         case 10: //Insertar Imagen
+            $bSuccess = false;
+			$targetExt  = "." . pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+			$FileName = uniqid('Proyecto-', true) . $targetExt;
+		   
+            $mysqli->action(function($mysqli) use ($FileName,&$bSuccess)
+			{									
+				//First upload image
+				$sourcePath = $_FILES['file']['tmp_name'];					
+				$targetPath = "uploads/images/". $FileName;
+				$ImageTitle = $_POST['img-title'];
                 $IMGDescripcion = $_POST['img-descripcion'];
-                $sourcePath = $_FILES['file']['tmp_name'];
-				$targetExt  = "." . pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
-				$targetPath = "uploads/images/". uniqid('Proyecto-', true) . $targetExt;
-            $targetName = basename($_POST['img-title'] , $targetExt);
-//				$targetName = basename($_FILES['file']['name'] , $targetExt);
 				move_uploaded_file($sourcePath,"../../" . $targetPath);
+				
+				if(!file_exists("../../" . $targetPath))
+				{
+					echo "Error when moving file.";
+					print_r($_FILES["file"]);
+					return false;
+				}
+				
 								
-				$last_id = $mysqli->insert("imagenes",
+				$IDImagen = $mysqli->insert("imagenes",
 				[
-					"img"  => $targetName,
+					"img"  => $ImageTitle,
 					"ruta" => GetURL($targetPath),
-					"categoria" => "Proyecto",
-                    "descripcion" => $IMGDescripcion
+					"categoria" => "Proyectos",
+					"descripcion" => $IMGDescripcion
 				]
 				);
-				if(CheckDBError($mysqli)) return;
-				echo "<a id=\"IMG_".$last_id."\" value=\"".$last_id."\" class=\"uploaded-img no-padding collection-item col s2\" style=\"width:100%;height:auto;\">
-						<i class=\"secondary-menu menu-btn material-icons center\" onclick=\"DeleteImage(".$last_id.")\" style=\"position:absolute;cursor:pointer;\">close</i>
-						<div class=\"center-align\ style=\"display:none\">
-							<img src=\"".GetURL($targetPath)."\" style=\"width:100%;height:auto;\">									
-							<span style=\"display:none\" class=\"truncate\">".$targetName."</span>
-						</div>
-						</a>";	
-				break;
+				if(CheckDBError($mysqli)) return false;
+													
+				$idproyecto 	= $_POST["idproyecto"];
+						
+				$mysqli->insert("proyectos_img",
+				[
+					"idimagen" => $IDImagen,
+					"idproyecto" => $idproyecto
+				]);
+				
+				if(CheckDBError($mysqli)) return false;															
+									
+				//Return card
+				ProyectCard($mysqli,$idproyecto,$IDImagen);
+				$bSuccess = true;					
+			});
+				
+			//If rollback, then delete the uploaded file
+			if(!$bSuccess)
+				@unlink("../../uploads/images/".$FileName);
+			
+			break;	
+			   
+            
+            
 		case 11: //Eliminar Imagen
 				$IDImagen = $_POST["IDImagen"];
 				$Ruta = $mysqli->get("imagenes","ruta",["idimagen" => $IDImagen]);
@@ -157,30 +186,80 @@
 				
 				//array_map('unlink', glob("some/dir/*.txt"));
 				@unlink($Ruta);								
-				echo $IDImagen;
+				echo "0";
 				break;
 		case 12: //Actualizar Imagen
-				$IDImagen 	= $_POST["IDImagen"];
-				$Imagen 	= $_POST["Imagen"];
-
-				$strSQL = "UPDATE sliderimgs SET imagen = ? WHERE idimagen = ?";
-				if( $stmt = $mysqli->prepare($strSQL) )
-				{
-					$stmt->bind_param('si',$Imagen,$IDImagen);
-					$stmt->execute();
-					if($stmt->errno != 0)
+				$bSuccess = false;
+				$targetExt  = "." . pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
+				$FileName = uniqid('Proyecto-', true) . $targetExt;				
+								
+				//Only bSuccess is passed by reference*
+				$mysqli->action(function($mysqli) use ($FileName,&$bSuccess)
+				{									
+					$IDImagen = $_POST["IDImagen"];
+					$ImageTitle = $_POST['img-title'];
+                    $IMGDescripcion = $_POST['img-descripcion'];
+					
+					//First upload image and update it on DB
+					//If he uploaded a file
+					if($_FILES['file']['error'] == UPLOAD_ERR_OK)
 					{
-						echo $stmt->errno . " : " . $mysqli->error;
-						return;
+						$sourcePath = $_FILES['file']['tmp_name'];					
+						$targetPath = "uploads/images/". $FileName;
+						$ImageTitle = $_POST['img-title'];
+						move_uploaded_file($sourcePath,"../../" . $targetPath);
+						
+						if(!file_exists("../../" . $targetPath))
+						{
+							echo "Error when moving file.";
+							return false;
+						}
+						
+						//Get filename for deletion. -> See end of case for actual deletion.
+						$OldImageName = basename($mysqli->get("imagenes","ruta",["idimagen" => $IDImagen]));										
+						
+						$mysqli->update("imagenes",
+						[
+							"img"  => $ImageTitle,
+							"ruta" => GetURL($targetPath),
+							"categoria" => "Proyecto",
+							"descripcion" => $IMGDescripcion
+						],
+						[
+							"idimagen" => $IDImagen
+						]);
+						
+						if(CheckDBError($mysqli)) return false;
 					}
-				}
-				else
-				{
-					echo "Error en la consulta: " . $mysqli->error;
-					return;
-				}
+					else 
+					//If didnt uploaded a file just update name
+						$mysqli->update("imagenes",["img" => $ImageTitle],["idimagen" => $IDImagen]);
+														
+					$idproyecto = $_POST["idproyecto"];
+					$mysqli->update("proyectos_img",
+						[
+							"idproyecto"  => $idproyecto,
+							
+						],
+						[
+							"idimagen" => $IDImagen
+						]);
+								
 				
-				echo "0";
+
+					//At last if everyting is fine delete old image
+					if(isset($OldImageName) && $OldImageName != "")
+						@unlink("../../uploads/images/".$OldImageName);
+										
+					//Return card
+					ProyectCard($mysqli,$idproyecto,$IDImagen);
+					$bSuccess = true;						
+				});
+				
+				//If rollback, then delete the uploaded file
+				if(!$bSuccess)
+					@unlink("../../uploads/images/".$FileName);
+				
 				break;	
         case 13: //Add IMG
             $mysqli->action(function($mysqli)
@@ -232,7 +311,8 @@ function ProyectCard($mysqli, $IDProyecto, $IDImagen = null)
                                    <p class=\"\">".$row["descripcion"]."</p>
                                 </div>
                                 <div class=\"card-action\">
-                                  <a style=\"cursor:pointer;\" onclick=\"DeleteImage(".$row["idimagen"].")\">eliminar</a>
+                                <a style=\"cursor:pointer;\" onclick=\"ItemModal(".$row["idimagen"].")\">Editar</a>
+                                  <a style=\"cursor:pointer;\" onclick=\"DeleteImage2(".$row["idimagen"].")\">eliminar</a>
                                 </div>
                             </div>           
 						</li>
@@ -243,4 +323,3 @@ function ProyectCard($mysqli, $IDProyecto, $IDImagen = null)
 		
 	}
 ?>
-
