@@ -239,13 +239,14 @@
             <span><a id="" onclick="$('#proyectimg').find('#FileInput2').click();" class="waves-effect waves-circle input-secondary-menu white-text"><i class="material-icons" style="padding:4px">camera_alt</i></a></span>
             </a>
             <div class="description">
-                <div class="row card-content">               
+                <div class="row card-content">   
+                                
                     <div class="input-field col s12">
                         <input id="nombre-producto" length="50" name="nombre-producto" type="text" class="validate" required value="<?php echo $stmt[0]["nombre"] ?>"> 
                         <label for="nombre-producto">Producto</label>
                     </div>
                     <div class="input-field col s12">
-                         
+                         <input type="hidden" id="idproducto" value="<?php echo $idproducto ?>">
                         <textarea id="descripcion-producto" name="descripcion-producto" length="750" class="materialize-textarea"><?php echo $stmt[0]["descripcion"] ?></textarea>
                         <label for="descripcion-producto">Descripcion</label>
                     </div> 
@@ -304,49 +305,13 @@
         </div>        
 </div>
 <!-------------------------------------------- MODAL EDITAR INFO producto ------------------------------------->
-<!--
-<!-------------------------------------------- Confirm Delete Modal -------------------------------------------
-    <div id="confirmar-eliminar" class="modal">
-        <div class="modal-content">
-            <h4>Borrar el producto</h4>
-            <p class="flow-text">Si borras un producto, esta acción no se puede deshacer. </p>
-            <p>
-              <input type="checkbox" id="chkbx-confirmar"/>
-              <label for="chkbx-confirmar">Si borras un producto, también se borran todas sus fotos.</label>
-            </p>
-        </div>
-        <div class="modal-footer">
-            <button type="submit" value="SI" id="delete-yes"  class="disabled modal-action modal-close btn-flat waves-effect waves-light">borrar</button>
-            <button type="submit" value="NO" id="delete-no"  class=" modal-action modal-close btn-flat waves-effect waves-light">cancelar</button>
-        </div>        
-    </div>
-<!-------------------------------------------- Confirm Delete Modal ------------------------------------------->
 
-<!-------------------------------------------- Confirm Delete ITEM Modal -------------------------------------------
-    <div id="confirmar-item" class="modal delete-item">
-        <div class="modal-content">
-            <h5>Eliminar foto</h5>
-            <p class="">¿Estás seguro de que quieres borrar la foto?</p>            
-        </div>
-        <div class="modal-footer">
-            <button type="submit" value="SI" id="delete-img-yes"  class="disabled modal-action modal-close btn-flat waves-effect blue-text text-darken-2 waves-light">eliminar</button>
-            <button type="submit" value="NO" id="delete-img-no"  class=" modal-action modal-close btn-flat waves-effect waves-light">cancelar</button>
-        </div>        
-    </div>
-<!-------------------------------------------- Confirm Delete ITEM Modal -------------------------------------------
--->
 
 <script>
     
     Materialize.showStaggeredList("#CoverThumbnails");
 
-    $('input:checkbox').change(function(){
-    if($(this).is(":checked")) {
-        $('#delete-yes').removeClass("disabled");
-    } else {
-        $('#delete-yes').addClass("disabled");
-    }
-});
+   
    
     $(document).ready(function(){
         
@@ -461,13 +426,9 @@
     function Agregar2()
     {
         var formData = new FormData($('#frmUpload')[0]);
-        //formData.append("DataAdd",Changes[0].toString());
-        //formData.append("DataRemove",Changes[1].toString());
+        
         formData.append("idproducto",$("#idproducto").val());
-        
-        //console.table(Array.from(formData.entries()));
-        
-        //Show loading animation
+       
         ShowLoadingSwal();
         
         $.ajax({
@@ -545,22 +506,11 @@
         $('#modalFrmAdd').openModal();
           
     }
-      
-    var HTMLLoader = 
-  "<div class=\"col s12 center TabLoader\" style=\"margin-top: 10%\">" +
-  "<div class=\"preloader-wrapper active\">"+
-  "<div class=\"spinner-layer spinner-blue-only\">"+
-  "<div class=\"circle-clipper left\">"+
-  "<div class=\"circle\"></div>"+
-  "</div><div class=\"gap-patch\">"+
-  "<div class=\"circle\"></div>"+
-  "</div><div class=\"circle-clipper right\">"+
-  "<div class=\"circle\"></div>"+
-  "</div></div></div></div>";
+
     
    
 
-    function editar (idproducto){        
+    function editar(idproducto){        
         
                  
         var formData = new FormData($('#frmcustomproyect')[0]);
@@ -577,13 +527,6 @@
             Materialize.toast('Guardando...', 3000);
             $("#custom-producto").closeModal();
                  
-               // Materialize.toast('Se guardó el producto.', 3000);
-            /*  
-                var cells = $(".description").children();
-                cells[1].innerText= $("#nombre-producto").val();    
-                cells[2].innerText= $("#descripcion-producto").val()+' - '+$("#categoria-producto").val();
-                cells[3].innerText= $("#proveedor-producto").val();       
-              */
                
                     
         });
@@ -633,8 +576,7 @@
      function Editar2(id)
     {
         var formData = new FormData($('#frmUpload')[0]);
-        //formData.append("DataAdd",Changes[0].toString());
-        //formData.append("DataRemove",Changes[1].toString());
+        
         formData.append("idproducto",$("#idproducto").val());
         formData.append("IDImagen",id);        
         
@@ -685,77 +627,23 @@
         });		      
     }
     
-    function eliminar(idproducto){              
-        $("#confirmar-eliminar").openModal();
-        $( "#delete-yes" ).click(function() {
-                $.ajax({
+    function eliminar(idproducto){        
+        ConfirmDelete("Borrar Producto","Esta seguro que quiere eliminar este producto","Seguro?",
+        function(){
+            $.ajax({
 				    url:"<?php echo GetURL("modulos/modcrearproductos/servicecrearproducto.php?accion=4") ?>",
 				    method: "POST",
 				    data: {idproducto:idproducto}
 			    }).done(function(data){
                             if(data=="0"){
-                                //location.href="dashboard/adminproductos"
+                                location.href="../adminproductos"
                             }
                             else{
                                 alert(data);
                             }
                         }
                     );
-  
-});
-        $( "#delete-no" ).click(function() {
-                 $("#confirmar-eliminar").closeModal();
-        });
-   
-       
-    } 
-     
-function ConfirmDelete2(title,content,ckMessage = "",YesCallback,strDelete = "borrar", strCancel = "cancelar")
-{
-    var HTML = 
-    '<div id="confirmar-item" class="modal delete-item">'+
-        '<div class="modal-content">'+
-            '<h5>'+title+'</h5>'+
-            '<p class="">'+content+'</p>'+
-            ((ckMessage != "" ) ? 
-            '<p><input type="checkbox" id="chkbx-confirmar"/>'+
-            '<label for="chkbx-confirmar">'+ckMessage+'</label></p>' : '') + 
-        '</div>'+
-        '<div class="modal-footer">'+
-            '<button type="submit" value="SI" id="delete-yes" class="'+ ((ckMessage != "") ? 'disabled ' : '') +'modal-action btn-flat waves-effect waves-light">'+strDelete+'</button>'+
-            '<button type="submit" value="NO" id="delete-no" class=" modal-action modal-close btn-flat waves-effect waves-light">'+strCancel+'</button>'+
-        '</div>'+
-    '</div>';
-    
-    //console.log("Data->"+HTML);
-    
-    //Append to Body
-    $('body').append(HTML);
-    
-    //CheckBox events.
-    $('#confirmar-item input:checkbox').unbind('change').change(function()
-    {
-        if($(this).is(":checked")) 
-            $('#delete-yes').removeClass("disabled");
-        else 
-            $('#delete-yes').addClass("disabled");
-    });    
-    
-    //Set Events
-    if (YesCallback && typeof(YesCallback) === "function") 
-        $('#delete-yes').unbind('click').click(function()
-        {
-            if(!$(this).hasClass("disabled"))
-            {
-                YesCallback();
-                $("#confirmar-item").closeModal({
-                    complete: function(){
-                      $("#confirmar-item").remove();  
-                    }
-                });                
-            }
-        });
-        
-    $("#confirmar-item").openModal();    
-}	
+        }
+        );   
+    } 	
 </script>

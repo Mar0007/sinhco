@@ -92,7 +92,7 @@
 					$target_dir = "../../uploads/images/productos/";
 					$imageFileType = pathinfo($_FILES['imagen-producto']['name'],PATHINFO_EXTENSION);  										
 					$target_file = $target_dir.$idproducto.".".$imageFileType;
-					//echo "Imagen->".$target_file."<br>";
+					
 					if(!move_uploaded_file($imagen,$target_file))
 					{
 						echo "<h5> Imagen no fue actualizada </h5>";
@@ -144,78 +144,8 @@
            echo "0" ;
 												
 				break;
-        case 10: //Insertar Imagen
-               
-			$bSuccess = false;
-			$targetExt  = "." . pathinfo($_FILES['file']['name'], PATHINFO_EXTENSION);
-			$FileName = uniqid('Producto-', true) . $targetExt;	
-			
-			   $mysqli->action(function($mysqli) use ($FileName,&$bSuccess)
-				{									
-					//First upload image
-					$sourcePath = $_FILES['file']['tmp_name'];					
-					$targetPath = "uploads/images/productos/". $FileName;
-					$ImageTitle = $_POST['img-title'];
-					move_uploaded_file($sourcePath,"../../" . $targetPath);
-					
-					if(!file_exists("../../" . $targetPath))
-					{
-						echo "Error when moving file.";
-						print_r($_FILES["file"]);
-						return false;
-					}
-			   
-			   
-								
-				$last_id = $mysqli->insert("imagenes",
-				[
-					"img"  => $ImageTitle,
-					"ruta" => GetURL($targetPath),
-					"categoria" => "Producto",
-					"descripcion" => ""
-				]
-				
-				);
-				if(CheckDBError($mysqli)) return ;
-				echo "<a id=\"IMG_".$last_id."\" value=\"".$last_id."\" class=\"uploaded-img no-padding collection-item col s2\" style=\"width:100%;height:auto;\">
-						<i class=\"secondary-menu menu-btn material-icons center\" onclick=\"DeleteImage(".$last_id.")\" style=\"position:absolute;cursor:pointer;\">close</i>
-						<div class=\"center-align\ style=\"display:none\">
-							<img src=\"".GetURL($targetPath)."\" style=\"width:100%;height:auto;\">									
-							<span style=\"display:none\" class=\"truncate\">".$ImageTitle."</span>
-						</div>
-						</a>";	
-				break;
-				$bSuccess = true;	
-				});
-				
-				//If rollback, then delete the uploaded file
-				if(!$bSuccess)
-					@unlink("../../uploads/images/productos/".$FileName);
-				
-				break;
-		case 11: //Eliminar Imagen
-		/*
-				$IDImagen = $_POST["IDImagen"];
-				$Ruta = $mysqli->get("imagenes","ruta",["idimagen" => $IDImagen]);
-				
-				if(CheckDBError($mysqli)) return;
-								
-				$mysqli->delete("imagenes",
-					[
-						"AND" => 
-						[
-							"idimagen" => $IDImagen
-							
-						]	
-					]
-					);			
-				
-				//array_map('unlink', glob("some/dir/*.txt"));
-				@unlink($Ruta);								
-				echo $IDImagen;
-				break;
-				*/
-				
+        case 11: //Eliminar Imagen
+		
 				$mysqli->action(function($mysqli)
 				{
 					$idproducto = $_POST["idproducto"];
@@ -229,51 +159,6 @@
 					@unlink('../../uploads/images/productos/'.$OldFilename);								
 					
 					echo "0";					
-				});
-				break;
-				
-		case 12: //Actualizar Imagen
-				$IDImagen 	= $_POST["IDImagen"];
-				$Imagen 	= $_POST["Imagen"];
-
-				$strSQL = "UPDATE sliderimgs SET imagen = ? WHERE idimagen = ?";
-				if( $stmt = $mysqli->prepare($strSQL) )
-				{
-					$stmt->bind_param('si',$Imagen,$IDImagen);
-					$stmt->execute();
-					if($stmt->errno != 0)
-					{
-						echo $stmt->errno . " : " . $mysqli->error;
-						return;
-					}
-				}
-				else
-				{
-					echo "Error en la consulta: " . $mysqli->error;
-					return;
-				}
-				
-				echo "0";
-				break;	
-        case 13: //Add IMG
-            $mysqli->action(function($mysqli)
-				{									
-					$IDImagen = $_POST["IDImagen"];
-					$IDproducto = $_POST["IDproducto"];	                    
-					//$IDImgInit  = ((isset($_POST['IDImgInit'])) ? $_POST['IDImgInit'] : $IDImagen);
-					
-															
-					
-						$mysqli->insert("productos_img",[
-                            "idproducto" => $IDproducto,
-                            "idimagen" => $IDImagen
-                        ]);
-						if(CheckDBError($mysqli)) return false;													
-					
-					
-					
-					ProyectCard($mysqli,$IDproducto, $IDImagen);												
-						
 				});
 				break;
 				
