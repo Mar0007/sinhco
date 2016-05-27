@@ -116,7 +116,12 @@ function ConfirmDelete(title,content,ckMessage = "",YesCallback,strDelete = "bor
             }
         });
         
-    $("#confirmar-eliminar").openModal();    
+    $("#confirmar-eliminar").openModal({
+        complete: function(){
+            $("#confirmar-eliminar").remove(); 
+        }
+    });
+    $("#confirmar-eliminar").css("display","table");        
 }
 
 function bytesToSize(bytes) {
