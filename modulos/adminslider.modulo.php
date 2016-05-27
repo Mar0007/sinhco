@@ -323,21 +323,6 @@
         $('ul.tabs').tabs('select_tab', 'TabImg');                
     }
     
-    //FOR IMAGE PREVIEW
-    function readURL(input) 
-    {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-
-            reader.onload = function (e) 
-            {
-                $('#proyect-img').attr('src', e.target.result);
-            }
-                                    
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-    
     function Agregar()
     {
         var formData = new FormData($('#frmUpload')[0]);
@@ -626,33 +611,6 @@
 	{
 		for(var i = 0; i < Changes.length; i++)
 			Changes[i].length = 0;
-	}
-        
-    //Check for filezise
-    function handleFileSelect(evt) 
-    {
-      var files = evt.target.files; // FileList object
-      var max_size = $("#maxsize").val(); // Max file size
-
-      // files is a FileList of File objects. List some properties.
-      var output = [];
-      for (var i = 0, f; f = files[i]; i++) 
-      {
-        //console.log("FileSize->"+f.size);
-        if(f.size > max_size) 
-        { // Check if file size is larger than max_size
-          //Reset preview
-          $("#modalFrmAdd").find("img").attr('src',$("#InitImage").attr('src'));
-          //Clear input:file
-          $(this).val('');
-          //Notify          
-          alert("Error: La imagen sobrepasa el tamaño maximo.\nTamaño maximo: " + bytesToSize(max_size) + ".\nTamaño de su imagen: "+bytesToSize(f.size));          
-          return false;
-        }
-      }
-      
-      //Set preview.
-      readURL(this);
-    }
+	}        
     
 </script>

@@ -73,12 +73,14 @@
                                     .GetDropDownSettingsRow($idproyecto,GetMenuArray())."
                             </div> 
                         ";
+                        
+                        setlocale(LC_ALL,"es_ES");
                     ?>   
                 <input style="display:none" type = "file" id = "imagen" name = "imagen"/>
                 <div class="description">
                     <h6 id="hope"class="white-text light" style=" display:none;margin-top:4%; padding-left:4%;padding-bottom:1%"><?php echo $idproyecto ?></h6>
                     <h5 id="sidename" class="white-text " style="overflow:hidden;margin:0px; padding-left:4%"><?php echo $stmt[0]["nombre"] ?></h5>
-                    <h6 id="sideplace" class="white-text light" style="margin-top:2%; padding-left:4%;padding-bottom:1%"><?php echo $stmt[0]["lugar"] ?> - <?php echo date("j F Y", $date) ?> </h6>
+                    <h6 id="sideplace" class="white-text light" style="margin-top:2%; padding-left:4%;padding-bottom:1%"><?php echo $stmt[0]["lugar"] ?> - <?php echo date("F j, Y", $date) ?> </h6>
                     <h6 id="sidecontent" class="white-text medium" style="margin-top:4%; padding-left:4%;padding-bottom:1%"><?php echo $stmt[0]["contenido"] ?></h6>
                 </div>
 
@@ -214,7 +216,7 @@
             format: 'yyyy-mm-dd'    
         });
         
-        $("#FileInput").change(handleFileSelect);
+        $(":file").change(handleFileSelect);
         //UPDATE INPUTS
         Materialize.updateTextFields();        
         
@@ -234,21 +236,7 @@
             }
         );
     });
-    
-    //FOR IMAGE PREVIEW
-    function readURL(input) 
-        {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
 
-                reader.onload = function (e) {
-                    $('#proyect-img').attr('src', e.target.result);
-                    //$('#proyect-img').show();
-                }
-                                        
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
     
      function ItemModal(id)
     {
@@ -296,32 +284,7 @@
     }
 	var ajax_request;	
     
-     //Check for filezise
-    function handleFileSelect(evt) 
-    {
-      var files = evt.target.files; // FileList object
-      var max_size = $("#maxsize").val(); // Max file size
 
-      // files is a FileList of File objects. List some properties.
-      var output = [];
-      for (var i = 0, f; f = files[i]; i++) 
-      {
-        //console.log("FileSize->"+f.size);
-        if(f.size > max_size) 
-        { // Check if file size is larger than max_size
-          //Reset preview
-          $("#modalFrmAdd").find("img").attr('src',$("#InitImage").attr('src'));
-          //Clear input:file
-          $(this).val('');
-          //Notify          
-          alert("Error: La imagen sobrepasa el tamaño maximo.\nTamaño maximo: " + bytesToSize(max_size) + ".\nTamaño de su imagen: "+bytesToSize(f.size));          
-          return false;
-        }
-      }
-      
-      //Set preview.
-      readURL(this);
-    }
     
     function Agregar2()
     {
@@ -427,10 +390,9 @@
             {
                 $("#sidename").text($("#nombre-proyecto").val());
                 var Lugar = $("#lugar-proyecto").val();
-                var Fecha = $("#fecha-proyecto").val();
-                var formatted = $.datepicker.formatDate("d MM yy", new Date(Fecha));
+                var Fecha = CustomParseDate($("#fecha-proyecto").val());
                 
-                $("#sideplace").text(Lugar + " - " + formatted);
+                $("#sideplace").text(Lugar + " - " + Fecha);
                 
                 Materialize.toast('Guardado', 3000,"green");
                 $("#custom-proyecto").closeModal();                                                                    

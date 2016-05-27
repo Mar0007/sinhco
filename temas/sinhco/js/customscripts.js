@@ -124,4 +124,70 @@ function bytesToSize(bytes) {
    if (bytes == 0) return '0 Byte';
    var i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
    return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
-};                
+};
+
+
+function CustomParseDate(DateStr)
+{
+    DateStr = DateStr.split("-");
+
+    var monthNames = [
+        "Enero", "Febrero", "Marzo",
+        "Abril", "Mayo", "Junio", "Julio",
+        "Agosto", "Septiembre", "Octubre",
+        "Noviembre", "Diciembre"
+    ];
+
+    day = DateStr[2];
+    monthIndex = parseInt(DateStr[1]);
+    year = DateStr[0];
+
+    //console.table(Str);
+    //console.log(day, monthNames[monthIndex - 1], year);
+    return monthNames[monthIndex - 1] + " " + day + ", " + year;
+}
+
+
+//Check for filezise
+function handleFileSelect(evt) 
+{
+    var files = evt.target.files; // FileList object
+    var max_size = $("#maxsize").val(); // Max file size
+
+    // files is a FileList of File objects. List some properties.
+    var output = [];
+    for (var i = 0, f; f = files[i]; i++) 
+    {
+    //console.log("FileSize->"+f.size);
+    if(f.size > max_size) 
+    { // Check if file size is larger than max_size
+        //Reset preview          
+        $(this).parents(".modal").find('img').attr('src',$("#InitImage").attr('src'));          
+        
+        //Clear input:file
+        $(this).val('');
+        //Notify          
+        alert("Error: La imagen sobrepasa el tamaño maximo.\nTamaño maximo: " + bytesToSize(max_size) + ".\nTamaño de su imagen: "+bytesToSize(f.size));          
+        return false;
+    }
+    }
+    
+    //Set preview.
+    readURL(this);
+}
+
+    
+//FOR IMAGE PREVIEW
+function readURL(input) 
+{
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) 
+        {
+            $(input).parents(".modal").find('img').attr('src',e.target.result);
+        }
+                                
+        reader.readAsDataURL(input.files[0]);
+    }
+}
