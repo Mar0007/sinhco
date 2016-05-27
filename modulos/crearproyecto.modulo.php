@@ -396,7 +396,7 @@
         
         $('#custom-proyecto').openModal({
             complete: function() { 
-                document.getElementById("custom-proyecto").reset();                                
+                //document.getElementById("custom-proyecto").reset();                                
                 Materialize.updateTextFields();                      
             }
         })
@@ -423,12 +423,23 @@
 			contentType: false,
 			processData: false            
         }).done(function(data){
-            
-            Materialize.toast('Guardando...', 3000);
-            $("#custom-proyecto").closeModal();
-                 
-               
-                    
+            if(data == "0")
+            {
+                $("#sidename").text($("#nombre-proyecto").val());
+                var Lugar = $("#lugar-proyecto").val();
+                var Fecha = $("#fecha-proyecto").val();
+                var formatted = $.datepicker.formatDate("d MM yy", new Date(Fecha));
+                
+                $("#sideplace").text(Lugar + " - " + formatted);
+                
+                Materialize.toast('Guardado', 3000,"green");
+                $("#custom-proyecto").closeModal();                                                                    
+            }
+            else
+            {
+                Materialize.toast('<i class="material-icons">highlight_off</i> Error al guardar', 4000,"red");
+                console.error("Error->Editar():"+data);
+            }                        
         });
     }
     

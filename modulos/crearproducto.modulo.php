@@ -251,7 +251,7 @@
                     </div> 
                     <div class="input-field col s12">
 						<!-- <i class="material-icons prefix">assignment_ind</i> -->	
-                        <select id="categoria-producto" name="categoria-producto" required>
+                        <select id="categoria-producto" name="categoria-producto">
                             <option value="" href="" disabled selected>Elija la categoria</option>
                             <?php
                             
@@ -273,7 +273,7 @@
 						
 						<div class="input-field col s12">
 						<!--<i class="material-icons prefix">assignment_ind</i> -->	
-                        <select id="proveedor-producto" name="proveedor-producto" required> 
+                        <select id="proveedor-producto" name="proveedor-producto"> 
                             <option value="" href="" disabled selected>Elija el Proveedor</option>
                             <?php
                             
@@ -514,7 +514,17 @@
         
           
         var formData = new FormData($('#frmcustomproyect')[0]);
-        formData.append("idproducto",$("#idproducto").val());       
+        
+        if(!formData.has('categoria-producto') || !formData.has('proveedor-producto'))
+        {
+            Materialize.toast('<i class="material-icons">highlight_off</i> Todos los campos son requeridos', 4000,"red");
+            return;
+        }
+        
+        
+        
+        formData.append("idproducto",$("#idproducto").val());
+               
         $.ajax({
            url:"<?php echo GetURL("modulos/modcrearproductos/servicecrearproducto.php?accion=3")?>",
             method: "POST",
@@ -522,14 +532,24 @@
 			cache: false,
 			contentType: false,
 			processData: false            
-        }).done(function(data){
+        }).done(function(data)
+        {            
+            if(data == "0")
+            {
+                var Nombre = $("#nombre-producto").val();
+                
+                $("#sidename").val(Nombre);
+                
+                Materialize.toast('Guardando...', 3000);
+                $("#custom-producto").closeModal();
+                //location.href= "../crearproducto/"+$("#idproducto").val();                                                                    
+            }
+            else
+            {
+                Materialize.toast('<i class="material-icons">highlight_off</i> Error al guardar', 4000,"red");
+                console.error("Error->Editar():"+data);
+            }
             
-            Materialize.toast('Guardando...', 3000);
-            $("#custom-producto").closeModal();
-            location.href= "../crearproducto/"+$("#idproducto").val();
-                 
-               
-                    
         });
     }
     
