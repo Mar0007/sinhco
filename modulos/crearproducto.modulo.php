@@ -281,7 +281,6 @@
                                 [
                                     "idproveedor","nombre"
                                 ]);
-                                
                                 if($stmt)
                                 {
                                     foreach($stmt as $row)
@@ -536,9 +535,16 @@
         {            
             if(data == "0")
             {
-                var Nombre = $("#nombre-producto").val();
                 
-                $("#sidename").val(Nombre);
+                $("#sidename").text($("#nombre-producto").val());
+                $("#sidecontent").text($("#descripcion-producto").val());
+                $("#sidecategoria").text($("#categorianombre-producto").val());
+                $("#sideproveedor").text($("#proveedor-producto").val());
+              document.getElementById("idproducto").setAttribute("src", "/sinhco/uploads/images/productos/Producto-61.jpg");
+              
+                
+            
+                
                 
                 Materialize.toast('Guardando...', 3000);
                 $("#custom-producto").closeModal();

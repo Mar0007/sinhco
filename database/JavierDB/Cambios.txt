@@ -1,3 +1,0 @@
-Se agrego la tabla intermedia de proveedores_productos
-Se cambio el precio y el estado dentro de productos a nulo
-Se le deshabilito a los campos detro de productos la propiedad de unique
