@@ -61,9 +61,9 @@
 								
 				if($imagen != "")
 				{
-					$target_dir = "../../uploads/images/";
+					$target_dir = "../../uploads/images/Proyecto-";
 					$imageFileType = pathinfo($_FILES['imagen-proyecto']['name'],PATHINFO_EXTENSION);  										
-					$target_file = $target_dir.$idproyecto.".".$imageFileType;
+					$target_file = $target_dir."Proyecto-".$idproyecto.".".$imageFileType;
 					//echo "Imagen->".$target_file."<br>";
 					if(!move_uploaded_file($imagen,$target_file))
 					{
@@ -71,7 +71,7 @@
 					}
 					else
 					{
-						foreach(glob("../../uploads/images/".$idproyecto.".*") as $Img)
+						foreach(glob("../../uploads/images/Proyecto-".$idproyecto.".*") as $Img)
 						{
 							if($Img != $target_file)
 								unlink($Img);
@@ -207,6 +207,8 @@
 						$sourcePath = $_FILES['file']['tmp_name'];					
 						$targetPath = "uploads/images/". $FileName;
 						$ImageTitle = $_POST['img-title'];
+                        $IMGDescripcion = $_POST['img-descripcion'];
+                        
 						move_uploaded_file($sourcePath,"../../" . $targetPath);
 						
 						if(!file_exists("../../" . $targetPath))
@@ -233,7 +235,7 @@
 					}
 					else 
 					//If didnt uploaded a file just update name
-						$mysqli->update("imagenes",["img" => $ImageTitle],["idimagen" => $IDImagen]);
+						$mysqli->update("imagenes",["img" => $ImageTitle, "descripcion" => $IMGDescripcion],["idimagen" => $IDImagen]);
 														
 					$idproyecto = $_POST["idproyecto"];
 					$mysqli->update("proyectos_img",

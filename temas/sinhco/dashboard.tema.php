@@ -1,20 +1,5 @@
-<?php 
-    //$Experimental
-    $WebTitle .= " - Dashboard";
-    
-    
-    $idusuario = $_SESSION['idusuario'];
-    /*
-    $stmt = $mysqli->select("usuarios",["nombre"],["idusuario" => $idusuario]);
-    if(!$stmt)
-    {
-        if($mysqli->error()[2] != "")
-            echo "Error:".$mysqli->error()[2];
-            
-        return;
-    }        
-    $nombre = $stmt[0]["nombre"];
-    */
+<?php         
+    $idusuario = $_SESSION['idusuario'];   
     $nombre = $_SESSION['usuario'];
     
     //<--- Get Module ---> 
@@ -135,7 +120,7 @@
     
     <style>
         .user-details {
-            background: url("<?php echo GetURL("uploads/covers/cover-small.jpg")?>") no-repeat center center
+            background: url("<?php echo GetCoverImagePath($idusuario)?>") no-repeat center center
         }
                  
     </style>

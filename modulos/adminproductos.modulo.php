@@ -57,7 +57,7 @@
                     <input id="Descripcion" name="Descripcion" type="text" class="validate" length="750">
                     <label for="Descripcion">Descripcion</label>
                 </div>               
-                <input  id="sendForm" type="submit" style="visibility:hidden" disabled="disabled">
+                
             </div>           
         </form>       
         
@@ -200,12 +200,12 @@
                 $('#guardar').addClass("disabled");
                 $('#guardar').removeClass("modal-close");
                 $('#guardar').removeClass("blue-text");
-                $('#sendForm').attr('disabled', 'disabled');
+              
             } else {
                 $('#guardar').removeClass("disabled");
                 $('#guardar').addClass("modal-close");
                 $('#guardar').addClass("blue-text");
-                $('#sendForm').attr('disabled', false);
+             
             }
         });
         
