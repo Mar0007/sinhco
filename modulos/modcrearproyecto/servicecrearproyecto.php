@@ -61,7 +61,7 @@
 								
 				if($imagen != "")
 				{
-					$target_dir = "../../uploads/images/";
+					$target_dir = "../../uploads/images/Proyecto-";
 					$imageFileType = pathinfo($_FILES['imagen-proyecto']['name'],PATHINFO_EXTENSION);  										
 					$target_file = $target_dir."Proyecto-".$idproyecto.".".$imageFileType;
 					//echo "Imagen->".$target_file."<br>";

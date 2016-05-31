@@ -393,6 +393,8 @@
             if(data == "0")
             {
                 $("#sidename").text($("#nombre-proyecto").val());
+                $("#sidecontent").text($("#contenido-proyecto").val());
+                
                 var Lugar = $("#lugar-proyecto").val();
                 var Fecha = CustomParseDate($("#fecha-proyecto").val());
                 
