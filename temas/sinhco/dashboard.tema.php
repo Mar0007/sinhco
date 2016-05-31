@@ -21,7 +21,7 @@
                 <li class="user-details cyan darken-2">
                 <div class="row">
                     <div class="col s4 m4 l4">
-                        <img src=' . GetUserImagePath($idusuario) . ' alt="" class="circle responsive-img valign profile-image" style="margin-top:15px">
+                        <img src=' . GetUserImagePath($idusuario) . ' alt="" class="circle profile-image" style="height:70px;width:70px;">
                     </div>
                     <div class="col s8 m8 l8">
                         <ul id="profile-dropdown" class="dropdown-content">
@@ -129,7 +129,7 @@
     
     <style>
         .user-details {
-            background: url("<?php echo GetURL("uploads/covers/cover-small.jpg")?>") no-repeat center center
+            background: url("<?php echo GetCoverImagePath($idusuario)?>") no-repeat center center
         }
                  
     </style>

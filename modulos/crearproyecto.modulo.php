@@ -67,8 +67,8 @@
                             );		
                         }
                         echo 
-                        "
-                            <img id=".$idproyecto." class=\"image-header\" style=\"width:100%;\" src=\"".GetProyectImagePath($idproyecto)."\">
+                        "   
+                            <img id=\"IMG_".$idproyecto."\" class=\"image-header\" style=\"width:100%;\" src=\"".GetProyectImagePath($idproyecto)."\">
                             <div style=\"font-size:2.3rem\" class=\"menu-panel white-text\">"
                                     .GetDropDownSettingsRow($idproyecto,GetMenuArray())."
                             </div> 
@@ -109,10 +109,9 @@
 
 <!-------------------------------------------- MODAL AGREGAR IMAGEN AL PROYECTO ------------------------------->
  <div id="modalFrmAdd" class="modal modal-fixed-footer custom-item">
-        <div id="top-content" class="modal-content">            
-            <h5 id="modal-title" class="light">Agregar una imagen</h5>
+        <div id="top-content" class="modal-content no-padding">               
             <div id="contentUploads">	
-                <form id="frmUpload" method="post" enctype="multipart/form-data" style="max-height:120px">
+                <form id="frmUpload" method="post" autocomplete="off" enctype="multipart/form-data" style="max-height:120px">
                     <div style="position:relative">
                         <img id="proyect-img" src="<?php echo GetURL("uploads/covers/camerabg.png")?>" style="width:100%; object-fit:cover; height:220px;" class="responsive-img"></img>                    
                         <div class="input-secondary-menu circle">
@@ -123,22 +122,24 @@
                         </div>
                     </div>
                     <div id="imgpreview-loader"></div>
+                <div class="description">
                         <span class="right grey-text">Tamaño maximo: <?php echo ini_get('upload_max_filesize') ?></span>
                         <input id="InitImage" type="hidden" value="">
                     <div id="ColImgs" class="collection" style="border-style: none;"></div>
                    <div class="row">
                         <div class="input-field col s12">
-                        <input id="img-title" length="50" name="img-title" type="text" class="validate"> 
+                        <input id="img-title" length="50" maxlength="50" name="img-title" type="text" class="validate"> 
                         <label for="img-title">Título de la imagen</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="input-field col s12">
-                        <textarea id="img-descripcion" length="1440" name="img-descripcion" type="text" class="materialize-textarea validate" ></textarea>  
+                        <textarea id="img-descripcion" length="140" maxlength="140" name="img-descripcion" type="text" class="materialize-textarea"></textarea>  
                         <label for="img-descripcion">Descripción de la imagen</label>
                     </div>
                 </div>
                     <input type="submit" style="display:none">
+                </div>
                 </form>            
             </div>
         </div>
@@ -168,11 +169,11 @@
             <div class="description">
                 <div class="row card-content">               
                     <div class="input-field col s12">
-                        <input id="nombre-proyecto" length="50" name="nombre-proyecto" type="text" class="validate" required value="<?php echo $stmt[0]["nombre"] ?>"> 
+                        <input id="nombre-proyecto" length="50" maxlength="50" name="nombre-proyecto" type="text" class="validate" required value="<?php echo $stmt[0]["nombre"] ?>"> 
                         <label for="nombre-proyecto">Proyecto</label>
                     </div>
                     <div class="input-field col s12">
-                        <input id="lugar-proyecto" length="25" name="lugar-proyecto" type="text" class="validate" required value="<?php echo $stmt[0]["lugar"] ?>" >     
+                        <input id="lugar-proyecto" length="25" maxlength="25" name="lugar-proyecto" type="text" class="validate" required value="<?php echo $stmt[0]["lugar"] ?>" >     
                         <label for="lugar-proyecto">Lugar</label>
                     </div> 
                     <div class="input-field col s12">
@@ -180,7 +181,7 @@
                         <label class="active" for="fecha-proyecto">Fecha</label>
                     </div>
                     <div class="input-field col s12">
-                        <textarea id="contenido-proyecto" name="contenido-proyecto" length="300" class="materialize-textarea"><?php echo $stmt[0]["contenido"] ?></textarea>
+                        <textarea id="contenido-proyecto" name="contenido-proyecto" length="300" maxlength="300" class="materialize-textarea"><?php echo $stmt[0]["contenido"] ?></textarea>
                         <label for="contenido-proyecto">Descripción</label>
                     </div> 
                     <input  type="submit" style="display:none">
@@ -252,9 +253,10 @@
             $("#modalFrmAdd").find("img").attr('src', $("#IMG_"+id).find('img').attr('src') );
             $("#InitImage").attr('src',$("#IMG_"+id).find('img').attr('src'));
             $("#modal-title").text('Editar imagen');
-            $("#img-title").val( $("#IMG_"+id).find('.card-title').text() );
-            $("#img-descripcion").val( $("#IMG_"+id).find('.card-content').text() );
+            $("#img-title").val( $("#IMG_"+id).find('.card-title').text());
+            $("#img-descripcion").val($("#IMG_"+id).find('.card-content p').text());
             $("#guardar").text('Guardar');
+         
         }
         
         
@@ -280,6 +282,7 @@
        
         Materialize.updateTextFields();
         $("#modalFrmAdd").openModal();
+        $("#img-descripcion").trigger("keyup");
                   
     }
 	var ajax_request;	
@@ -363,6 +366,7 @@
                 Materialize.updateTextFields();                      
             }
         })
+        $("#contenido-proyecto").trigger("keyup");
     }
     
     function ModalAdd(){
@@ -373,7 +377,7 @@
     
    
 
-    function editar(idproducto){        
+    function editar(idproyecto){        
         
                  
         var formData = new FormData($('#frmcustomproyect')[0]);
@@ -394,6 +398,12 @@
                 
                 $("#sideplace").text(Lugar + " - " + Fecha);
                 
+                $("#sidecontent").text($("#contenido-proyecto").val());
+                $("#IMG_"+idproyecto).fadeOut(function(){                    
+                    $(this).find('img').attr('src',$(data).find('img').attr('src'));
+                    $(this).fadeIn();  
+                });
+                                
                 Materialize.toast('Guardado', 3000,"green");
                 $("#custom-proyecto").closeModal();                                                                    
             }

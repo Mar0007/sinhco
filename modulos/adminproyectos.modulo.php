@@ -72,11 +72,11 @@
         <form id="frmnewproyect" autocomplete="off">
             <div class="row card-content">               
                 <div class="input-field col s12">
-                    <input id="nombre" name="nombre" type="text" class="validate" length ="50">
+                    <input id="nombre" name="nombre" type="text" class="validate" length ="50" maxlength="50">
                     <label for="nombre">Nombre</label>
                 </div>
                 <div class="input-field col s12">
-                    <input id="lugar" name="lugar" type="text" class="validate" length="25">
+                    <input id="lugar" name="lugar" type="text" class="validate" length="25" maxlength="25">
                     <label for="lugar">Lugar</label>
                 </div>               
                <!-- <input  id="sendForm" type="submit" style="visibility:hidden" disabled="disabled">-->
@@ -110,11 +110,11 @@
             <div class="description">
                 <div class="row card-content">               
                     <div class="input-field col s12">
-                        <input id="nombre-proyecto" length="50" name="nombre-proyecto" type="text" class="validate" required> 
+                        <input id="nombre-proyecto" length="50" maxlength="50" name="nombre-proyecto" type="text" class="validate" required> 
                         <label for="nombre-proyecto">Proyecto</label>
                     </div>
                     <div class="input-field col s12">
-                        <input id="lugar-proyecto" length="25" name="lugar-proyecto" type="text" class="validate" required>
+                        <input id="lugar-proyecto" length="25" maxlength="25" name="lugar-proyecto" type="text" class="validate" required>
                         <label for="lugar-proyecto">Lugar</label>
                     </div>
                     <div class="input-field col s12">
@@ -122,7 +122,7 @@
                         <label class="active" for="fecha-proyecto">Fecha</label>
                     </div>
                     <div class="input-field col s12">
-                        <textarea id="contenido-proyecto" name="contenido-proyecto" length="300" class="materialize-textarea" required></textarea>
+                        <textarea id="contenido-proyecto" name="contenido-proyecto" maxlength="300" length="300" class="materialize-textarea" required></textarea>
                         <label for="contenido-proyecto">Descripción</label>
                     </div> 
                     <input  type="submit" style="display:none">

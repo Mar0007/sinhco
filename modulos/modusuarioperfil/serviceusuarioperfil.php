@@ -25,23 +25,26 @@
 				break;
 		case 3: //Actualizar
 				$idusuario 	= $_POST["idusuario"];
-				$usuario   	= $_POST["nombre"];
+				$nombre   	= $_POST["nombre"];
+                $apellido  	= $_POST["apellido"];
 				$email   	= $_POST["email"];
 				//$nacimiento = $_POST["nacimiento"];
 				//$admin   	= (isset($_POST["admin"])) ? true : false;
-				$estado   	= (isset($_POST["estado"])) ? true : false;
-				$password   = $_POST["password"];
-				$imagen		= $_FILES['imagen']['tmp_name'];
+				$estado   	= (isset($_POST["estado"]));
+				//$password   = $_POST["password"];
+				$imagen_usr		= $_FILES['user-img']['tmp_name'];
+                $imagen_cover_usr		= $_FILES['user-cover-img']['tmp_name'];
+            
 				
 				//echo "Imagen->".$imagen."<br>";
 				
-				if($imagen != "")
+				if($imagen_usr != "")
 				{
 					$target_dir = "../../uploads/avatars/";
-					$imageFileType = pathinfo($_FILES['imagen']['name'],PATHINFO_EXTENSION);  										
+					$imageFileType = pathinfo($_FILES['user-img']['name'],PATHINFO_EXTENSION);  										
 					$target_file = $target_dir.$idusuario.".".$imageFileType;
 					//echo "Imagen->".$target_file."<br>";
-					if(!move_uploaded_file($imagen,$target_file))
+					if(!move_uploaded_file($imagen_usr,$target_file))
 					{
 						echo "<h5> Imagen no fue actualizada </h5>";
 					}
@@ -53,43 +56,45 @@
 								unlink($Img);
 						}
 					}
-				}												
-				
-				if($password != "")
+				}		
+                if($imagen_cover_usr != "")
 				{
-					//Encriptacion
-					$llave = hash('sha512',rand());
-					//$passw = hash('sha512',$password);
-					$password = hash('sha512',$password . $llave);
-					$strSQL   = "UPDATE usuarios 
-								 SET nombre = ?, email = ?, estado = ?, password = ?, llave = ? 
-								 WHERE idusuario = ?";
-				}
-				else
-					$strSQL   = "UPDATE usuarios 
-								 SET nombre = ?, email = ?, estado = ? 
-								 WHERE idusuario = ?";
-									
-				if( $stmt = $mysqli->prepare($strSQL) )
-				{
-					if($password != "")
-						$stmt->bind_param('ssisss',$usuario,$email,$estado,$password,$llave,$idusuario);
-					else
-						$stmt->bind_param('ssis',$usuario,$email,$estado,$idusuario);
-						
-					$stmt->execute();
-					
-					if($stmt->errno != 0)
+					$target_dir = "../../uploads/covers/";
+					$imageFileType = pathinfo($_FILES['user-cover-img']['name'],PATHINFO_EXTENSION);  										
+					$target_file = $target_dir."Cover-".$idusuario.".".$imageFileType;
+					//echo "Imagen->".$target_file."<br>";
+					if(!move_uploaded_file($imagen_cover_usr,$target_file))
 					{
-						echo $stmt->errno . " : " . $mysqli->error;
+						echo "<h5> Imagen no fue actualizada </h5>";
 					}
 					else
 					{
-						echo "0";
-					}										
-				}
-				else
-					echo "Error en la consulta: " . $mysqli->error;
+						foreach(glob("../../uploads/covers/Cover-".GetStrWithRange($idusuario).".*") as $Img)
+						{
+							if($Img != $target_file)
+								unlink($Img);
+						}
+					}
+				}	
+                $mysqli->update("usuarios",
+						[
+                            "nombre" => $nombre,
+                            "apellido" => $apellido,
+                            "email"  => $email,
+                            "estado" => $estado,
+                            
+                          
+                        ],[
+							"AND" => 
+							[
+								"idusuario" => $idusuario
+								
+							]
+						]);				
+						
+						if( CheckDBError($mysqli) ) return false;
+				     echo "0";				
+				
 						
 				break;		
 		case 4: //Eliminar

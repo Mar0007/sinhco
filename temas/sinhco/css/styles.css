@@ -33,11 +33,17 @@
     .modal.custom-item{
         top:4px !important;
     }
+    .modal.new-user{
+        top:3% !important;
+    }
     
 }
 @media only screen and (max-width: 991px) {
     .modal.custom-item{
         top:4px !important;
+    }
+    .modal.new-user{
+        top:3% !important;
     }
 }
 
@@ -46,6 +52,10 @@
     .modal.custom-item{        
         width: 100% !important; 
         top: 4px !important;
+    }
+    .modal.new-user{        
+        width: 100% !important; 
+        top: 8px !important;
     }
     .modal.create-item{
         width: 100% !important;        
@@ -83,6 +93,9 @@
 
 @media only screen and (min-width: 1600px) {
     .modal.custom-item{
+        top:20% !important;
+    }
+    .modal.new-user{
         top:20% !important;
     }
 }
@@ -170,6 +183,13 @@ nav {
     max-height: 100%
 }
 
+/**edit item modal**/
+.modal.new-user{    
+    width: 628px;
+    height: 605px;
+    max-height: 100%
+}
+
 /**create item modal**/
 .modal.create-item{
     width: 480px;
@@ -185,6 +205,58 @@ nav {
 
 /************/
      
+.user-cover{
+    background-position: center;
+    background-size: cover;
+    object-fit: cover;
+    object-position: center;    
+    min-height: 75px;
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+    max-height: 145.6px;    
+    height: 140px;
+}
+
+.user-img{
+    background-color: #fff;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    height: 120px;
+    cursor: pointer;
+    margin-top: -62px;
+    width: 120px;    
+    position: relative;
+}
+.img-input-btn.user-img-input{
+    background: rgba(0,0,0,0.26);
+    cursor: pointer;
+    left: 50%;
+    margin: -24px;
+    position: absolute;
+}
+.user-img-input{    
+    transition: background .3s;
+    border: 0;    
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-block;
+    height: 48px;
+    outline: none;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    width: 48px;
+    z-index: 0;
+}
+
+#user-backimg:hover span{
+    visibility: visible !important;
+}
+#user-rndimg:hover span{
+    visibility: visible !important;
+}
+
 .center-wrapper{
     display: flex;
     align-items: center;

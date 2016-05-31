@@ -479,6 +479,15 @@
 		else
 			return GetURL("uploads/images/proyect-default.jpg");		
 	}
+    function GetCoverImagePath($idusuario, $bIsService = false)
+	{        
+        $Prefix = ($bIsService) ? "../../" : "";
+        $result = glob($Prefix . "uploads/covers/Cover-".$idusuario.".*");
+		if(count($result) > 0 )
+			return GetURL(ltrim($result[0],"/."));
+		else
+			return GetURL("uploads/covers/cover.jpg");		
+	}
     
     function GetProductImagePath($idproducto, $bIsService = false)
 	{        
