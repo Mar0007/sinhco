@@ -60,6 +60,12 @@
         display: inline-block;
     }
     
+    #ModulosDisponibles li, #ModulosAsignados li
+    {
+        margin-right: 5px;
+        margin-top: 3px;
+    }
+    
     #CoverThumbnails img 
     {
         width:32px;
@@ -102,7 +108,7 @@
                     <ul id="CoverThumbnails" style="padding-left:4%;list-style-type: none; margin: auto;">                    
                     <?php
                         foreach ($stmtImg as $key => $row)                         
-                            echo '<li id="CImg_'.$row["idimagen"].'" data-id="'.$row["idimagen"].'" style="opacity:0;"><img src="'.$row["ruta"].'" class="circle"></li>';    
+                            echo '<li id="CImg_'.$row["idimagen"].'" data-id="'.$row["idimagen"].'" style="opacity:0;"><img src="'.GetImageURL($row["ruta"],100,100).'" class="circle"></li>';    
                     ?>
                     </ul>
                 </div>
@@ -173,18 +179,28 @@
             <!-- /Tab 1 -->
             <!-- Tab 2 -->
             <div id="TabModulos">
-                <div class="row center">
-                    <div class="col s6 l6">	
+                <div class="row">
+                    <div class="col s12">	
+                        <h5> Modulos Disponibles </h5>
+                        <div class="divider"></div>
+                        <!--
                         <table id="ModulosDisponibles">
                             <thead><tr><th>Modulos Disponibles</th><tr></thead>
                             <tbody></tbody>
-                        </table>
+                        </table-->
+                        <ul id="ModulosDisponibles" style="display:inline-block">
+                        </ul>
                     </div>
-                    <div class="col s6 l6">
-                        <table id="ModulosAsignados">
+                    <br>
+                    <div class="col s12">
+                        <h5> Modulos Asignados </h5>
+                        <div class="divider"></div>                        
+                        <ul id="ModulosAsignados" style="display:inline-block">
+                        </ul>                        
+                        <!--table id="ModulosAsignados">
                             <thead><tr><th>Modulos Asignados</th><tr></thead>
                             <tbody></tbody>
-                        </table>
+                        </table-->
                     </div>
                 </div>				
             </div>				
@@ -259,11 +275,11 @@
         {
             if(data != "0")
             {
-                Materialize.toast('<i class="material-icons left">highlight_off</i>Error al guardar las posiciones.', 4000,"red");
+                Materialize.toast('<i class="material-icons toasticon">highlight_off</i>Error al guardar las posiciones.', 4000,"red");
                 console.error(data);
             }
             else
-                Materialize.toast('<i class="material-icons left">check_circle</i> Guardado', 1000,"green");
+                Materialize.toast('<i class="material-icons toasticon">check_circle</i> Guardado', 1000,"green");
         });			                  
     }
     
@@ -297,14 +313,14 @@
             {
                 $('ul.tabs').tabs('select_tab', 'TabImg');
                 $("#frmUpload").find(':submit').click();
-                Materialize.toast('<i class="material-icons left">error_outline</i>La imagen es requerida.', 3000,"red");
+                Materialize.toast('<i class="material-icons toasticon">error_outline</i>La imagen es requerida.', 3000,"red");
                 return;
             }			
                                     
-            if($('#ModulosAsignados tbody').html() == "")
+            if($('#ModulosAsignados').html() == "")
             {
                 $('ul.tabs').tabs('select_tab', 'TabModulos');
-                Materialize.toast('<i class="material-icons left">error_outline</i>Asigne al menos 1 modulo.', 3000,"red");
+                Materialize.toast('<i class="material-icons toasticon">error_outline</i>Asigne al menos 1 modulo.', 3000,"red");
                 return;
             }
             
@@ -372,7 +388,7 @@
             }        
             else
             {
-                Materialize.toast('<i class="material-icons left">highlight_off</i>Error, no se pudo agregar la imagen.', 3000,"red");
+                Materialize.toast('<i class="material-icons toasticon">highlight_off</i>Error, no se pudo agregar la imagen.', 3000,"red");
                 console.error("Error->Agregar(): "+data);
             }
             
@@ -428,7 +444,7 @@
             else
             {
                 //Handle error
-                Materialize.toast('<i class="material-icons left">highlight_off</i>Error, no se pudo editar la imagen.', 3000,"red");
+                Materialize.toast('<i class="material-icons toasticon">highlight_off</i>Error, no se pudo editar la imagen.', 3000,"red");
                 console.error("Error->Editar():"+data);
             }
             
@@ -468,11 +484,11 @@
                         $("#TotalImgs").text($("#CoverThumbnails li").length);	                    		  				                        
                     });
                                         
-                    Materialize.toast('<i class="material-icons left">check_circle</i>La imagen se borro exitosamente', 4000,"green");
+                    Materialize.toast('<i class="material-icons toasticon">check_circle</i>La imagen se borro exitosamente', 4000,"green");
                 }
                 else
                 {
-                    Materialize.toast('<i class="material-icons left">highlight_off</i>Error al tratar de borrar la imagen', 4000,"red");
+                    Materialize.toast('<i class="material-icons toasticon">highlight_off</i>Error al tratar de borrar la imagen', 4000,"red");
                     console.error("Error->DeleteImage():"+data);
                 }
             });            
@@ -485,8 +501,8 @@
     var Changes = [[],[]];	
 	function LoadModulos(id)
 	{
-		$('#ModulosDisponibles tbody').empty();
-		$('#ModulosAsignados tbody').empty();
+		$('#ModulosDisponibles').empty();
+		$('#ModulosAsignados').empty();
 		CleanChanges();
 		
 		if($("#TabModulos .TabLoader").length < 0);
@@ -514,13 +530,14 @@
 				$.each(data["Disponibles"],function( key, val)
 				{
 					//console.log("Val->" + val["idmodulo"]);
-					$("<tr>",
+					$("<li>",
 					{
 						"id":"mod_"+val["idmodulo"],
-						"class":"modaldata",
-						"style":"display:none",
-						html:"<td><a href=\"javascript:agregarmod('"+val["idmodulo"]+"')\">"+val["idmodulo"]+"</a></td>"
-					}).appendTo("#ModulosDisponibles tbody");
+						"class":"modaldata chip noselect",
+						"style":"display:none;cursor:pointer",
+                        "OnClick": "agregarmod('"+val["idmodulo"]+"')",                         
+                        text: val["idmodulo"]
+					}).appendTo("#ModulosDisponibles");
 				});
 			}
 			
@@ -532,13 +549,13 @@
 				$.each(data["Asignados"],function( key, val)
 				{
 					//console.log("Val->" + val["idmodulo"]);
-					$("<tr>",
+					$("<li>",
 					{
 						"id":"mod_"+val["idmodulo"],
-						"class":"modaldata",
+						"class":"modaldata chip noselect",
 						"style":"display:none",
-						html:"<td><a href=\"javascript:quitarmod('"+val["idmodulo"]+"')\">"+val["idmodulo"]+"</a></td>"
-					}).appendTo("#ModulosAsignados tbody");
+                        html: val["idmodulo"] + "<i onClick=\"quitarmod('"+val["idmodulo"]+"')\" class=\"material-icons\">close</i>"
+					}).appendTo("#ModulosAsignados");
 				});
 			}			
 									
@@ -549,14 +566,14 @@
 		
 		ajax_request.fail(function(AjaxObject)
 		{
-            Materialize.toast('<i class="material-icons left">error_outline</i>Error al obtener modulos del perfil.', 3000,"red");
+            Materialize.toast('<i class="material-icons toasticon">error_outline</i>Error al obtener modulos del perfil.', 3000,"red");
 			console.error("JSON-Error->LoadModulos(): "+AjaxObject.responseText);
 		});		
 	}
 		
     function agregarmod(idmodulo){
-        var tr=$("#mod_"+idmodulo),
-            tbody = $('#ModulosAsignados tbody');
+        var tr = $("#mod_"+idmodulo),
+            tbody = $('#ModulosAsignados');
         
 		//Checks if it's already marked for deletion
 		if(!CheckForChanges(idmodulo,1,true) && Changes[0].indexOf(idmodulo) == -1)
@@ -566,16 +583,18 @@
 		
         tr.fadeOut("fast",function(){
             $(this).remove();
-            tbody.append($(this));
-            $("a", this).attr("href","javascript:quitarmod('"+idmodulo+"')");
-            $(this).fadeIn("fast");            
+            tbody.append($(this));            
+            $(this).attr("OnClick","");
+            $(this).css("cursor","");
+            $(this).append("<i onClick=\"quitarmod('"+idmodulo+"')\" class=\"material-icons\">close</i>");
+            $(this).fadeIn("fast");
         });
         
     }
 	    
     function quitarmod(idmodulo){
         var tr=$("#mod_"+idmodulo),
-            tbody = $('#ModulosDisponibles tbody');
+            tbody = $('#ModulosDisponibles');
 			
 		if(!CheckForChanges(idmodulo,0,true) && Changes[1].indexOf(idmodulo) == -1)
 		{
@@ -585,7 +604,9 @@
         tr.fadeOut("fast",function(){
             $(this).remove();
             tbody.append($(this));
-            $("a", this).attr("href","javascript:agregarmod('"+idmodulo+"')");
+            $(this).attr("OnClick","agregarmod('"+idmodulo+"')");
+            $(this).css("cursor","pointer");
+            $("i", this).remove();
             $(this).fadeIn("fast");            
         });
         

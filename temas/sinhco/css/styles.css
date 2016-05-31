@@ -41,6 +41,16 @@
     }
 }
 
+@media only screen and (max-width: 600px) {
+    .toast {
+        display:block;
+    }
+    
+    #main {
+        top: 54px !important;
+    }
+}
+
 @media only screen and (max-width: 550px) {
     /**adjust all modals width in smaller screens**/
     .modal.custom-item{        
@@ -127,7 +137,7 @@ nav {
 
 #main {
     position: absolute; 
-    top: 56px;
+    top: 64px;
     bottom: 0px; 
     width: 100%; 
     overflow-y: auto; 
@@ -455,7 +465,7 @@ nav ul li a:hover, nav ul a.active{
     font-weight: 500;
 }
 nav ul li.active{
-    background-color: transparent;
+    /*background-color: transparent;*/
     color: #01579b;
 }
 .fix-icon{
@@ -666,4 +676,19 @@ textarea.materialize-textarea:focus.invalid + label:after {
 
 .input-field .prefix.active {
   color: #1e88e5;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+}
+
+.toasticon {
+    margin-right:5px;
+    vertical-align: bottom;
 }

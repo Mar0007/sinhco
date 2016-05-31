@@ -1,3 +1,8 @@
+<?php 
+  require_once('funciones.php');
+  header("HTTP/1.1 404 Not Found"); 
+?>
+
 <!DOCTYPE html>
 <html lang="es_HN">
 <head>
@@ -30,7 +35,7 @@
                   <span class="card-title">Lo sentimos. No pudimos encontrar la dirección.</span>                    
                 </div>
                 <div class="card-action">
-                  <a href="#">Volver a la página de inicio</a>                  
+                  <a href="javascript:GoBack()">Regresar</a>                  
                 </div>
               </div>
             </div>
@@ -38,3 +43,14 @@
     </div>
     </body>
 </html>
+
+<script>
+  function GoBack() {
+    fallbackUrl = '<?php echo GetURL('inicio')?>';
+    var prevPage = window.location.href;
+
+    window.history.go(-1);
+
+    setTimeout(function(){ if (window.location.href == prevPage) window.location.href = fallbackUrl; }, 500);
+}
+</script>

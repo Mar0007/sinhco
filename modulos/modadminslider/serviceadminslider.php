@@ -331,7 +331,7 @@
             <li id="IMG_'.$row["idimagen"].'" data-id="'.$row["idimagen"].'" class="dataproyectos col s12 m6 l8" style="opacity: 0">
                 <div class="card hoverable">
                     <div class="card-image waves-effect waves-block waves-light">
-                        <img class="responsive-img" src="'.$row["ruta"].'">      
+                        <img class="responsive-img" src="'.GetImageURL($row["ruta"],700,300).'">      
                         <span class="card-title">'.$row["img"].'</span>
                     </div>                                
                     <div class="card-content">

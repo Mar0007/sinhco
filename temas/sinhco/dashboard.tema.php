@@ -1,59 +1,65 @@
 <?php 
-        //$Experimental
-        $WebTitle .= " - Dashboard";
-        
-        
-        $idusuario = $_SESSION['idusuario'];
-        /*
-        $stmt = $mysqli->select("usuarios",["nombre"],["idusuario" => $idusuario]);
-        if(!$stmt)
-        {
-            if($mysqli->error()[2] != "")
-                echo "Error:".$mysqli->error()[2];
-                
-           return;
-        }        
-        $nombre = $stmt[0]["nombre"];
-        */
-        $nombre = $_SESSION['usuario'];
-        $MenuHTML = menu($mysqli, 2, 'side-nav fixed leftside-navigation' ,'slide-out',
-        '
-                <li class="user-details cyan darken-2">
-                <div class="row">
-                    <div class="col s4 m4 l4">
-                        <img src=' . GetUserImagePath($idusuario) . ' alt="" class="circle responsive-img valign profile-image" style="margin-top:15px">
-                    </div>
-                    <div class="col s8 m8 l8">
-                        <ul id="profile-dropdown" class="dropdown-content">
-                            <li><a href="'.GetURL("dashboard/usuarioperfil/".$idusuario).'"><i class="mdi-action-settings"></i> Config</a>
-                            </li>
-                            <li><a href="#"><i class="mdi-communication-live-help"></i> Ayuda</a>
-                            </li>
-                            <li class="divider"></li>
-                            </li>
-                            <li><a href="'.GetURL("logout.php").'"><i class="mdi-hardware-keyboard-tab"></i> Logout</a>
-                            </li>
-                        </ul>
-                        <a class="btn-flat dropdown-button waves-effect waves-light white-text profile-btn" href="#" data-activates="profile-dropdown">
-                            <div class="row">
-                                <div class="col s9">
-                                <span style="margin-left:-10px">'. $nombre .'</span>
-                                </div>
-                                <div class="col s2">
-                                    <i class="mdi-navigation-arrow-drop-down"></i>                                                        
-                                </div>
-                            </div>                            
-                        </a>
-                        <p class="user-roal">Admin</p>
-                    </div>
-                </div>
-                </li> 
-        '       
-        );
+    //$Experimental
+    $WebTitle .= " - Dashboard";
     
+    
+    $idusuario = $_SESSION['idusuario'];
+    /*
+    $stmt = $mysqli->select("usuarios",["nombre"],["idusuario" => $idusuario]);
+    if(!$stmt)
+    {
+        if($mysqli->error()[2] != "")
+            echo "Error:".$mysqli->error()[2];
+            
+        return;
+    }        
+    $nombre = $stmt[0]["nombre"];
+    */
+    $nombre = $_SESSION['usuario'];
     
     //<--- Get Module ---> 
-      $ModuloHTML = modulo($modulo ,$mysqli, "", "ModuleView",true);
+    $ModuloHTML = modulo($modulo ,$mysqli, "", "ModuleView",true);
+    if(!$ModuloHTML)
+    {
+        require_once($tema."404.tema.php");
+        return;
+    }    
+    
+    $MenuHTML = menu($mysqli, 2, 'side-nav fixed leftside-navigation' ,'slide-out',
+    '
+            <li class="user-details cyan darken-2">
+            <div class="row">
+                <div class="col s4 m4 l4">
+                    <img src=' . GetUserImagePath($idusuario) . ' alt="" class="circle responsive-img valign profile-image" style="margin-top:15px">
+                </div>
+                <div class="col s8 m8 l8">
+                    <ul id="profile-dropdown" class="dropdown-content">
+                        <li><a href="'.GetURL("dashboard/usuarioperfil/".$idusuario).'"><i class="mdi-action-settings"></i> Config</a>
+                        </li>
+                        <li><a href="#"><i class="mdi-communication-live-help"></i> Ayuda</a>
+                        </li>
+                        <li class="divider"></li>
+                        </li>
+                        <li><a href="'.GetURL("logout.php").'"><i class="mdi-hardware-keyboard-tab"></i> Logout</a>
+                        </li>
+                    </ul>
+                    <a class="btn-flat dropdown-button waves-effect waves-light white-text profile-btn" href="#" data-activates="profile-dropdown">
+                        <div class="row">
+                            <div class="col s9">
+                            <span style="margin-left:-10px">'. $nombre .'</span>
+                            </div>
+                            <div class="col s2">
+                                <i class="mdi-navigation-arrow-drop-down"></i>                                                        
+                            </div>
+                        </div>                            
+                    </a>
+                    <p class="user-roal">Admin</p>
+                </div>
+            </div>
+            </li> 
+    '       
+    );
+      
 ?>
 <!DOCTYPE html>
 <html>

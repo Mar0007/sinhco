@@ -1,0 +1,323 @@
+#DashboardInfo a {
+    color: #666
+}
+
+#DashboardInfo a:hover {
+    color: #000
+}
+
+#DashboardInfo table {
+    border-collapse: collapse;
+    width: 100%
+}
+
+#DashboardInfo table th {
+    font-weight: normal;
+    color: #444
+}
+
+#DashboardInfo table th,
+#DashboardInfo table td {
+    border-right: 1px solid #c3c3c3;
+    border-left: 1px solid #c3c3c3;
+    border-bottom: 1px solid #c3c3c3;
+    padding: 4px;
+    background-color: #eee
+}
+
+#DashboardInfo table tr th,
+#DashboardInfo table tr.alt td {
+    background-color: #ddd
+}
+
+#DashboardInfo .infoTable {
+    margin: 10px 5px 10px 5px;
+    clear: both;
+    box-shadow: none
+}
+
+#DashboardInfo .infoTable h2 {
+    margin: 0;
+    padding: 5px;
+    color: #fff;
+    text-shadow: #2665a7 1px 1px 1px;
+    border: 1px solid #4a8fd6;
+    background-color: #5c9ada
+}
+
+#DashboardInfo .infoTable,
+#DashboardInfo .infoTable h2 {
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    -moz-border-radius-topleft: 3px;
+    -moz-border-radius-topright: 3px
+}
+
+#DashboardInfo .infoTable.collapsed {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    -moz-border-radius-bottomleft: 4px;
+    -moz-border-radius-bottomright: 4px
+}
+
+#DashboardInfo .collapsed h2 {
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    -moz-border-radius-bottomleft: 3px;
+    -moz-border-radius-bottomright: 3px
+}
+
+#DashboardInfo .collapsed table {
+    display: none
+}
+
+#DashboardInfo #foot {
+    margin: 15px 0px 20px 15px;
+    color: #444;
+    float: left
+}
+
+#DashboardInfo #foot_time {
+    margin: 15px 15px 20px 0px;
+    color: #444;
+    float: right;
+    vertical-align: bottom
+}
+
+#DashboardInfo h1 {
+    font-size: 1.6em;
+    margin: 0;
+    padding: 0
+}
+
+#DashboardInfo h2 {
+    font-size: 1.2em;
+    margin: 0
+}
+
+#DashboardInfo .col2 {
+    overflow: hidden
+}
+
+#DashboardInfo .col2 .col {
+    float: left;
+    width: 50%
+}
+
+#DashboardInfo #info .center {
+    text-align: center
+}
+
+#DashboardInfo td.none {
+    text-align: center;
+    font-size: 12px;
+    padding: 10px;
+    color: #666
+}
+
+#DashboardInfo span.perc,
+#DashboardInfo span.faded {
+    color: #666
+}
+
+#DashboardInfo span.caption {
+    font-size: 90%
+}
+
+#DashboardInfo td ul {
+    margin: 0;
+    padding: 0
+}
+
+#DashboardInfo td ul li {
+    list-style-type: square;
+    padding: 0;
+    margin-left: 15px;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-right: 0
+}
+
+#DashboardInfo .raid_normal {
+    color: green
+}
+
+#DashboardInfo .raid_spare {
+    color: blue
+}
+
+#DashboardInfo .raid_failed {
+    color: red
+}
+
+#DashboardInfo .raid_unknown {
+    color: purple
+}
+
+#DashboardInfo .margin_auto {
+    margin: auto
+}
+
+#DashboardInfo table.mini {
+    padding: 0;
+    font-size: 90%;
+    border-collapse: collapse
+}
+
+#DashboardInfo table.mini th,
+#DashboardInfo table.mini td {
+    margin: 0;
+    padding: 0;
+    border: none
+}
+
+#DashboardInfo table.mini th {
+    background-color: inherit;
+    color: #444
+}
+
+#DashboardInfo .net_up {
+    color: green
+}
+
+#DashboardInfo .net_down {
+    color: red
+}
+
+#DashboardInfo .net_unknown {
+    color: purple
+}
+
+#DashboardInfo #errorList,
+#DashboardInfo #timerList {
+    font-size: 75%;
+    margin-top: 15px;
+    margin-bottom: 15px
+}
+
+#DashboardInfo .bar_chart {
+    position: relative;
+    margin: auto
+}
+
+#DashboardInfo .smaller_bar_chart {
+    padding-bottom: 2px
+}
+
+#DashboardInfo .smaller_bar_chart .bar_text {
+    text-align: left !important
+}
+
+#DashboardInfo .bar_inner {
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    min-height: 18px;
+    background-color: #b7cce2
+}
+
+#DashboardInfo .bar_text {
+    position: absolute;
+    line-height: 18px;
+    font-size: 12px;
+    text-indent: 2px;
+    text-align: center;
+    width: 100%
+}
+
+#DashboardInfo .new_bar_outer {
+    position: relative;
+    margin: auto;
+    background-color: inherit
+}
+
+#DashboardInfo .new_bar_text {
+    z-index: 2;
+    position: relative;
+    padding: 2px;
+    text-align: center;
+    color: #000
+}
+
+#DashboardInfo .new_bar_bg {
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    z-index: 1;
+    height: 100%;
+    position: absolute;
+    display: block;
+    background-color: #b7cce2
+}
+
+#DashboardInfo .new_bar_left .new_bar_text {
+    text-align: left
+}
+
+#DashboardInfo .alt .bar_inner,
+#DashboardInfo .alt .new_bar_bg {
+    background-color: #96b4d5
+}
+
+#DashboardInfo .service_up {
+    color: green
+}
+
+#DashboardInfo .service_down {
+    color: maroon
+}
+
+#DashboardInfo .service_zombie {
+    color: orange
+}
+
+#DashboardInfo span.toggler {
+    line-height: 24px;
+    color: #8abdf2;
+    float: right;
+    font-family: "Courier New";
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.4em;
+    padding-top: 0.2em;
+    padding-right: 0.4em
+}
+
+#DashboardInfo .infoTable span.toggler:hover {
+    color: #fff
+}
+
+#DashboardInfo #header {
+    padding: 5px 0px 5px 5px
+}
+
+#DashboardInfo #header:before {
+    float: left;
+    content: url("icons/logo.png");
+    display: inline-block;
+    margin-right: 10px
+}
+
+#DashboardInfo .subtitle {
+    color: #999;
+    font-size: 12px
+}
+
+#DashboardInfo .time {
+    padding: 5px 15px 0px 0px;
+    color: #999;
+    float: right;
+    text-align: right
+}
+
+#DashboardInfo .col2_side {
+    overflow: hidden
+}
+
+#DashboardInfo .col2_side_left {
+    float: left;
+    width: 80%
+}
+
+#DashboardInfo .col2_side_right {
+    float: left;
+    width: 20%
+}

@@ -47,9 +47,9 @@
 </IfModule>
 
 
-#Simulate ErrorDocument 404 ./404.php
+#Simulate ErrorDocument 404 ./index.php/404
 <IfModule mod_rewrite.c>    
     RewriteCond %{SCRIPT_FILENAME} !-d    
     RewriteCond %{SCRIPT_FILENAME} !-f
-    RewriteRule ^(.*)$ ./404.php [L]
+    RewriteRule ^(.*)$ ./index.php/404 [L]
 </IfModule>

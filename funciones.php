@@ -117,9 +117,11 @@
     
     function GetMenuitemHTML($row,$bisDP = false,$DPName = "")
     {        
+        $bActive = strpos($_SERVER['REQUEST_URI'], GetURL($row["vinculo"])) !== false;
+                
         return 
         '
-            <li>
+            <li'.(($bActive) ? ' class="active"' : '').'>
                 <a class="waves-effect waves-cyan'.((!$bisDP) ? '"' : ' dropdown-button" data-activates="'.$DPName.'"').' href="'.GetURL($row["vinculo"]).'">'.
                     (($row["icono"] && $row["icono"] != "") ? 
                     '<i class="material-icons left" style="line-height: inherit;">'.$row["icono"].'</i>' : "" ) 
@@ -259,6 +261,7 @@
             if( !CheckDBError($mysqli) )
             {
                 if($bGetHTML) ob_end_clean();
+                echo '<script>console.error("M404: Modulo no esta declarado")</script>';
                 return false;
                 //echo "<h3>Error, el modulo no esta declarado en la base de datos.</h3>";                
             }                
@@ -413,7 +416,7 @@
     
     function CurrentFolder()
     {
-        $Scripts = Array('index.php','login.php','logout.php');
+        $Scripts = Array('index.php','login.php','logout.php','getimage.php');
         if(!in_array(basename($_SERVER['SCRIPT_NAME']),$Scripts)) 
             return dirname($_SERVER['SCRIPT_NAME'])."/../../";            
         
@@ -428,6 +431,18 @@
             return $URL;
         
         return CurrentFolder().$URL;
+    }
+    
+    /* Types: exact, scale
+    */
+    function GetImageURL($URL,$Width,$Height,$type = 'scale')
+    {        
+        if($type == 'exact')
+        {
+            return GetURL('getimage.php?width='.$Width.'&height='.$Height.'&file='.$URL);
+        }
+        
+        return GetURL('getimage.php?maxw='.$Width.'&maxh='.$Height.'&file='.$URL);
     }
     
     
@@ -500,7 +515,11 @@
 			$result .= "[".$Upper[$i].$Lower[$i]."]";
 		
 		return $result;
-	}    
+	}
+    
+    function arraytolower(array $array, $round = 0){
+        return unserialize(strtolower(serialize($array)));
+    }         
     
 	function GetDropDownSettingsRow($id,$Items)
 	{

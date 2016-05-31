@@ -4,7 +4,7 @@
     
     if(!$Modulo)
     {
-        require("404.php");
+        require_once($tema."404.tema.php");
         return;
     }
 ?>

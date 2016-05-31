@@ -1,9 +1,16 @@
 <?php
 	global $mysqli;
 	global $SEGURIDAD;
+	global $OnDashboard;
 	
 	if($SEGURIDAD != 1)
 	{
+		if($OnDashboard)
+		{
+			require_once("modulos/dashboard.modulo.php");
+			return;
+		}
+		
 		echo "<h1>Acceso denegado</h1>";
 		return;
 	}		
