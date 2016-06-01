@@ -136,16 +136,13 @@
 
 <!-------------------------------------------- MODAL AGREGAR IMAGEN AL PROYECTO ------------------------------->
  <div id="modalFrmAdd" class="modal modal-fixed-footer custom-item" style="width:474px">
-        <div id="top-content" class="modal-content">
-            <h5 class="light">Agregar una imagen</h5>
-            
-            <div class="col s12">
+        <div id="top-content" class="modal-content no-padding">
+            <!--div class="col s12">
                 <ul class="tabs" style="overflow:hidden">
                     <li class="tab col s3"><a class="active" href="#TabImg">Img</a></li>
                     <li class="tab col s3"><a href="#TabModulos">Modulos</a></li>
                 </ul>
-            </div>             
-            <br>
+            </div-->             
             <!-- Tab 1 -->           
             <div id="TabImg">				
                 <form id="frmUpload" method="post" enctype="multipart/form-data" style="max-height:120px">
@@ -178,16 +175,11 @@
             </div>
             <!-- /Tab 1 -->
             <!-- Tab 2 -->
-            <div id="TabModulos">
+            <div id="">
                 <div class="row">
                     <div class="col s12">	
                         <h5> Modulos Disponibles </h5>
                         <div class="divider"></div>
-                        <!--
-                        <table id="ModulosDisponibles">
-                            <thead><tr><th>Modulos Disponibles</th><tr></thead>
-                            <tbody></tbody>
-                        </table-->
                         <ul id="ModulosDisponibles" style="display:inline-block">
                         </ul>
                     </div>
@@ -197,10 +189,6 @@
                         <div class="divider"></div>                        
                         <ul id="ModulosAsignados" style="display:inline-block">
                         </ul>                        
-                        <!--table id="ModulosAsignados">
-                            <thead><tr><th>Modulos Asignados</th><tr></thead>
-                            <tbody></tbody>
-                        </table-->
                     </div>
                 </div>				
             </div>				

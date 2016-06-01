@@ -260,8 +260,8 @@
 				$IDSlider = $_POST["IDSlider"];
 				$IDImagen  = $_POST["IDImage"];
 				
-				$strSQL = "SELECT idmodulo FROM modulos WHERE idmodulo 
-						   NOT IN ( SELECT idmodulo FROM slider_img_mod 
+				$strSQL = "SELECT idmodulo FROM modulos WHERE
+						   tipo < 1 and idmodulo NOT IN ( SELECT idmodulo FROM slider_img_mod 
 						   WHERE idslider = ".$mysqli->quote($IDSlider)."and idimagen = ".$mysqli->quote($IDImagen).")";
 
 				$stmt = $mysqli->query($strSQL);

@@ -155,7 +155,14 @@
                       </li>
                     </ul>
                     <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
-                    <div class="header-search-wrapper hide-on-med-and-down">
+                    <form class="right" style="width:25%">
+                        <div class="input-field">
+                            <input id="search" type="search" required>
+                            <label for="search"><i class="material-icons">search</i></label>
+                            <i class="material-icons">close</i>
+                        </div>         
+                    </form>           
+                    <!--div class="header-search-wrapper hide-on-med-and-down">
                         <i class="mdi-action-search"></i>
                         <input type="text" name="Search" class="header-search-input z-depth-2" placeholder="Buscar..."/>
                     </div>
@@ -167,7 +174,7 @@
                         </li>                        
                         <li><a href="#" data-activates="chat-out" class="waves-effect waves-block waves-light chat-collapse white-text"><i class="mdi-communication-chat"></i></a>
                         </li>
-                    </ul>
+                    </ul-->
                 </div>
             </nav>
         </div>

@@ -268,7 +268,7 @@
         }
         else
         {        
-            if( $stmt[0]["tipo"] == 1 )
+            if( $stmt[0]["tipo"] == 1  || $stmt[0]["tipo"] == -1)
             {
                 if( file_exists("modulos/".$idmodulo.".modulo.php") )
                     require_once("modulos/".$idmodulo.".modulo.php");

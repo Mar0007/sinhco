@@ -164,17 +164,22 @@ function handleFileSelect(evt)
     for (var i = 0, f; f = files[i]; i++) 
     {
     //console.log("FileSize->"+f.size);
-    if(f.size > max_size) 
-    { // Check if file size is larger than max_size
-        //Reset preview          
-        $(this).parents(".modal").find('img').attr('src',$("#InitImage").attr('src'));          
-        
-        //Clear input:file
-        $(this).val('');
-        //Notify          
-        alert("Error: La imagen sobrepasa el tamaño maximo.\nTamaño maximo: " + bytesToSize(max_size) + ".\nTamaño de su imagen: "+bytesToSize(f.size));          
-        return false;
-    }
+        if(f.size > max_size) 
+        { // Check if file size is larger than max_size
+            //Reset preview          
+            //$(this).parents(".modal").find('img').attr('src',$("#InitImage").attr('src'));
+            
+            if($(this).parent().find("img").length > 0)
+                $(this).parent().find("img").attr('src',$("#InitImage").attr('src'));
+            else
+                $(this).parents(".modal").find('img').attr('src',$("#InitImage").attr('src'));     
+            
+            //Clear input:file
+            $(this).val('');
+            //Notify          
+            alert("Error: La imagen sobrepasa el tamaño maximo.\nTamaño maximo: " + bytesToSize(max_size) + ".\nTamaño de su imagen: "+bytesToSize(f.size));          
+            return false;
+        }
     }
     
     //Set preview.
@@ -190,7 +195,10 @@ function readURL(input)
 
         reader.onload = function (e) 
         {
-            $(input).parents(".modal").find('img').attr('src',e.target.result);
+            if($(input).parent().find("img").length > 0)            
+                $(input).parent().find("img").attr('src',e.target.result);
+            else
+                $(input).parents(".modal").find('img').attr('src',e.target.result);
         }
                                 
         reader.readAsDataURL(input.files[0]);
