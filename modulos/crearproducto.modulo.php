@@ -33,7 +33,6 @@
                 [
                     "[><]categoria_producto"=>"idcategoria",
                     "[><]proveedores"=>"idproveedor"
-                    
                 ],
                 [
                     "productos.idproducto",
@@ -206,7 +205,7 @@
                         <input id="InitImage" type="hidden" value="">
                     <div id="ColImgs" class="collection" style="border-style: none;"></div>
                     <div class="input-field col s12">
-                        <input id="img-title" length="50" name="img-title" type="text" class="validate"> 
+                        <input id="img-title" length="50" maxlength="50" name="img-title" type="text" class="validate"> 
                         <label for="img-title">Título de la imagen</label>
                     </div>
                     <input type="submit" style="display:none">
@@ -242,11 +241,11 @@
                 <div class="row card-content">   
                         
                     <div class="input-field col s12">
-                        <input id="nombre-producto" length="50" name="nombre-producto" type="text" class="validate" required value="<?php echo $stmt[0]["nombre"] ?>"> 
+                        <input id="nombre-producto" length="50" name="nombre-producto" maxlength="50"  type="text" class="validate" required value="<?php echo $stmt[0]["nombre"] ?>"> 
                         <label for="nombre-producto">Producto</label>
                     </div>
                     <div class="input-field col s12">
-                        <textarea id="descripcion-producto" name="descripcion-producto" length="750" class="materialize-textarea"><?php echo $stmt[0]["descripcion"] ?></textarea>
+                        <textarea id="descripcion-producto" name="descripcion-producto" length="750" maxlength="750"class="materialize-textarea"><?php echo $stmt[0]["descripcion"] ?></textarea>
                         <label for="descripcion-producto">Descripcion</label>
                     </div> 
                     <div class="input-field col s12">
@@ -490,12 +489,12 @@
          
         $( "#update-no" ).click(function(){ 
             $("#custom-producto").closeModal();                                
-           // location.href= "crearproducto/"+idproducto; 						
+            						
         });
         
         $('#custom-producto').openModal({
             complete: function() { 
-                document.getElementById("custom-producto").reset();                                
+                                             
                 Materialize.updateTextFields();                      
             }
         })
@@ -519,7 +518,8 @@
             Materialize.toast('<i class="material-icons">highlight_off</i> Todos los campos son requeridos', 4000,"red");
             return;
         }
-        
+       
+      
         
         
         formData.append("idproducto",$("#idproducto").val());
@@ -535,20 +535,22 @@
         {            
             if(data == "0")
             {
+                var a = $("#FileInput2").val().substr($("#FileInput2").val().lastIndexOf('.')+1);
                 
                 $("#sidename").text($("#nombre-producto").val());
                 $("#sidecontent").text($("#descripcion-producto").val());
                 $("#sidecategoria").text($("#categorianombre-producto").val());
-                $("#sideproveedor").text($("#proveedor-producto").val());
-              document.getElementById("idproducto").setAttribute("src", "/sinhco/uploads/images/productos/Producto-61.jpg");
+                $("#sideproveedor").text($("#proveedor-producto :selected").text());
               
+                $("#profile-header .image-header").attr("src","/sinhco/uploads/images/productos/Producto-61."+a+"?"+(new Date()).getTime());
+                
                 
             
                 
                 
                 Materialize.toast('Guardando...', 3000);
                 $("#custom-producto").closeModal();
-                //location.href= "../crearproducto/"+$("#idproducto").val();                                                                    
+                                                                                   
             }
             else
             {
