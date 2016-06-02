@@ -27,6 +27,8 @@
 	}	
 		
 	//Get proyect info
+    
+    
 
     
      $stmt = $mysqli->select("productos",
@@ -542,7 +544,7 @@
                 $("#sidecategoria").text($("#categorianombre-producto").val());
                 $("#sideproveedor").text($("#proveedor-producto :selected").text());
               
-                $("#profile-header .image-header").attr("src","/sinhco/uploads/images/productos/Producto-61."+a+"?"+(new Date()).getTime());
+                $("#profile-header .image-header").attr("src","/sinhco/uploads/images/productos/Producto-"+$("#idproducto").val()+"."+a+"?"+(new Date()).getTime());
                 
                 
             
