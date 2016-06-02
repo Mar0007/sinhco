@@ -2,13 +2,19 @@
     $idusuario = $_SESSION['idusuario'];   
     $nombre = $_SESSION['usuario'];
     
+    
+    $TituloModulo = $mysqli->get("modulos","modulo",["idmodulo" => $modulo]);
+    if($TituloModulo) AddHistory($TituloModulo,"");
+    
     //<--- Get Module ---> 
     $ModuloHTML = modulo($modulo ,$mysqli, "", "ModuleView",true);
     if(!$ModuloHTML)
     {
         require_once($tema."404.tema.php");
         return;
-    }    
+    }
+    
+            
     
     $MenuHTML = menu($mysqli, 2, 'side-nav fixed leftside-navigation' ,'slide-out',
     '
@@ -154,6 +160,12 @@
                           </h1>
                       </li>
                     </ul>
+                    
+                    <div class="hide-on-med-and-down left" style="margin:auto auto 0 250px">
+                        <?php echo GetBreadcrumbs() ?>
+                    </div>
+                             
+                    
                     <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
                     <form class="right" style="width:25%">
                         <div class="input-field">

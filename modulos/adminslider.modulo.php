@@ -134,18 +134,11 @@
 </div>
 
 
-<!-------------------------------------------- MODAL AGREGAR IMAGEN AL PROYECTO ------------------------------->
+<!-------------------------------- MODAL AGREGAR IMAGEN ------------------------------->
  <div id="modalFrmAdd" class="modal modal-fixed-footer custom-item" style="width:474px">
         <div id="top-content" class="modal-content no-padding">
-            <!--div class="col s12">
-                <ul class="tabs" style="overflow:hidden">
-                    <li class="tab col s3"><a class="active" href="#TabImg">Img</a></li>
-                    <li class="tab col s3"><a href="#TabModulos">Modulos</a></li>
-                </ul>
-            </div-->             
-            <!-- Tab 1 -->           
             <div id="TabImg">				
-                <form id="frmUpload" method="post" enctype="multipart/form-data" style="max-height:120px">
+                <form id="frmUpload" class= method="post" enctype="multipart/form-data" style="max-height:120px">
                     <div style="position:relative">
                         <img id="proyect-img" src="<?php echo GetURL("uploads/covers/camerabg.png")?>" style="width:100%; object-fit:cover; height:220px;" class="responsive-img"></img>
                         <div class="CornerShadow">
@@ -155,44 +148,35 @@
                             </div>                        
                         </div>
                     </div>
-                    <span class="right grey-text">Tamaño maximo: <?php echo ini_get('upload_max_filesize') ?></span>
-                    <input id="InitImage" type="hidden" value="">
-                    <div class="input-field col s12">
-                        <input id="img-title" length="50" name="img-title" type="text" class="validate"> 
-                        <label for="img-title">Título de la imagen</label>
+                    <div class="description">
+                        <span class="right grey-text">Tamaño maximo: <?php echo ini_get('upload_max_filesize') ?></span>
+                        <input id="InitImage" type="hidden" value="">
+                        <div class="input-field col s12">
+                            <input id="img-title" length="50" name="img-title" type="text" class="validate"> 
+                            <label for="img-title">Título de la imagen</label>
+                        </div>
+                        
+                        <label>Alineacion del Texto</label><br>
+                        <input name="TextAlign" type="radio" checked id="RLeft" value="Left"/>
+                        <label for="RLeft">Izquierda</label>
+                        <input name="TextAlign" type="radio" id="RRight" value="Right"/>
+                        <label for="RRight">Derecha</label>
+                        <input name="TextAlign" type="radio" id="RCenter" value="Center"/>
+                        <label for="RCenter">Centro</label>                    
+                        
+                        <input type="submit" style="display:none">
+                        <div id="TabModulos" style="margin-top:15px">
+                            <span class="grey-text"> Modulos Disponibles </span>
+                            <div class="divider"></div>
+                            <ul id="ModulosDisponibles" style="display:inline-block"></ul>
+                            <p></p>
+                            <span class="grey-text"> Modulos Asignados </span>
+                            <div class="divider"></div>                        
+                            <ul id="ModulosAsignados" style="display:inline-block"></ul>                       	
+                        </div>
                     </div>
-                    
-                    <label>Alineacion del Texto</label><br>
-                    <input name="TextAlign" type="radio" checked id="RLeft" value="Left"/>
-                    <label for="RLeft">Izquierda</label>
-                    <input name="TextAlign" type="radio" id="RRight" value="Right"/>
-                    <label for="RRight">Derecha</label>
-                    <input name="TextAlign" type="radio" id="RCenter" value="Center"/>
-                    <label for="RCenter">Centro</label>                    
-                    
-                    <input type="submit" style="display:none">                    
                 </form>
             </div>
-            <!-- /Tab 1 -->
-            <!-- Tab 2 -->
-            <div id="">
-                <div class="row">
-                    <div class="col s12">	
-                        <h5> Modulos Disponibles </h5>
-                        <div class="divider"></div>
-                        <ul id="ModulosDisponibles" style="display:inline-block">
-                        </ul>
-                    </div>
-                    <br>
-                    <div class="col s12">
-                        <h5> Modulos Asignados </h5>
-                        <div class="divider"></div>                        
-                        <ul id="ModulosAsignados" style="display:inline-block">
-                        </ul>                        
-                    </div>
-                </div>				
-            </div>				
-            <!-- /Tab 2 -->    
         </div>
                 
         <div class="modal-footer">
@@ -200,7 +184,7 @@
             <a id="cancel" class="btn-flat modal-action modal-close waves-effect waves-light">Cancelar<i class="material-icons right"></i></a>           
         </div>        
 </div>
-<!-------------------------------------------- MODAL AGREGAR IMAGEN AL PROYECTO ------------------------------->
+<!-------------------------------- /MODAL AGREGAR IMAGEN ------------------------------->
 
 
 <script>
@@ -245,10 +229,7 @@
                 else
                     $('#'+other+ ' li:eq(' +pre+ ')').insertBefore('#'+other+ ' li:eq(' +post+ ')');
             },                          		
-            update: function(event, ui) 
-            {
-                UpdateOrder();
-            }        
+            update: UpdateOrder
         });	        
     });
     
@@ -299,7 +280,6 @@
         {
             if (!$("#frmUpload")[0].checkValidity() && !id)
             {
-                $('ul.tabs').tabs('select_tab', 'TabImg');
                 $("#frmUpload").find(':submit').click();
                 Materialize.toast('<i class="material-icons toasticon">error_outline</i>La imagen es requerida.', 3000,"red");
                 return;
@@ -307,7 +287,6 @@
                                     
             if($('#ModulosAsignados').html() == "")
             {
-                $('ul.tabs').tabs('select_tab', 'TabModulos');
                 Materialize.toast('<i class="material-icons toasticon">error_outline</i>Asigne al menos 1 modulo.', 3000,"red");
                 return;
             }
@@ -323,8 +302,7 @@
         
         LoadModulos(id);
         Materialize.updateTextFields();
-        $("#modalFrmAdd").openModal();
-        $('ul.tabs').tabs('select_tab', 'TabImg');                
+        $("#modalFrmAdd").openModal();         
     }
     
     function Agregar()

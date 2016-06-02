@@ -1,6 +1,7 @@
 <?php
 	global $mysqli;
 	global $OnDashboard;
+	global $Navigation;
 	
 	if($OnDashboard != 1 || !login_check($mysqli))
 	{
@@ -39,17 +40,12 @@
 			return;			
 		}
 	}
+	
+	AddHistory("Modulos",GetURL("dashboard/modulos"),true);
+	AddHistory(($editID != "") ? $row["idmodulo"] : "Nuevo Modulo","");
 ?>
 
 <?php require_once("recursos/froalaeditor/editor.php"); ?>
-<nav>
-	<div class="nav-wrapper">
-		<div class="col s12">
-		<a href="<?php echo GetURL("dashboard/modulos")?>" class="breadcrumb">Modulos</a>
-		<a class="breadcrumb"><?php echo ($editID != "") ? $row["idmodulo"] : "Nuevo Modulo"?></a>
-		</div>
-	</div>
-</nav>
 <div class="container" style="width:85%">
 <div class="card-content">
 	<h3><?php echo ($editID != "") ? "Editar":"Crear"?> modulo estatico</h3>

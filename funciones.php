@@ -559,6 +559,30 @@
 		
 		return $HTMLResult;
 	}
+    
+    function GetBreadcrumbs()
+    {
+        global $Navigation;
+        $Result = "";        
+        
+        foreach ($Navigation as $key => $val) 
+           $Result .= '<a href="'.$val.'" class="breadcrumb">'.$key.'</a>';
+           
+        return $Result;
+    }
+    
+    function AddHistory($Title,$Ref,$DeletePrevious = false)
+    {
+        global $Navigation;        
+        
+        if(isset($Navigation) && array_key_exists($Title,$Navigation)) 
+            return false;
+            
+        if($DeletePrevious) array_pop($Navigation);
+            
+        $Navigation[$Title] = $Ref;        
+        return true;        
+    }
 	
 	function limit_text($text, $limit) 
 	{

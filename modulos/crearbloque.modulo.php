@@ -39,17 +39,13 @@
 			return;			
 		}
 	}
+	
+	AddHistory("Bloques",GetURL("dashboard/bloques"),true);
+	AddHistory(($editID != "") ? $row["idbloque"] : "Nuevo Bloque","");	
 ?>
 
 <script src="<?php echo GetURL("recursos/tinymce/tinymce.min.js") ?>"></script>
-<nav>
-	<div class="nav-wrapper">
-		<div class="col s12">
-		<a href="<?php echo GetURL("dashboard/bloques")?>" class="breadcrumb">Bloques</a>
-		<a class="breadcrumb"><?php echo ($editID != "") ? $row["idbloque"] : "Nuevo Bloque"?></a>
-		</div>
-	</div>
-</nav>
+
 <div class="card-content">
 	<h3><?php echo ($editID != "") ? "Editar":"Crear"?> bloque estatico</h3>
 	<div title="Crear bloque estatico">

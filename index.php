@@ -30,8 +30,10 @@
                 die();
             }                        
             $OnDashboard = 1;
-            if(URLParam(1)) $modulo = URLParam(1);
-            require_once($tema."dashboard.tema.php");              
+            if(URLParam(1)) $modulo = URLParam(1);            
+            
+            AddHistory("Dashboard",GetURL("dashboard/inicio"));            
+            require_once($tema."dashboard.tema.php");            
             break;
         }
         case "404":
