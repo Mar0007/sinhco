@@ -131,9 +131,7 @@
 								
 		case 4: //Eliminar	
             $IDproducto = $_POST["idproducto"];
-			$mysqli->action(function($mysqli){
-				
-				
+	
 					//Busca todas las imagenes de ese producto
 					
 					$a = $mysqli->select("productos_img",
@@ -143,13 +141,15 @@
 					[
 						"idproducto"=>$IDproducto
 					]);
-					if( CheckDBError($mysqli) ) return false;
+					
+					//if( CheckDBError($mysqli) ) return false;
 
 					//Borra dentro de la base imagenes y la carpeta, cada imagen que encontro 
 					foreach ($a as $key) {
 						$idimagen2 = $key;
 						$OldFilename = basename($mysqli->get("imagenes","ruta",["idimagen" => $idimagen2]));	
 						@unlink('../../uploads/images/productos/'.$OldFilename);
+						@unlink('../../uploads/images/productos/Producto-'.$IDproducto.'.jpg');
 						
 
 						$mysqli->delete("imagenes",
@@ -171,7 +171,7 @@
 						"idproducto" => $IDproducto					
 					]
 					]);	
-					if( CheckDBError($mysqli) ) return false;		
+					//if( CheckDBError($mysqli) ) return false;		
 					
 					//Borra el producto con el mismo idproducto
 					$mysqli->delete("productos",
@@ -180,15 +180,14 @@
 					[
 						"idproducto" => $IDproducto					
 					]
-					]);			
+					]);		
 						
-				if( CheckDBError($mysqli) ) return false;
+					@unlink('../../uploads/images/productos/Producto-'.$IDproducto.'.jpg');
+				//if( CheckDBError($mysqli) ) return false;
 				echo "0" ;
-								
-			});
-			
-												
+							
 				break;
+				
         case 11: //Eliminar Imagen
 		
 				$mysqli->action(function($mysqli)

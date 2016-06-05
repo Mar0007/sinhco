@@ -520,10 +520,7 @@
             Materialize.toast('<i class="material-icons">highlight_off</i> Todos los campos son requeridos', 4000,"red");
             return;
         }
-       
-      
-        
-        
+
         formData.append("idproducto",$("#idproducto").val());
                
         $.ajax({
@@ -658,7 +655,9 @@
         });		      
     }
     
-    function eliminar(idproducto){        
+    function eliminar(idproducto){    
+       //S var a =  $("#"+$("#idproducto").val()).attr('src');
+            
         ConfirmDelete("Borrar Producto","Esta seguro que quiere eliminar este producto","Seguro?",
         function(){
             $.ajax({
