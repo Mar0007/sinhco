@@ -60,8 +60,10 @@
                                     <li id="'.$row["idproyecto"].'" class="dataproyectos col s12 m6 ">
                                         <div class="card medium hoverable">
                                             <div class="card-image waves-effect waves-block waves-light">
-                                                <img class="responsive-img" src="'.GetProyectImagePath($row["idproyecto"], false).'">      
-                                                <span class="card-title">'.$row["nombre"].'</span>
+                                                <a href="proyectview/'.$row["idproyecto"].'">
+                                                    <img class="responsive-img" src="'.GetProyectImagePath($row["idproyecto"], false).'">      
+                                                    <span class="card-title">'.$row["nombre"].'</span>
+                                                </a>
                                             </div>
                                             <div class="card-content">
                                                 <p class="grey-text ">'.$row["lugar"].'</p>

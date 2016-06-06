@@ -40,6 +40,9 @@
 		
 		return;
 	}	
+
+    AddHistory("Proyectos",GetURL("dashboard/adminproyectos"),true);
+	AddHistory(($idproyecto != "") ? $stmt[0]["nombre"] : "Nuevo Proyecto","");
 ?>	
 
     <input type="hidden" id="maxsize" value="<?php echo parse_size(ini_get('upload_max_filesize')) ?>">
@@ -60,7 +63,7 @@
                                 ),
                                 array
                                 (
-                                    "href" 		=> "javascript:eliminar('%id')",
+                                    "href" 		=> "javascript:EliminarProyecto('%id')",
                                     "icon" 		=> "",
                                     "contenido" => "Eliminar proyecto"
                                 )
@@ -155,7 +158,8 @@
 <!-------------------------------------------- MODAL EDITAR INFO PROYECTO ------------------------------------->
 <div    id="custom-proyecto" class="modal modal-fixed-footer custom-item">
     <div class="modal-content no-padding">
-        <form id="frmcustomproyect" autocomplete="off" method="POST" enctype="multipart/form-data" action="javascript:editar()">
+        <form id="frmcustomproyect" autocomplete="off" method="POST" enctype="multipart/form-data" action="javascript:
+                                                                                                        Proyecto()">
             <a class="" action="">
             <div id="proyectimg" class="card-image">
                 <?php               
@@ -190,7 +194,7 @@
         </form>       
     </div>
     <div class="modal-footer">
-           <a id="update-yes" onclick="$('#frmcustomproyect').find(':submit').click();" class="btn-flat blue-text text-darken-1 waves-effect ">Guardar<i class="material-icons right"></i></a>
+           <a id="update-yes" class="btn-flat blue-text text-darken-1 waves-effect ">Guardar<i class="material-icons right"></i></a>
            <a id="update-no"  class="btn-flat modal-action modal-close  waves-effect waves-light">Cancelar<i class="material-icons right"></i></a>           
         </div>        
 </div>
@@ -200,24 +204,19 @@
 
 
 <script>
-
-    $('input:checkbox').change(function(){
-        if($(this).is(":checked")) {
-            $('#delete-yes').removeClass("disabled");        
-        } else {
-            $('#delete-yes').addClass("disabled");        
-        }
-    });
    
     $(document).ready(function(){
         //INITIALIZE DATEPICKER
         $('.datepicker').pickadate({
             selectMonths: true, // Creates a dropdown to control month
-            selectYears: 15, // Creates a dropdown of 15 years to control year
-            format: 'yyyy-mm-dd'    
+            selectYears: 8, // Creates a dropdown of 15 years to control year
+            format: 'yyyy-mm-dd' ,
+            max:true
         });
         
+        //IMAGE PREVIEW
         $(":file").change(handleFileSelect);
+        
         //UPDATE INPUTS
         Materialize.updateTextFields();        
         
@@ -226,16 +225,16 @@
         $("#img-loader").append(HTMLLoader);
 
         ajax_request = $.ajax({
-		url:"<?php echo GetURL("modulos/modcrearproyecto/servicecrearproyecto.php?accion=1") ?>",
-		method: "POST",
-		data: {IDProyecto:IDProyecto}		
-        }).done(
-            function(data){
-                $("#project-list").append(data);	
-                $("#img-loader").hide();
-                Materialize.showStaggeredList("#project-list");
-            }
-        );
+            url:"<?php echo GetURL("modulos/modcrearproyecto/servicecrearproyecto.php?accion=1") ?>",
+            method: "POST",
+            data: {IDProyecto:IDProyecto}		
+            }).done(
+                function(data){
+                    $("#project-list").append(data);	
+                    $("#img-loader").hide();
+                    Materialize.showStaggeredList("#project-list");
+                }
+            );
     });
 
     
@@ -266,17 +265,17 @@
             if (!$("#frmUpload")[0].checkValidity() && !id)
             {
                 $("#frmUpload").find(':submit').click();
-                Materialize.toast('La imagen es requerida.', 3000,"red");
+                Materialize.toast('La imagen es requerida', 4000);
                 return;
             }			         
             
             if(!id)
             {
-                Agregar2();
+                InsertImage();
                 return;
             }
             
-            Editar2(id);                        
+            EditImage(id);                        
         });
         
        
@@ -289,7 +288,7 @@
     
 
     
-    function Agregar2()
+    function InsertImage()
     {
         var formData = new FormData($('#frmUpload')[0]);
         
@@ -318,24 +317,15 @@
                 $("#IMG_" + IncomingID ).css({
                     "display": "none",
                     "opacity": "1"
-                });                
-                
-                //Add to Thumbnails
-                $("#CoverThumbnails").prepend(
-                    '<li id="CImg_'+IncomingID+'" style="display: none;"><img src="'+$(data).find('img').attr('src')+'" class="circle"></li>'
-                );
-                
-                //Renumber imgs
-                $("#TotalImgs").text($("#CoverThumbnails li").length);
-                
-                //Show them.
-                $("#CImg_" + IncomingID).fadeIn();
-                $("#IMG_"  + IncomingID).fadeIn();                                                            
+                }); 
+               
+                $("#IMG_"  + IncomingID).fadeIn();
+                Materialize.toast('Imagen agregada', 3000);
             }        
             else
             {
-                Materialize.toast('Error, no se pudo agregar la imagen.', 3000,"red");
-                console.error("Error en Agregar()->"+data);
+                Materialize.toast('No se pudo agregar la imagen', 4000);
+                console.error("Error en InsertImage()->"+data);
             }
             
             //Close loading swal.
@@ -351,18 +341,26 @@
           }
           else{
               $( "#update-yes" ).unbind('click').click(function() {
-                    editar(idproyecto);							
+                  if (!$("#frmcustomproyect")[0].checkValidity())
+                    {
+                        $("#frmcustomproyect").find(':submit').click();
+                        Materialize.toast('Todos los campos son requeridos', 4000);
+                        return;
+                    }
+                    EditarProyecto(idproyecto);							
                });
               }
               
-        $( "#update-no" ).click(function(){ 
+        /*$( "#update-no" ).click(function(){ 
             $("#custom-proyecto").closeModal();                                
            // location.href= "crearproducto/"+idproducto; 						
-        });
+        });*/
         
         $('#custom-proyecto').openModal({
+            dismissible: false,
             complete: function() { 
-                //document.getElementById("custom-proyecto").reset();                                
+                //document.getElementById("custom-proyecto").reset();   
+                $("#custom-proyecto").find("form").trigger("reset");
                 Materialize.updateTextFields();                      
             }
         })
@@ -377,7 +375,7 @@
     
    
 
-    function editar(idproyecto){        
+    function EditarProyecto(idproyecto){        
         
                  
         var formData = new FormData($('#frmcustomproyect')[0]);
@@ -392,6 +390,7 @@
         }).done(function(data){
             if(data == "0")
             {
+                
                 $("#sidename").text($("#nombre-proyecto").val());
                 $("#sidecontent").text($("#contenido-proyecto").val());
                 
@@ -401,29 +400,31 @@
                 $("#sideplace").text(Lugar + " - " + Fecha);
                 
                 $("#sidecontent").text($("#contenido-proyecto").val());
-                $("#IMG_"+idproyecto).fadeOut(function(){                    
-                    $(this).find('img').attr('src',$(data).find('img').attr('src'));
-                    $(this).fadeIn();  
-                });
+                
+                if ($("#FileInput2").val() != ""){
+                    var extention = $("#FileInput2").val().substr($("#FileInput2").val().lastIndexOf('.')+1);
+                $("#profile-header .image-header").attr("src","/sinhco/uploads/images/Proyecto-"+$("#id-proyecto").val()+"."+extention+"?"+(new Date()).getTime());    
+                }
+                
                                 
-                Materialize.toast('Guardado', 3000,"green");
+                Materialize.toast('Proyecto actualizado', 3000);
                 $("#custom-proyecto").closeModal();                                                                    
             }
             else
             {
-                Materialize.toast('<i class="material-icons">highlight_off</i> Error al guardar', 4000,"red");
-                console.error("Error->Editar():"+data);
+                Materialize.toast('No se pudo actualizar el proyecto', 4000);
+                console.error("Error->EditarProyecto():"+data);
             }                        
         });
     }
     
     
 	
-	function DeleteImage2(id)
+	function DeleteImage(id)
     {
         var idproyecto = $("#idproyecto").val();
                
-        ConfirmDelete("Borrar imagen","¿Está seguro de borrar la imagen?","",
+        ConfirmDelete("Borrar imagen","¿Está seguro de que quieres borrar la imagen?","",
         function()
         {
             //Show loading animation
@@ -440,25 +441,20 @@
                         $(this).remove();
                     });
                     
-                    $("#CImg_"+id).fadeOut(function(){
-                        $(this).remove();
-                        //Renumber imgs
-                        $("#TotalImgs").text($("#CoverThumbnails li").length);	                    		  				                        
-                    });
-                                        
-                   // swal("Borrado", "Se borro exitosamente.", "success");
+                    Materialize.toast('Imagen eliminada', 3000);
                 }
                 else
                 {
-                    swal("Error", data, "error");
-                    console.error("Error->"+data);
+                    Materialize.toast('No se pudo eliminar la imagen', 4000);
+                    console.error("Error en DeleteImage()->"+data);
                 }
-            });            
+            });
+            swal.close();
         });
     }	
     
     
-     function Editar2(id)
+     function EditImage(id)
     {
         var formData = new FormData($('#frmUpload')[0]);
         
@@ -481,12 +477,6 @@
                 //Close modal
                 $("#modalFrmAdd").closeModal();
                 
-                //Update cover Thumbnails
-                $("#CImg_"+id).fadeOut(function(){                                        
-                    $(this).find('img').attr('src',$(data).find('img').attr('src'));
-                    $(this).fadeIn();
-                });
-                
                 //Add data                
                 $("#IMG_"+id).fadeOut(function(){
                     //Insert before the faded row.
@@ -498,13 +488,14 @@
                         "opacity": "1"
                     });
                     
-                    $("#IMG_"+id).fadeIn();                    
+                    $("#IMG_"+id).fadeIn(); 
+                    Materialize.toast('Imagen actualizada', 3000);
                 });			                            
             }        
             else
             {
-                Materialize.toast('Error, no se pudo editar la imagen.', 3000,"red");
-                console.error("Error en Editar()->"+data);
+                Materialize.toast('No se pudo editar la imagen', 4000);
+                console.error("Error en EditImage()->"+data);
             }
             
             //Close loading swal.
@@ -512,8 +503,8 @@
         });		      
     }
     
-    function eliminar(idproyecto){        
-        ConfirmDelete("Borrar proyecto","¿Está seguro que quiere eliminar este proyecto?","",
+    function EliminarProyecto(idproyecto){        
+        ConfirmDelete("Borrar proyecto","Si borras un proyecto, esta acción no se puede deshacer.","Si borras un proyecto, también se borran todas sus imágenes.",
         function(){
             $.ajax({
 				    url:"<?php echo GetURL("modulos/modcrearproyecto/servicecrearproyecto.php?accion=4") ?>",
@@ -521,19 +512,17 @@
 				    data: {idproyecto:idproyecto}
 			    }).done(function(data){
                             if(data=="0"){
+                                Materialize.toast('Proyecto eliminado', 3000);
                                 location.href="../adminproyectos"
                             }
                             else{
-                                //alert(data);
+                                Materialize.toast('No se pudo eliminar el proyecto', 4000);
+                                console.error("Error en EliminarProyecto()->"+data);
                             }
                         }
                     );
         }
         );   
     } 	
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	
     
-     
-	
 </script>

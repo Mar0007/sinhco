@@ -49,7 +49,9 @@
                 }
 				break;
 		case 3: //Actualizar 
-            $mysqli->action(function($mysqli)
+            $bSuccess = false;
+            
+            $mysqli->action(function($mysqli) use ($bSuccess)
 				{				
 					                    
                     $idproyecto = $_POST['idproyecto'];				
@@ -59,9 +61,9 @@
                     $newfecha = $_POST['fecha-proyecto'];
                     $imagen		= $_FILES['imagen-proyecto']['tmp_name'];
 								
-				if($imagen != "")
+				if($_FILES['imagen-proyecto']['error'] == UPLOAD_ERR_OK)
 				{
-					$target_dir = "../../uploads/images/Proyecto-";
+					$target_dir = "../../uploads/images/";
 					$imageFileType = pathinfo($_FILES['imagen-proyecto']['name'],PATHINFO_EXTENSION);  										
 					$target_file = $target_dir."Proyecto-".$idproyecto.".".$imageFileType;
 					//echo "Imagen->".$target_file."<br>";
@@ -77,7 +79,20 @@
 								unlink($Img);
 						}
 					}
-				}	
+                    $mysqli->update("proyectos",
+						[
+                            "nombre" => $newnombre,
+                            "lugar"  => $newlugar,
+                            "fecha" => $newfecha,
+                            "contenido" => $newcontenido
+                        ],[
+							"AND" => 
+							[
+								"idproyecto" => $idproyecto
+								
+							]
+						]);
+				}	else
 				
 					$mysqli->update("proyectos",
 						[
@@ -100,17 +115,61 @@
 								
 		case 4: //Eliminar	
             $IDProyecto = $_POST["idproyecto"];
+            
+            //Busca todas las imagenes de ese proyecto
+					
+					$a = $mysqli->select("proyectos_img",
+					[
+						"idimagen"
+					], 
+					[
+						"idproyecto"=>$IDProyecto
+					]);
+					
+					
+
+					//Borra dentro de la base imagenes y la carpeta, cada imagen que encontro 
+					foreach ($a as $key) {
+						$Targetimage = $key;
+						$OldFilename = basename($mysqli->get("imagenes","ruta",["idimagen" => $Targetimage]));	
+						@unlink('../../uploads/images/'.$OldFilename);
+						@unlink('../../uploads/images/Proyecto-'.$IDProyecto.'.jpg');
+						
+
+						$mysqli->delete("imagenes",
+						[
+							"AND" =>
+						[
+							"idimagen" => $Targetimage					
+						]
+						]);
+						if( CheckDBError($mysqli) ) return false;	
+					}
+					
+					
+					//Borra todas las imagenes que tengan el mismo idproyecto
+					$mysqli->delete("proyectos_img",
+					[
+						"AND" =>
+					[
+						"idproyecto" => $IDProyecto					
+					]
+					]);	
+					
+					
+					//Borra el producto con el mismo idproyecto
+					$mysqli->delete("proyectos",
+					[
+						"AND" =>
+					[
+						"idproyecto" => $IDProyecto					
+					]
+					]);		
+						
+					@unlink('../../uploads/images/Proyecto-'.$IDProyecto.'.jpg');
+				
+				echo "0" ;
 			
-            $mysqli->delete("proyectos",
-            [
-				"AND" =>
-            [
-				"idproyecto" => $IDProyecto					
-			]
-			]);			
-                
-           if( CheckDBError($mysqli) ) return false;
-           echo "0" ;
 												
 				break;
         case 10: //Insertar Imagen
@@ -169,24 +228,21 @@
             
             
 		case 11: //Eliminar Imagen
-				$IDImagen = $_POST["IDImagen"];
-				$Ruta = $mysqli->get("imagenes","ruta",["idimagen" => $IDImagen]);
-				
-				if(CheckDBError($mysqli)) return;
-								
-				$mysqli->delete("imagenes",
-					[
-						"AND" => 
-						[
-							"idimagen" => $IDImagen
-							
-						]	
-					]
-					);			
-				
-				//array_map('unlink', glob("some/dir/*.txt"));
-				@unlink($Ruta);								
-				echo "0";
+			$mysqli->action(function($mysqli)
+				{
+					//$IDProyecto = $_POST["idproyecto"];
+					$IDImagen = $_POST["IDImagen"];	
+						
+					$OldFilename = basename($mysqli->get("imagenes","ruta",["idimagen" => $IDImagen]));					
+					if(CheckDBError($mysqli)) return false;
+														
+					$mysqli->delete("imagenes",["idimagen" => $IDImagen]);								
+					
+					@unlink('../../uploads/images/'.$OldFilename);								
+					
+					echo "0";					
+				});	
+            
 				break;
 		case 12: //Actualizar Imagen
 				$bSuccess = false;
@@ -314,7 +370,7 @@ function ProyectCard($mysqli, $IDProyecto, $IDImagen = null)
                                 </div>
                                 <div class=\"card-action\">
                                 <a style=\"cursor:pointer;\" onclick=\"ItemModal(".$row["idimagen"].")\">Editar</a>
-                                  <a style=\"cursor:pointer;\" onclick=\"DeleteImage2(".$row["idimagen"].")\">eliminar</a>
+                                  <a style=\"cursor:pointer;\" onclick=\"DeleteImage(".$row["idimagen"].")\">eliminar</a>
                                 </div>
                             </div>           
 						</li>

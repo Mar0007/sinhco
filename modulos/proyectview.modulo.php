@@ -58,7 +58,7 @@
         <div class="section indigo-bg"><!-- FOR CONTAINER end -->
             <div class="row container"> <!-- SECTION TITLE -->
                 <h2 class="light center blue-grey-text text-darken-3">Breve reseña</h2>
-                <p class="flow-text grey-text center"><?php echo date("j F Y", $date) ?></p>
+                <p class="flow-text grey-text center"><?php echo date("F j, Y", $date) ?></p>
                 <p class="center flow-text"><?php echo $stmt[0]["contenido"] ?></p>
             </div>
             
@@ -81,7 +81,7 @@
             </div>
             
             <div class="section center-align">
-            <a href="/sinhco/proyectos" class="btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect  waves-circle">
+            <a href="../proyectos" class="btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect  waves-circle">
                 <span><i class="material-icons">arrow_back</i></span>
             </a>
         </div>

@@ -56,7 +56,7 @@
     
         <!--Module Action Button-->
         <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-            <a id="crearProyecto" onclick="mostrarfrmagregar()" data-target="frmagregar" class="btn-floating btn-large blue-grey darken-2 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Nuevo proyecto">
+            <a id="crearProyecto" onclick="OpenNewModal()" data-target="frmagregar" class="btn-floating btn-large blue-grey darken-2 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Nuevo proyecto">
                 <i class="large material-icons">add</i>
             </a>               
         </div>
@@ -72,11 +72,11 @@
         <form id="frmnewproyect" autocomplete="off">
             <div class="row card-content">               
                 <div class="input-field col s12">
-                    <input id="nombre" name="nombre" type="text" class="validate" length ="50" maxlength="50">
+                    <input id="nombre" name="nombre" type="text" class="validate" required length ="50" maxlength="50">
                     <label for="nombre">Nombre</label>
                 </div>
                 <div class="input-field col s12">
-                    <input id="lugar" name="lugar" type="text" class="validate" length="25" maxlength="25">
+                    <input id="lugar" name="lugar" type="text" class="validate" required length="25" maxlength="25">
                     <label for="lugar">Lugar</label>
                 </div>               
                <!-- <input  id="sendForm" type="submit" style="visibility:hidden" disabled="disabled">-->
@@ -86,7 +86,7 @@
     </div>
     
     <div class="modal-footer">
-        <a id="guardar" onclick="javascript:OpenModal()"  class="disabled modal-action  btn-flat  waves-effect waves-light">Crear</a>
+        <a id="guardar" onclick="javascript:OpenEditModal()"  class="disabled modal-action  btn-flat  waves-effect waves-light">Crear</a>
         
         <a id="cancel" class="btn-flat modal-action modal-close waves-effect waves-light">Cancelar<i class="material-icons right"></i></a>           
     </div>        
@@ -132,7 +132,7 @@
     </div>
     <div class="modal-footer">
            <a id="update-yes" onclick="$('#frmcustomproyect').find(':submit').click();" class="btn-flat blue-text text-darken-1 waves-effect ">Salvar<i class="material-icons right"></i></a>
-           <a id="update-no"  class="btn-flat modal-action modal-close  waves-effect waves-light">Cancelar<i class="material-icons right"></i></a>           
+           <a id="update-no"  class="btn-flat modal-action modal-close waves-effect waves-light">Cancelar<i class="material-icons right"></i></a>           
         </div>        
 </div>
 <!-------------------------------------------- MODAL EDITAR INFO PROYECTO ------------------------------------->
@@ -147,31 +147,15 @@
         
         $('.datepicker').pickadate({
             selectMonths: true, // Creates a dropdown to control month
-            selectYears: 15, // Creates a dropdown of 15 years to control year
-            format: 'yyyy-mm-dd'    
+            selectYears: 8, // Creates a dropdown of 15 years to control year
+            format: 'yyyy-mm-dd' ,
+            max: true //Limits date to current date
         });
         
         //end datepicker
         
-      
-
-        //FOR IMAGE PREVIEW
-        function readURL(input) 
-        {
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    $('#Proyect-Image').attr('src', e.target.result);
-
-                }
-
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-        $("#FileInput").change(function(){
-              readURL(this);
-        });
+        //IMAGE PREVIEW
+        $(":file").change(handleFileSelect);
                 
         //toggle submit button in modal
          $('#nombre').keyup(function() {
@@ -187,17 +171,15 @@
                 $('#guardar').addClass("disabled");
                 $('#guardar').removeClass("modal-close");
                 $('#guardar').removeClass("blue-text");
-               // $('#sendForm').attr('disabled', 'disabled');
+               
             } else {
                 $('#guardar').removeClass("disabled");
                 $('#guardar').addClass("modal-close");
                 $('#guardar').addClass("blue-text");
-               // $('#sendForm').attr('disabled', false);
             }
         });
         
-        //end toggle        
-       
+        //end toggle
         
         //get data
         $.ajax({
@@ -209,15 +191,12 @@
 				//Materialize.showStaggeredList("#proyectostb");
 			}
 		);
-        
-        //end get data       
-  
-        
+        //end get data
     }); //end document ready
     
     
     //Opening new Proyect modal
-    function mostrarfrmagregar (){
+    function OpenNewModal (){
         document.getElementById("frmnewproyect").reset();                
         Materialize.updateTextFields(); 
         $('#guardar').addClass("disabled");
@@ -239,29 +218,26 @@
     
     
     //Open edit modal
-    function OpenModal()
+    function OpenEditModal()
     { 	
-        $("#nuevo-proyecto").closeModal(); 
-       
-        $( "#update-no" ).click(function(){ 
-            $("#custom-proyecto").closeModal();                                
-           // location.href= "crearproyecto/"+idproyecto; 						
-        });
-        
-        $('#custom-proyecto').openModal({
-            dismissible: false,
-            ready: function() {
-                $("#nombre-proyecto").val($("#nombre").val());
-                $("#lugar-proyecto").val($("#lugar").val());
-
-                Materialize.updateTextFields();
-            },
-            complete: function() { 
-                document.getElementById("custom-proyecto").reset(); 
-                document.getElementById("frmnewproyect").reset();                
-                Materialize.updateTextFields();                      
+        if(($("#nombre").val() && $("#lugar").val()) == "")
+            {
+                Materialize.toast('Todos los campos son requeridos.', 3000);
             }
-        });
+        else{
+            $("#nuevo-proyecto").closeModal();     
+            
+            //Reset modal and get values from previous
+            $("#custom-proyecto").find("form").trigger("reset");
+            $("#nombre-proyecto").val($("#nombre").val());
+            $("#lugar-proyecto").val($("#lugar").val());            
+            Materialize.updateTextFields();
+            
+            //Open modal and prevent closing by clicking outside 
+            $('#custom-proyecto').openModal({
+                dismissible: false,
+            });
+        }
     }
     
     
@@ -276,16 +252,11 @@
 			contentType: false,
 			processData: false           
         }).done(function(last_id){
-            Materialize.toast('Guardando...', 3000);
+            Materialize.toast('Creando...', 3000);
             $("#custom-proyecto").closeModal();
             if(last_id != "0"){                
                 location.href= "crearproyecto/"+last_id;                
             }
-			
-        });
-                 
+        });      
     }
-    
-    
-    
 </script>
