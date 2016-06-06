@@ -42,19 +42,22 @@
 			echo "Error:".$mysqli->error()[2];
 		
 		return;
-	}	
+	}
+    
+    AddHistory("Usuarios",GetURL("dashboard/usuarios"),true);
+	AddHistory(($idusuario != "") ? $stmt[0]["nombre"] : "Nuevo usuario","");
 ?>				
-
+<input type="hidden" id="maxsize" value="<?php echo parse_size(ini_get('upload_max_filesize')) ?>">
 <div class="container">
 	<div class="row">
         <div class="card s12 m6">
             <div id="user-coverimg" class="" style="background-image:url()">
                 <img  class="user-cover" style="max-height: 245.6px;
-height: 240px;" src="<?php echo GetCoverImagePath($idusuario)?>">
+height: 240px; cursor:auto" src="<?php echo GetCoverImagePath($idusuario)?>">
             </div>
             
             <div id="user-displayimg" class="center">
-                <img  id="" class="user-img" src="<?php echo GetUserImagePath($idusuario)?>">                 
+                <img  id="" class="user-img" style="cursor:auto" src="<?php echo GetUserImagePath($idusuario)?>">                 
             </div>
             
             <div class="card-content center">
@@ -149,7 +152,11 @@ height: 240px;" src="<?php echo GetCoverImagePath($idusuario)?>">
         <h5>Cambiar contraseña</h5>
         
         <form id="frmchangepass" autocomplete="off">
-            <div class="row card-content">               
+            <div class="row card-content">    
+                <div class="input-field col s12 m6 l6" style="display:none">			
+                        <input id="idusuario" name="idusuario"  type="text" class="validate" length="20" maxlength="20" required value="<?php echo $idusuario ?>" >
+                        <label for="idusuario">Usuario</label>
+                    </div>
                 <div class="input-field col s12">
                     <input id="newpass" name="newpass" type="password" class="validate"  maxlength="50">
                     <label for="newpass">Contraseña</label>
@@ -159,7 +166,8 @@ height: 240px;" src="<?php echo GetCoverImagePath($idusuario)?>">
                     <label for="confirmpass">Confirmar contraseña</label>
                 </div>               
                <!-- <input  id="sendForm" type="submit" style="visibility:hidden" disabled="disabled">-->
-            </div>           
+            </div> 
+            
         </form>       
         
     </div>
@@ -183,7 +191,8 @@ height: 240px;" src="<?php echo GetCoverImagePath($idusuario)?>">
 		$('.datepicker').pickadate({
 			selectMonths: true, // Creates a dropdown to control month
 			selectYears: 15, // Creates a dropdown of 15 years to control year
-			format: 'yyyy-mm-dd'
+			format: 'yyyy-mm-dd',
+            max: true,
 		});		        
 	});	
 	
@@ -193,7 +202,14 @@ height: 240px;" src="<?php echo GetCoverImagePath($idusuario)?>">
 		frm.trigger('reset');
 							
 		//At last open it.
-		$('#modalFrmAdd').openModal();
+		$('#modalFrmAdd').openModal({
+            dismissible: false,
+            complete: function() { 
+                //document.getElementById("custom-proyecto").reset();   
+                $("#modalFrmAdd").find("form").trigger("reset");
+                Materialize.updateTextFields();
+            }
+            });
         Materialize.updateTextFields();		
 	}
     function OpenChangePass()
@@ -211,7 +227,29 @@ height: 240px;" src="<?php echo GetCoverImagePath($idusuario)?>">
         if($("#newpass").val() != $("#confirmpass").val())
 			return swal("Error","Contraseñas no concuerdan",'error');
 						
+		else{
+            //ShowLoadingSwal();
+		var formData = new FormData($('#frmchangepass')[0]);
 		
+		$.ajax(
+			{
+			url:"<?php echo GetURL("modulos/modusuarioperfil/serviceusuarioperfil.php?accion=5") ?>",
+			method: "POST",
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false
+		}).done(function(data){
+			if(data == "0")
+			{
+				                                
+                Materialize.toast('Contraseña actualizada', 3000);
+                $("#modalFrmAdd").closeModal();
+			}				
+			else
+				swal("Error", data, "error");
+		});	
+        }
     }
 	//Functions		
 	function Editar()
@@ -237,8 +275,21 @@ height: 240px;" src="<?php echo GetCoverImagePath($idusuario)?>">
                 $("#user-name").text(nombre + " " + apellido);                                
                 $("#user-email").text($("#usuario-email").val());
                 
+                //UPDATE User cover
+                if ($("#FileInput2").val() != ""){
+                    var extention = $("#FileInput2").val().substr($("#FileInput2").val().lastIndexOf('.')+1);
+                $("#user-coverimg .user-cover").attr("src","/sinhco/uploads/covers/Cover-"+$("#idusuario").val()+"."+extention+"?"+(new Date()).getTime());
+                
+                }
                                 
-                Materialize.toast('Usuario actualizado.', 3000);
+                //UPDATE User image
+                if ($("#FileInputRndImg").val() != ""){
+                    var extention = $("#FileInputRndImg").val().substr($("#FileInputRndImg").val().lastIndexOf('.')+1);
+                $("#user-displayimg .user-img").attr("src","/sinhco/uploads/avatars/"+$("#idusuario").val()+"."+extention+"?"+(new Date()).getTime());
+                $(".profile-image").attr("src","/sinhco/uploads/avatars/"+$("#idusuario").val()+"."+extention+"?"+(new Date()).getTime());
+                }
+                                
+                Materialize.toast('Usuario actualizado', 3000);
                 $("#modalFrmAdd").closeModal();
 			}				
 			else

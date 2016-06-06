@@ -13,7 +13,7 @@
 		echo "<h1>No tiene permisos para ver este modulo.</h1>";
 		return;
 	}
-			
+
 ?>
 
 <div class="row">
@@ -42,41 +42,41 @@
 
 <div id="modalFrmAdd" class="modal new-user modal-fixed-footer">
 	<div class="modal-content no-padding">
-		
+		<form id="frmagregar" autocomplete="off" method="POST" enctype="multipart/form-data" action="javascript:Agregar()">
         <div id="user-backimg" class="" style="background-image:url()">
             <img  class="user-cover" style="" src="<?php echo GetCoverImagePath(0)?>">
-            <input style="display:none" type="file" name="user-cover-img" id="FileInput2" accept=".png,.jpg"/>
+            <input style="display:none" type="file" name="users-cover-img" id="FileInput2" accept=".png,.jpg"/>
             <span style="visibility:hidden"><a id="" onclick="$('#user-backimg').find('#FileInput2').click();" class="waves-effect waves-circle input-secondary-menu white-text"><i class="material-icons" style="padding:4px">camera_alt</i></a></span>
     </div>
         <div id="user-rndimg" class="center">
             <img  id="" class="user-img" src="<?php echo GetUserImagePath(0)?>"> 
-            <input style="display:none" type="file" name="user-cover-img" id="FileInputRndImg" accept=".png,.jpg"/>
+            <input style="display:none" type="file" name="users-img" id="FileInputRndImg" accept=".png,.jpg"/>
             <span style="visibility:hidden"><a id="" onclick="$('#user-rndimg').find('#FileInputRndImg').click();" class="waves-effect waves-circle user-img-input img-input-btn  white-text"><i class="material-icons" style="padding:11px">camera_alt</i></a></span>
-        </div>        
-		<form id="frmagregar" class="description" autocomplete="off" action="javascript:Agregar()">
-			<div class="row">                	
+        </div>        		
+			<div class="description">
+                <div class="row">                	
                 <div class="input-field col s12 m6 l6">			
-                    <input id="nombre" type="text" class="validate" required>
+                    <input id="nombre" name="nombre" type="text" class="validate" required>
                     <label for="nombre">Nombre</label>
                 </div>
                 <div class="input-field col s12 m6 l6">			
-                    <input id="apellido" type="text" class="validate" >
+                    <input id="apellido" name="apellido" type="text" class="validate" >
                     <label for="apellido">Apellido</label>
                 </div>
             </div>
 			<div class="row">
                 <div class="input-field col s12 m6 l6">			
-                    <input id="email" type="email" class="validate" required>
+                    <input id="email" name="email" type="email" class="validate" required>
                     <label for="email">Email</label>
                 </div>
                 <div class="input-field col s12 m6 l6">			
-                    <input id="idusuario" type="text" class="validate" maxlength="20" required>
+                    <input id="idusuario" name="idusuario" type="text" class="validate" maxlength="20" required>
                     <label for="idusuario">Usuario</label>
                 </div>
             </div>
             <div class="row">
                 <div class="input-field col s12">
-                    <select id="ckactivo">
+                    <select id="ckactivo" name="estado">
                       <option value="1">Activo</option>
                       <option value="0">Inactivo</option>                      
                     </select>
@@ -85,7 +85,7 @@
             </div>
             <div class="row">                
                 <div class="input-field col s12 m6 l6">			
-                    <input id="txtpassword" type="password" class="validate" required>
+                    <input id="txtpassword" name="password" type="password" class="validate" required>
                     <label for="txtpassword">Contraseña</label>
                 </div>		
                 <div class="input-field col s12 m6 l6">			
@@ -93,13 +93,14 @@
                     <label for="confirmpassword">Confirmar Contraseña</label>
                 </div>			
             </div>
-			<input type="submit" value="Guardar" style="display:none">  						
+			<input type="submit" value="Guardar" style="display:none">
+            </div>
 		</form>
 	</div>
      <div class="modal-footer">
             <a id="btnSaveDialogUsr" class="btn blue darken-1 waves-effect " onclick="$('#modalFrmAdd').find('form').find(':submit').click()">Crear<i class="material-icons right"></i></a>
             <a id="btnCancelDialogUsr" class="btn-flat modal-action modal-close waves-effect waves-light">Cancelar<i class="material-icons right"></i></a>           
-    </div> 
+    </div>     
 </div>
 
 <!-- Import SHA512 functions -->
@@ -110,6 +111,7 @@
 	//Main
 	$(document).ready(function(){	
         $("#FileInput2").change(handleFileSelect);
+        $("#FileInputRndImg").change(handleFileSelect);
 		//Get data
 		$.ajax({
 			url:"<?php echo GetURL("modulos/modusuarios/serviceusuarios.php?accion=1") ?>"
@@ -130,27 +132,24 @@
 			return;
 		}				
 		
-		var idusuario 	= $("#idusuario").val();
-		var nombre 		= $("#nombre").val();
-        var apellido	= $("#apellido").val();
-		var email 		= $("#email").val();
-		var estado 		= $("#ckactivo").val();
-		var password 	= hex_sha512($("#txtpassword").val());										
-		
+		var formData = new FormData($('#frmagregar')[0]);	
+        formData.set("password", hex_sha512(formData.get("password")));		
 		ShowLoadingSwal();
 																			
 		$.ajax(
 			{
 			url:"<?php echo GetURL("modulos/modusuarios/serviceusuarios.php?accion=2")?>",
 			method: "POST",
-			data: {idusuario:idusuario,nombre:nombre,apellido:apellido,email:email,estado:estado,password:password}
+			data: formData,
+			cache: false,
+			contentType: false,
+			processData: false
 		}).done(function(data){
 			$("#modalFrmAdd").closeModal();
-			if(data.indexOf("<tr") > -1)
+			if(data.indexOf("<li") > -1)
 			{
 				swal.close();			
-				$("#datacontainer").append(data);
-				InitDropdown();
+				$("#datacontainer").append(data);				
 				$("#"+idusuario).fadeIn();
 			}
 			else
@@ -160,8 +159,8 @@
 
 	function Eliminar(idusuario)
 	{
-                
-        ConfirmDelete("Eliminar usuario","¿Está seguro que quiere eliminar este usuario?","",
+                        
+        ConfirmDelete("Eliminar usuario","¿Estás seguro de que quieres eliminar este usuario?","",
         function(){
              
             $.ajax({
@@ -169,17 +168,18 @@
 				    method: "POST",
 				    data: {idusuario:idusuario}
 			    }).done(function(data){
-                            if(data=="0"){
-                                $("#"+idusuario).fadeOut(function(){
+                        if(data=="0"){
+                            $("#"+idusuario).fadeOut(function(){
                                 $(this).remove();
-                                    });
-                                Materialize.toast('Usuario eliminado', 3000);
-                            }
-                            else{
-                                alert(data);
-                            }
+                            });
+                            Materialize.toast('Usuario eliminado', 3000);
                         }
-                    );
+                        else{
+                            Materialize.toast('No se pudo eliminar el usuario', 4000);
+                            console.error("Error en Eliminar()->"+data);
+                        }
+                    }
+                );
         }
         );
             
@@ -187,12 +187,15 @@
 	
 	function OpenModal()
 	{
-		var frm = $('#modalFrmAdd').find('form');
-		frm.trigger('reset');
-							
-		//At last open it.
-		$('#modalFrmAdd').openModal();
-		$('#idperfil').focus();	  
+        //Reset modal and get values from previous
+        $("#modalFrmAdd").find("form").trigger("reset");
+
+        Materialize.updateTextFields();
+
+        //Open modal and prevent closing by clicking outside 
+        $('#modalFrmAdd').openModal({
+            dismissible: false,
+        });
 	}			
 
 </script>

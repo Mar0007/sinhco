@@ -51,8 +51,52 @@
 					"#fecha_registro" => "NOW()" 
 				];				
 				$Data["password"] = hash('sha512',$Data["password"] . $Data["llave"]);															
+                $imagen_usr		= $_FILES['users-img']['tmp_name'];
+                $imagen_cover_usr		= $_FILES['users-cover-img']['tmp_name'];
+            
+				
+				//echo "Imagen->".$imagen."<br>";
+				
+				if($imagen_usr != "")
+				{
+					$target_dir = "../../uploads/avatars/";
+					$imageFileType = pathinfo($_FILES['users-img']['name'],PATHINFO_EXTENSION);  										
+					$target_file = $target_dir.$Data["idusuario"].".".$imageFileType;
+					//echo "Imagen->".$target_file."<br>";
+					if(!move_uploaded_file($imagen_usr,$target_file))
+					{
+						echo "<h5> Imagen no fue actualizada </h5>";
+					}
+					else
+					{
+						foreach(glob("../../uploads/avatars/".GetStrWithRange($Data["idusuario"]).".*") as $Img)
+						{
+							if($Img != $target_file)
+								unlink($Img);
+						}
+					}
+				}		
+                if($imagen_cover_usr != "")
+				{
+					$target_dir = "../../uploads/covers/";
+					$imageFileType = pathinfo($_FILES['users-cover-img']['name'],PATHINFO_EXTENSION);  										
+					$target_file = $target_dir."Cover-".$Data["idusuario"].".".$imageFileType;
+					//echo "Imagen->".$target_file."<br>";
+					if(!move_uploaded_file($imagen_cover_usr,$target_file))
+					{
+						echo "<h5> Imagen no fue actualizada </h5>";
+					}
+					else
+					{
+						foreach(glob("../../uploads/covers/Cover-".GetStrWithRange($Data["idusuario"]).".*") as $Img)
+						{
+							if($Img != $target_file)
+								unlink($Img);
+						}
+					}
+				}	
 				$mysqli->insert("usuarios",$Data);
-				if( CheckDBError($mysqli) ) return;								
+				if( CheckDBError($mysqli) ) return false;								
 				
 				GetRowHTML($Data);
 				                    				
