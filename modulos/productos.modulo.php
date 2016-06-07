@@ -28,16 +28,16 @@
        <div class="container">
            <div id="categories" class=" section">
                <div style="height:30px"></div>
-            <div class="col s12">
-                <div class="row"> <!-- SECTION TITLE -->
-                    <h2 class="light center blue-grey-text text-darken-2">Rotoplas</h2>                
-                </div>
+                <div class="col s12">
+                    <div class="row"> 
+                        <h2 class="light center blue-grey-text text-darken-2">Rotoplas</h2>                
+                    </div>
                 
                 <ul class="tabs">
-                    <li class="tab col s3"><a class="active" href="#test1">Almacenamiento</a></li>
-                    <li class="tab col s3"><a href="#test2">Conducción</a></li>
-                    <li class="tab col s3"><a href="#test3">Filtro  y Purificación</a></li>
-                    <li class="tab col s3"><a href="#test4">Mantenimiento</a></li>
+                    <li onclick="llenar(1)" class="tab col s3"><a class="active" href="#test1">Almacenamiento</a></li>
+                    <li onclick="llenar(2)" class="tab col s3"><a href="#test2">Quimicos</a></li>
+                    <li onclick="llenar(3)" class="tab col s3"><a href="#test3">Biodigestores</a></li>
+                    <li onclick="llenar(4)" class="tab col s3"><a href="#test4">Fosas Septicas</a></li>
                 </ul> 
                               
             </div>
@@ -45,74 +45,42 @@
        </div>
     </div>
         <div class="">
-                    <div id="test1" class="col s12">
-                       <div class="row"> 
-                           <div class="container">
-                        <ul id="">
-                        <?php
-                            $stmt = $mysqli->select("productos",
-                            [
-                                "productos.idproducto",                    
-                                "productos.nombre",
-                                "productos.descripcion",
-                                "productos.idcategoria",
-                                "productos.idproveedor"
-                            ],[
-                                "ORDER" => "productos.idproducto DESC",
-                                "LIMIT"=> 4
-                            ]);
-                            
-                            if(!$stmt)
-                            {
-                                if($mysqli->error()[2] != "")
-                                    echo "Error:".$mysqli->error()[2];
-
-                                return;
-                            }
-
-                            foreach($stmt as $row){
-                                $content=substr(strip_tags($row["descripcion"]), 0, 150) . "...";
-                                echo 
-                                '
-                                    <li id="'.$row["idproducto"].'" class="dataproductos col s12 m6 l6">
-                                        <div class="card medium z-depth-1 ">
-                                            <div class="card-image waves-effect waves-block waves-light" style="object-fit:cover">
-                                                <img class="responsive-img"  src="'.GetProductImagePath($row["idproducto"], false).'">      
-                                                
-                                            </div>
-                                            <div class="card-content">
-                                                
-                                                <span class="card-title activator">'.$row["nombre"].'<i class="material-icons right">more_vert</i></span>
-                                            </div>
-                                            <div class="card-reveal">
-                                                <span class="card-title">'.$row["nombre"].'<i class="material-icons right">close</i></span>                            
-                                                <p class="flow-text">'.$content.'</p>
-                                                 <div class="card-action">
-                                              <a href="proyectview/'.$row["idproducto"].'">VER producto</a>
-                                            </div>
-                                            </div>
-                                           
-                                        </div>           
-                                    </li>
-                                ';
-                            }
-                        ?>
-                        
-                        
-                    </ul>
+            <div id="test1" class="col s12" >
+                <div class="row"> 
+                    <div class="container">
+                        <ul id="1" >
+                        </ul>
                     </div>
-                   </div> 
+                </div> 
+            </div>
+            <div id="test2" class="col s12" >
+                <div class="row"> 
+                    <div class="container">
+                        <ul id="2"> 
+                        </ul>
                     </div>
-                    <div id="test2" class="col s12">
-                    
                 </div>
-                    <div id="test3" class="col s12">
-                   
+                
+            </div>
+            <div id="test3" class="col s12">
+                
+                <div class="row"> 
+                    <div class="container">
+                        <ul id="3">   
+                        </ul>
+                    </div>
                 </div>
-                    <div id="test4" class="col s12">
-                    
-                </div>
-         </div>
+            </div>
+            
+            <div id="test4" class="col s12">
+                    <div class="row"> 
+                    <div class="container">
+                        <ul id="4">  
+                        </ul>
+                    </div>
+                </div> 
+            </div>
+        </div>
         
     </main>
     
@@ -121,37 +89,51 @@
     
 </body> 
     <script>
+       
+        
         $(function() {  
-      $('.smoothScroll').click(function() {
-        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
-          var target = $(this.hash);
-          target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-          if (target.length) {
-            $('html,body').animate({
-              scrollTop: target.offset().top
-            }, 800); 
-            return false;
-          }
-        }
-      });
+//            $(".tabs").tabs("select_tab","test1");
+            $(".tab").first().trigger("click");
+                $('.smoothScroll').click(function() {
+                    if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+                    var target = $(this.hash);
+                    target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                    if (target.length) {
+                        $('html,body').animate({
+                        scrollTop: target.offset().top
+                        }, 800); 
+                        return false;
+                    }
+                    }
+                });
     });
     
-    function loadmore()
-    {
-      var val = document.getElementById("result_no").value;
-      $.ajax({
-      type: 'post',
-      url: "<?php echo GetURL("modulos/modproyectos/serviceproyectos.php") ?>",
-      data: {
-        getresult:val
-      },
-      success: function (response) {
-        var content = document.getElementById("project-list");
-        content.innerHTML = content.innerHTML+response;         
-        // We increase the value by 2 because we limit the results by 2
-        document.getElementById("result_no").value = Number(val)+6;
-      }
-      });
+   
+    
+    function llenar(a){
+        var Categoria;
+        var Proveedor;
+        var cells = $("#categories").children();
+        Proveedor = cells[1].children[0].children[0].innerHTML ;
+        var cells2 = $(".tabs").children();
+        Categoria= cells2[a-1].children[0].innerHTML;
+
+          $.ajax({
+                url:"<?php echo GetURL("modulos/modproductos/serviceproductos.php?accion=1") ?>",
+                method: 'POST',
+                data:{Proveedor:Proveedor,Categoria:Categoria}
+              }).done(function(data){
+                   
+                   $("#"+a).fadeOut(function(){
+					
+					    $(this).empty();
+				        $("#"+a).prepend(data);	
+						$(this).fadeIn();		
+														
+				});	                
+                
+                                      
+              });
     }
      
     </script>

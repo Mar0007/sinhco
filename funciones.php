@@ -180,7 +180,55 @@
         
         return $Result;        
     }
-
+    
+    function ShowproductSlider($mysqli, $idproducto, $clasecss = "", $idcss = "")
+    {
+        if($idcss != "") $idcss = " id=\"$idcss\"";        
+        $Result = "";        
+        
+        $stmt = $mysqli->select("productos_img",
+        [
+            "[><]imagenes" => "idimagen"
+        ],
+        [
+            "imagenes.img","imagenes.ruta", "imagenes.descripcion"
+        ],
+        [
+            "AND" =>
+            [
+                "productos_img.idproducto" => $idproducto
+                
+            ]
+        ]);
+        
+       if(!$stmt)
+        {
+			if($mysqli->error()[2] != "")
+                echo "Error on -> ShowSlider():". $mysqli->error()[2];
+                
+			return "";            
+        }                
+        
+        foreach ($stmt as $row)
+        {
+            $Result .= 
+            "<li>
+                <img src=\"". $row['ruta'] ."\">
+                <div class=\"caption right-align\">
+                    <p class=\"flow-text\">".$row['descripcion']."</p>
+                </div>
+             </li>";
+        }
+        
+        $Result = '<div'.$idcss.' class="slider '. $clasecss .'">
+                      <ul class="slides">'.
+                        $Result.
+                     '</ul>
+                   </div>';
+        
+        return $Result;     
+    }
+    
     function ShowProyectSlider($mysqli, $idproyecto, $clasecss = "", $idcss = "")
     {
         if($idcss != "") $idcss = " id=\"$idcss\"";        

@@ -218,6 +218,12 @@
 function CrearProducto (){
         var formData = new FormData($('#frmcustomproducto')[0]);
         
+        if(!formData.has('categoria-producto') || !formData.has('proveedores-producto'))
+        {
+            Materialize.toast('<i class="material-icons">highlight_off</i> Todos los campos son requeridos', 4000,"red");
+            return;
+        }
+        
              $.ajax({
                 url:"<?php echo GetURL("modulos/modadminproductos/serviceadminproductos.php?accion=2") ?>",
                 method: 'POST',
