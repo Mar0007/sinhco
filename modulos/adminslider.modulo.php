@@ -157,11 +157,11 @@
                         </div>
                         
                         <label>Alineacion del Texto</label><br>
-                        <input name="TextAlign" type="radio" checked id="RLeft" value="Left"/>
+                        <input name="TextAlign" type="radio" checked id="RLeft" value="left"/>
                         <label for="RLeft">Izquierda</label>
-                        <input name="TextAlign" type="radio" id="RRight" value="Right"/>
+                        <input name="TextAlign" type="radio" id="RRight" value="right"/>
                         <label for="RRight">Derecha</label>
-                        <input name="TextAlign" type="radio" id="RCenter" value="Center"/>
+                        <input name="TextAlign" type="radio" id="RCenter" value="center"/>
                         <label for="RCenter">Centro</label>                    
                         
                         <input type="submit" style="display:none">
@@ -244,11 +244,11 @@
         {
             if(data != "0")
             {
-                Materialize.toast('<i class="material-icons toasticon">highlight_off</i>Error al guardar las posiciones.', 4000,"red");
+                Materialize.toast('Error al guardar las posiciones.', 4000,"red");
                 console.error(data);
             }
-            else
-                Materialize.toast('<i class="material-icons toasticon">check_circle</i> Guardado', 1000,"green");
+            //else
+                //Materialize.toast('Se guardo las posiciones exitosamente', 1000,"green");
         });			                  
     }
     
@@ -271,7 +271,8 @@
             $("#modalFrmAdd").find("img").attr('src', $("#IMG_"+id).find('img').attr('src') );
             $("#InitImage").attr('src',$("#IMG_"+id).find('img').attr('src'));
             $("#img-title").val( $("#IMG_"+id).find('.card-title').text() );
-            $("#guardar").text('Editar');
+            $("#guardar").text('Editar');                        
+            $("input[name=TextAlign][value='"+$("#IMG_"+id).find(".textalign-data").val()+"']").prop('checked', true);
         }
         
         
@@ -281,13 +282,13 @@
             if (!$("#frmUpload")[0].checkValidity() && !id)
             {
                 $("#frmUpload").find(':submit').click();
-                Materialize.toast('<i class="material-icons toasticon">error_outline</i>La imagen es requerida.', 3000,"red");
+                Materialize.toast('La imagen es requerida.', 3000,"red");
                 return;
             }			
                                     
             if($('#ModulosAsignados').html() == "")
             {
-                Materialize.toast('<i class="material-icons toasticon">error_outline</i>Asigne al menos 1 modulo.', 3000,"red");
+                Materialize.toast('Asigne al menos 1 modulo.', 3000,"red");
                 return;
             }
             
@@ -354,7 +355,7 @@
             }        
             else
             {
-                Materialize.toast('<i class="material-icons toasticon">highlight_off</i>Error, no se pudo agregar la imagen.', 3000,"red");
+                Materialize.toast('Error, no se pudo agregar la imagen.', 3000,"red");
                 console.error("Error->Agregar(): "+data);
             }
             
@@ -410,7 +411,7 @@
             else
             {
                 //Handle error
-                Materialize.toast('<i class="material-icons toasticon">highlight_off</i>Error, no se pudo editar la imagen.', 3000,"red");
+                Materialize.toast('Error, no se pudo editar la imagen.', 3000,"red");
                 console.error("Error->Editar():"+data);
             }
             
@@ -450,11 +451,11 @@
                         $("#TotalImgs").text($("#CoverThumbnails li").length);	                    		  				                        
                     });
                                         
-                    Materialize.toast('<i class="material-icons toasticon">check_circle</i>La imagen se borro exitosamente', 4000,"green");
+                    Materialize.toast('La imagen se borro exitosamente', 4000,"green");
                 }
                 else
                 {
-                    Materialize.toast('<i class="material-icons toasticon">highlight_off</i>Error al tratar de borrar la imagen', 4000,"red");
+                    Materialize.toast('Error al tratar de borrar la imagen', 4000,"red");
                     console.error("Error->DeleteImage():"+data);
                 }
             });            
@@ -532,7 +533,7 @@
 		
 		ajax_request.fail(function(AjaxObject)
 		{
-            Materialize.toast('<i class="material-icons toasticon">error_outline</i>Error al obtener modulos del perfil.', 3000,"red");
+            Materialize.toast('Error al obtener modulos del perfil.', 3000,"red");
 			console.error("JSON-Error->LoadModulos(): "+AjaxObject.responseText);
 		});		
 	}

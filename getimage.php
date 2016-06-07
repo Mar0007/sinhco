@@ -32,27 +32,30 @@ $img = NULL;
 //echo "$sImagePath<br>";
  
 $sExtension = pathinfo($sImagePath, PATHINFO_EXTENSION);
-if ($sExtension == 'jpg' || $sExtension == 'jpeg') {
- 
-    $img = @imagecreatefromjpeg($sImagePath)
-        or die("Cannot create new JPEG image");
- 
-} else if ($sExtension == 'png') {
- 
-    $img = @imagecreatefrompng($sImagePath)
-        or die("Cannot create new PNG image.");
- 
-} else if ($sExtension == 'gif') {
- 
-    $img = @imagecreatefromgif($sImagePath)
-        or die("Cannot create new GIF image");
- 
+switch ($sExtension) 
+{
+    case 'jpg':
+    case 'jpeg':
+        $img = @imagecreatefromjpeg($sImagePath)
+            or die("Cannot create new JPEG image");
+        break;
+            
+    case 'png':
+        $img = @imagecreatefrompng($sImagePath)
+            or die("Cannot create new PNG image.");
+        break;
+        
+    case 'gif':
+        $img = @imagecreatefromgif($sImagePath)
+            or die("Cannot create new GIF image");
+        break;
 }
  
-if ($img) {
+if ($img) 
+{
  
     $iOrigWidth = imagesx($img);
-    $iOrigHeight = imagesy($img);
+    $iOrigHeight = imagesy($img);    
  
     if ($sType == 'scale') {
  
@@ -69,6 +72,9 @@ if ($img) {
             $tmpimg = imagecreatetruecolor($iNewWidth,
                                $iNewHeight);
  
+            if(($sExtension == "png") OR ($sExtension == "gif"))
+                GetTransparency($tmpimg,$iNewWidth,$iNewHeight);
+            
             imagecopyresampled($tmpimg, $img, 0, 0, 0, 0,
             $iNewWidth, $iNewHeight, $iOrigWidth, $iOrigHeight);
  
@@ -106,7 +112,10 @@ if ($img) {
                 $xAxis = ($iNewWidth/2)-
                     ($iThumbnailWidth/2);
  
-            } 
+            }
+            
+            if(($sExtension == "png") OR ($sExtension == "gif"))
+               GetTransparency($tmp2img,$iThumbnailWidth,$iThumbnailHeight);            
  
             imagecopyresampled($tmp2img, $tmpimg, 0, 0,
                        $xAxis, $yAxis,
@@ -121,12 +130,57 @@ if ($img) {
         }    
  
     }
+    else {
+     if(($sExtension == "png") OR ($sExtension == "gif"))
+     {
+        $tmpimg = imagecreatetruecolor($iOrigWidth,
+                            $iOrigHeight);        
+                            
+        GetTransparency($tmpimg,$iOrigWidth,$iOrigHeight);
+        imagecopyresampled($tmpimg, $img, 0, 0, 0, 0,
+        $iOrigWidth, $iOrigHeight, $iOrigWidth, $iOrigHeight);
+        
+        imagedestroy($img);
+        $img = $tmpimg;        
+     }              
+
+    }            
         
     //$MIMEType = mime_content_type($sImagePath);
-    header("Content-type: image/jpeg");
-    imagejpeg($img);
+    //header("Content-type: image/jpeg");
+    //imagejpeg($img);
+    
+    
+    switch ($sExtension)
+    {
+        case 'jpg':
+        case 'jpeg':
+            header("Content-type: image/jpeg");
+            imagejpeg($img);
+            break;
+                
+        case 'png':
+            header("Content-type: image/png");
+            imagepng($img);
+            break;
+            
+        case 'gif':
+            header("Content-type: image/gif");
+            imagegif($img);
+            break;        
+    } 
+       
 }
  
+ 
+ 
+ function GetTransparency(&$tmp,$Width,$Height)
+ {
+    imagealphablending($tmp, false);
+    imagesavealpha($tmp,true);
+    $transparent = imagecolorallocatealpha($tmp, 255, 255, 255, 127);
+    imagefilledrectangle($tmp, 0, 0, $Width, $Height, $transparent);    
+ }
  
    /**
    * @return false if not cached or modified, true otherwise.

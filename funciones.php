@@ -416,11 +416,21 @@
     
     function CurrentFolder()
     {
-        $Scripts = Array('index.php','login.php','logout.php','getimage.php');
-        if(!in_array(basename($_SERVER['SCRIPT_NAME']),$Scripts)) 
-            return dirname($_SERVER['SCRIPT_NAME'])."/../../";            
+        $Scripts = Array('index.php','login.php','editorutils.php','getimage.php');
+        $Path = dirname($_SERVER['SCRIPT_NAME']);
         
-        return str_replace("\\","",dirname($_SERVER['SCRIPT_NAME'])."/");
+        if(!in_array(basename($_SERVER['SCRIPT_NAME']),$Scripts)) 
+            $Path = RelativePathUp($Path,2);            
+        
+        return str_replace("\\","",$Path."/");
+    }
+    
+    function RelativePathUp($Path,$Levels = 1)
+    {        
+        if($Levels > 0)
+            return RelativePathUp(dirname($Path),$Levels - 1);
+        
+        return $Path; 
     }
     
     
@@ -435,12 +445,13 @@
     
     /* Types: exact, scale
     */
-    function GetImageURL($URL,$Width,$Height,$type = 'scale')
+    function GetImageURL($URL,$Width = null,$Height = null,$type = 'scale')
     {        
+        if(empty($Width) || empty($Height))
+            return GetURL('getimage.php?file='.$URL);
+        
         if($type == 'exact')
-        {
             return GetURL('getimage.php?width='.$Width.'&height='.$Height.'&file='.$URL);
-        }
         
         return GetURL('getimage.php?maxw='.$Width.'&maxh='.$Height.'&file='.$URL);
     }
@@ -470,6 +481,25 @@
         
         return ( isset($URL[$Segment]) ? $URL[$Segment] : false);
     }
+
+    function deleteDir($dirPath) 
+    {
+        if (!is_dir($dirPath))
+            throw new InvalidArgumentException("$dirPath must be a directory");
+
+        if (substr($dirPath, strlen($dirPath) - 1, 1) != '/')
+            $dirPath .= '/';
+        
+        $files = glob($dirPath . '*', GLOB_MARK);
+        foreach ($files as $file) 
+        {
+            if (is_dir($file))
+                self::deleteDir($file);
+            else
+                unlink($file);
+        }
+        rmdir($dirPath);
+    }    
     
 //-------------------------------------------------------------------------------------    
 // Custom functions

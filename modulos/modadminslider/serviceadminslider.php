@@ -32,9 +32,10 @@
 				$mysqli->action(function($mysqli) use ($FileName,&$bSuccess)
 				{									
 					//First upload image
-					$sourcePath = $_FILES['file']['tmp_name'];					
-					$targetPath = "uploads/images/". $FileName;
 					$ImageTitle = $_POST['img-title'];
+					$TextAlign = $_POST['TextAlign'];
+					$sourcePath = $_FILES['file']['tmp_name'];					
+					$targetPath = "uploads/images/Slider/". $FileName;
 					move_uploaded_file($sourcePath,"../../" . $targetPath);
 					
 					if(!file_exists("../../" . $targetPath))
@@ -48,9 +49,10 @@
 					$IDImagen = $mysqli->insert("imagenes",
 					[
 						"img"  => $ImageTitle,
-						"ruta" => GetURL($targetPath),
+						"ruta" => $targetPath,
 						"categoria" => "Slider",
-						"descripcion" => ""
+						"descripcion" => "",
+						"alineacion" => $TextAlign
 					]
 					);
 					if(CheckDBError($mysqli)) return false;
@@ -111,13 +113,14 @@
 				{									
 					$IDImagen = $_POST["IDImagen"];
 					$ImageTitle = $_POST['img-title'];
+					$TextAlign = $_POST['TextAlign'];
 					
 					//First upload image and update it on DB
 					//If he uploaded a file
 					if($_FILES['file']['error'] == UPLOAD_ERR_OK)
 					{
 						$sourcePath = $_FILES['file']['tmp_name'];					
-						$targetPath = "uploads/images/". $FileName;
+						$targetPath = "uploads/images/Slider/". $FileName;
 						$ImageTitle = $_POST['img-title'];
 						move_uploaded_file($sourcePath,"../../" . $targetPath);
 						
@@ -133,9 +136,10 @@
 						$mysqli->update("imagenes",
 						[
 							"img"  => $ImageTitle,
-							"ruta" => GetURL($targetPath),
+							"ruta" => $targetPath,
 							"categoria" => "Slider",
-							"descripcion" => ""
+							"descripcion" => "",
+							"alineacion" => $TextAlign
 						],
 						[
 							"idimagen" => $IDImagen
@@ -144,8 +148,19 @@
 						if(CheckDBError($mysqli)) return false;
 					}
 					else 
+					{
 					//If didnt uploaded a file just update name
-						$mysqli->update("imagenes",["img" => $ImageTitle],["idimagen" => $IDImagen]);
+						$mysqli->update("imagenes",
+						[
+							"img" => $ImageTitle,
+							"alineacion" => $TextAlign
+						],
+						[
+							"idimagen" => $IDImagen							
+						]);
+						
+						if(CheckDBError($mysqli)) return false;
+					}
 														
 					$IDSlider 	= $_POST["IDSlider"];
 					$InsertData = $_POST["DataAdd"];
@@ -195,7 +210,7 @@
 
 					//At last if everyting is fine delete old image
 					if(isset($OldImageName) && $OldImageName != "")
-						@unlink("../../uploads/images/".$OldImageName);
+						@unlink("../../uploads/images/Slider/".$OldImageName);
 										
 					//Return card
 					SliderCard($mysqli,$IDSlider,$IDImagen);
@@ -204,7 +219,7 @@
 				
 				//If rollback, then delete the uploaded file
 				if(!$bSuccess)
-					@unlink("../../uploads/images/".$FileName);
+					@unlink("../../uploads/images/Slider/".$FileName);
 				
 				break;		
 		case 4: //Eliminar
@@ -251,7 +266,7 @@
 														
 					$mysqli->delete("imagenes",["idimagen" => $IDImagen]);								
 					
-					@unlink('../../uploads/images/'.$OldFilename);								
+					@unlink('../../uploads/images/Slider/'.$OldFilename);								
 					echo "0";					
 				});
 				break;
@@ -311,7 +326,7 @@
 	{
 		
 		$strSQL = 				
-		"SELECT i.idimagen,i.img,i.ruta,i.descripcion,GROUP_CONCAT(idmodulo SEPARATOR ',') as modulos, orden
+		"SELECT i.idimagen,i.img,i.ruta,i.descripcion,i.alineacion,GROUP_CONCAT(idmodulo SEPARATOR ',') as modulos, orden
 		FROM slider_img_mod s join imagenes i on s.idimagen = i.idimagen 
 		WHERE idslider = " . $mysqli->quote($IDSlider) . ((is_null($IDImagen)) ? "" : " and s.idimagen = ".$mysqli->quote($IDImagen) )."
 		GROUP BY idimagen
@@ -338,12 +353,13 @@
                         <p>'.$row["descripcion"].'</p>
 						'.$strModulos.'
                     </div>
+					<input class="textalign-data" type="hidden" value="'.( (empty($row["alineacion"])) ? "left" : $row["alineacion"]) .'">
                     <div class="card-action">
 						<a style="cursor:pointer;" onclick="ItemModal('.$row["idimagen"].')">Editar</a>
                         <a style="cursor:pointer;" onclick="DeleteImage('.$row["idimagen"].')">Eliminar</a>
                     </div>
                 </div>           
-            </li>';											
+            </li>';			
         }    
     }    
 ?>

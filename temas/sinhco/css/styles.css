@@ -47,11 +47,7 @@
     }
 }
 
-@media only screen and (max-width: 600px) {
-    .toast {
-        display:block;
-    }
-    
+@media only screen and (max-width: 600px) {    
     #main {
         top: 54px !important;
     }
@@ -762,9 +758,4 @@ textarea.materialize-textarea:focus.invalid + label:after {
   -ms-user-select: none;       /* Internet Explorer/Edge */
   user-select: none;           /* Non-prefixed version, currently
                                   not supported by any browser */
-}
-
-.toasticon {
-    margin-right:5px;
-    vertical-align: bottom;
 }

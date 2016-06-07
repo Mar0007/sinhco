@@ -21,20 +21,21 @@
 
 
 <script>
+window.onbeforeunload = function() {            
+     if(ajax_request) ajax_request.abort();
+     return null;
+};
     
 $(document).ready(function() {
-    $("#ModuleView").append(HTMLLoader);		        
+    $("#ModuleView").append(HTMLLoader);
     GetAjaxData();
-});
-      
+});      
       
 var ajax_request;
 function GetAjaxData()
 {
     //Prevent parallel execution of ajax.
     if(ajax_request) ajax_request.abort();
-    //Clear table
-    //$("#DashboardInfo").empty();
     
     //Get data
     ajax_request = $.ajax({

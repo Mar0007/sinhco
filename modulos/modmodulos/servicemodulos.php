@@ -19,10 +19,16 @@
 	switch($accion)
 	{
 		case 1: // Consulta
-				$stmt = $mysqli->select("modulos",["idmodulo","modulo","tipo"],["tipo" => 0]);
+				$stmt = $mysqli->select("modulos",["idmodulo","modulo","tipo","descripcion"],["tipo" => 0]);
 				
 				if(CheckDBError($mysqli))
 					return;
+
+				if(empty($stmt))
+				{
+					echo "none";
+					return;
+				}					
 				
 				foreach ($stmt as $row) 
 				{
@@ -33,7 +39,7 @@
 							<a  class="black-text" href="#!">
 								<span class="title">'.$row["modulo"].'</span>								
 							</a>                 
-							<p class="grey-text lighten-2 title">Descripcion del el modulo muy descriptivo.</p>
+							<p class="grey-text lighten-2 title">'.$row['descripcion'].'</p>
 							<a class="">
 									'.GetDropDownSettingsRow($row["idmodulo"],GetMenuArray($row["tipo"] == 0)).'
 							</a> 
@@ -52,9 +58,13 @@
 				$idmodulo = $_POST["idmodulo"];
 				
 				$mysqli->delete("modulos",["idmodulo" => $idmodulo]);
+
 				if(CheckDBError($mysqli))
 					return;
-				
+
+				if(is_dir("../../uploads/images/editor/M_" . $idmodulo . "/"))
+					deleteDir("../../uploads/images/editor/M_" . $idmodulo . "/");
+
 				echo "0";				
 	}
 	
@@ -79,13 +89,4 @@
 			)			
 		);		
 	}				
-	
-	function GetIconHTML($b)
-	{
-		if($b)
-			return "<i class=\"material-icons\">insert_drive_file</i>";
-		
-		return "<i class=\"material-icons\">storage</i>";
-	}	
-
 ?>

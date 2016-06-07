@@ -1,6 +1,7 @@
 <?php
 	global $mysqli;
 	global $OnDashboard;
+	global $Navigation;
 	
 	if($OnDashboard != 1 || !login_check($mysqli))
 	{
@@ -19,7 +20,7 @@
 	{
 		$stmt = $mysqli->select("bloques",
 		[
-			"idbloque","bloque","tipo","contenido"
+			"idbloque","bloque","tipo","contenido","descripcion"
 		],
 		[
 			"idbloque" => $editID
@@ -39,103 +40,114 @@
 			return;			
 		}
 	}
+	else
+	{
+		header('Location:'.GetURL("dashboard/bloques"));
+		die();
+	}
 	
 	AddHistory("Bloques",GetURL("dashboard/bloques"),true);
-	AddHistory(($editID != "") ? $row["idbloque"] : "Nuevo Bloque","");	
+	AddHistory($row["idbloque"],"");
 ?>
+<style>
+@media only screen and (max-width: 992px) {
+	.side-nav {
+		z-index: 1000;		
+	}
+}
 
-<script src="<?php echo GetURL("recursos/tinymce/tinymce.min.js") ?>"></script>
+body {
+	background: white
+}	
+</style>
 
-<div class="card-content">
-	<h3><?php echo ($editID != "") ? "Editar":"Crear"?> bloque estatico</h3>
-	<div title="Crear bloque estatico">
-		<form id="frmBloque" action="javascript:<?php echo ($editID != "") ? "Editar()":"Agregar()"?>">
-			<div class="input-field col s12">
-				<label for="txtCodigo">Codigo</label>
-				<input id="txtCodigo" type="text" class="validate" <?php echo ($editID != "") ? "disabled":""?> required pattern="\S+" title="Sin espacios" maxlength="20" length="20" value="<?php echo ($editID != "") ? $row["idbloque"]:""?>">		
-			</div>			
-			<div class="input-field col s12">
-				<label for="txtTitulo">Titulo</label>
-				<input id="txtTitulo" type="text" class="validate" required value="<?php echo ($editID != "") ? $row["bloque"]:""?>">		
-			</div>
-			<input type="submit" style="display:none">
-			<label>Contenido:</label>
-			<textarea><?php echo ($editID != "") ? $row["contenido"]:""?></textarea>
-		</form>
-	</div>
-	<div class="card-action">
-		<button id="btnCrear" class="btn waves-effect waves-light" onclick="$('#frmBloque').find(':submit').click();"><?php echo ($editID != "") ? "<i class=\"material-icons left\">save</i>Guardar":"<i class=\"material-icons left\">library_add</i>Crear Bloque"?></button>
+<?php require_once("recursos/froalaeditor/editor.php"); ?>
+
+<div id="modMain" class="container" style="width:95%;display:none">
+	<div class="card-content">
+		<h3 class="light center blue-grey-text text-darken-3">Editar bloque</h3>
+		<div class="divider" style="margin-bottom:30px"></div>
+		<div>
+			<br>
+			<textarea id='edit'><?php echo $row["contenido"] ?></textarea>
+		</div>
 	</div>
 </div>
+
+<div class="fixed-action-btn" style="bottom: 45px; right: 24px; z-index:999">
+	<a id="btnGuardar" onclick="OpenModal()" class="btn-floating btn-large blue-grey darken-2 tooltipped" data-position="left" data-delay="50" data-tooltip="Guardar">
+		<i class="large material-icons">save</i>
+	</a>      
+</div>
+
+<!--Module data MODAL-->
+<div id="datamodal" class="modal create-item modal-fixed-footer">
+    <div class="modal-content">
+        <h5 style="margin-top:-10px">Editar bloque</h5>        
+		<form id="frmModal" autocomplete="off" action="javascript:<?php echo ($editID != "") ? "Editar()":"Agregar()"?>">
+			<div class="row card-content">				
+				<div class="input-field col s12">
+					<label for="txtCodigo">Codigo</label>
+					<input id="txtCodigo" type="text" class="validate" disabled required pattern="\S+" title="Sin espacios" maxlength="20" length="20" value="<?php echo $row["idbloque"] ?>">		
+				</div>			
+				<div class="input-field col s12">
+					<label for="txtTitulo">Titulo</label>
+					<input id="txtTitulo" type="text" class="validate" required value="<?php echo $row["bloque"]?>">		
+				</div>
+				<div class="input-field col s12">
+					<label for="txtDescripcion">Descripcion</label>
+					<input id="txtDescripcion" type="text" class="validate" required value="<?php echo $row["bloque"]?>">		
+				</div>
+			</div>			
+			<input id="hCodigo" type="hidden" value="<?php echo $row["idbloque"] ?>">
+			<input id="hTitulo" type="hidden" value="<?php echo $row["bloque"] ?>">
+			<input id="hDescripcion" type="hidden" value="<?php echo $row["descripcion"] ?>">
+			<input id="txtInit" type="hidden" value="<?php echo $editID ?>">
+			<input type="submit" style="display:none">
+		</form>          
+    </div>
+    
+    <div class="modal-footer">
+        <a id="guardar" onclick="$('#frmModal').find(':submit').click();"  class="modal-action btn-flat waves-effect waves-light">Editar</a>        
+        <a id="cancel" class="btn-flat modal-action modal-close waves-effect waves-light">Cancelar<i class="material-icons right"></i></a>           
+    </div>        
+
+</div>
+<!--END Module data MODAL -->
+
 <script>	
-	tinymce.init({
-		selector: "textarea",
-		plugins: [
-			"advlist autolink lists link image charmap print preview anchor",
-			"searchreplace visualblocks code fullscreen",
-			"insertdatetime media table contextmenu paste imagetools"
-		],
-		toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link image | fullscreen",
-		height : 300	
-	});
-	
-	//Main
-	$(document).ready(function(){
-	});	
-	
-	//Functions	
-	function Agregar()
-	{
-		var idbloque  = $("#txtCodigo").val();
-		var titulo	  = $("#txtTitulo").val();
-		var contenido = tinymce.activeEditor.getContent();
+	$(function(){
+		$('#edit').froalaEditor({
+				enter: $.FroalaEditor.ENTER_P, 
+				placeholderText: "Escriba algun texto...",
+				toolbarInline: false,
+				toolbarVisibleWithoutSelection: true,
+				zIndex: 999,
+				language: 'es',
+				imageManagerLoadURL: '<?php echo GetURL("editorutils.php?action=1&id=$editID&prefix=B") ?>',
+				imageUploadURL: '<?php echo GetURL("editorutils.php?action=2&id=$editID&prefix=B") ?>',
+				imageManagerDeleteURL: '<?php echo GetURL("editorutils.php?action=3&id=$editID&prefix=B")?>'				
+			});		
 		
-		if(contenido == "")
-			return swal("Error", "Contenido no puede ir en blanco", "error");
-			
-		//Check first if form is valid.
-		if (!$("#frmBloque")[0].checkValidity()) 		
-		{
-			$("#frmBloque").find(':submit').click()
-			return;
-		}			
-				
-		ShowLoadingSwal();
-		$.ajax
-		({
-			url:"<?php echo GetURL("modulos/modcrearbloque/servicecrearbloque.php?accion=2")?>",
-			method: "POST",
-			data: {idbloque:idbloque,titulo:titulo,contenido:contenido}
-		}).done(function(data){
-			if(data == "0")
-			{
-				swal({
-					title:"Guardado", 
-					text:"Los datos se han almacenado satisfactoriamente.", 
-					type:"success"
-				},
-				function(){
-					location.href="<?php echo GetURL('dashboard/bloques')?>";
-				});				
-			}				
-			else
-				swal("Error", data, "error");
-		});					
-	}
+		$("#modMain").fadeIn();
+		$('#edit').froalaEditor('placeholder.refresh');
+	});
 	
 	function Editar()
 	{
+		var idinit    = $("#txtInit").val();
 		var idbloque  = $("#txtCodigo").val();
 		var titulo	  = $("#txtTitulo").val();
-		var contenido = tinymce.activeEditor.getContent();
+		var descripcion = $("#txtDescripcion").val();
+		var contenido = $("#edit").val();
 		
 		if(contenido == "")
-			return swal("Error", "Contenido no puede ir en blanco", "error");
+			return Materialize.toast('Error contenido no puede ir en blanco', 3000,"red");
 
 		//Check first if form is valid.
-		if (!$("#frmBloque")[0].checkValidity()) 		
+		if (!$("#frmModal")[0].checkValidity()) 		
 		{
-			$("#frmBloque").find(':submit').click()
+			$("#frmModal").find(':submit').click()
 			return;
 		}				
 		
@@ -144,21 +156,38 @@
 		({
 			url:"<?php echo GetURL("modulos/modcrearbloque/servicecrearbloque.php?accion=3")?>",
 			method: "POST",
-			data: {idbloque:idbloque,titulo:titulo,contenido:contenido}
-		}).done(function(data){
+			data: {idbloque:idbloque,titulo:titulo,contenido:contenido,idinit:idinit,descripcion:descripcion}
+		}).done(function(data){			
+			//Close animation
+			swal.close();
 			if(data == "0")
 			{
-				swal({
-					title:"Guardado", 
-					text:"Los datos se han almacenado satisfactoriamente.", 
-					type:"success"
-				},
-				function(){
-					location.href="<?php echo GetURL('dashboard/bloques')?>";
-				});				
+				$('#datamodal').closeModal();
+				Materialize.toast('Se edito exitosamente', 3000,"green");
+				location.href="<?php echo GetURL('dashboard/bloques')?>";
 			}				
 			else
-				swal("Error", data, "error");
-		});					
+			{
+				if(data == "104")
+					Materialize.toast('Codigo ya existe', 3000,"red");
+				else
+					Materialize.toast('Error al guardar los datos', 3000,"red");
+				
+				console.error("Agregar->" + data);				
+			}				
+		});
+		
 	}
+
+    //OPEN EDIT MODAL
+    function OpenModal()
+    { 	
+		//Reset
+		$("#txtCodigo").val($("#hCodigo").val());
+		$("#txtTitulo").val($("#hTitulo").val());
+		$("#txtDescripcion").val($("#hDescripcion").val());
+						
+		Materialize.updateTextFields();
+		$('#datamodal').openModal();		
+	}							
 </script>

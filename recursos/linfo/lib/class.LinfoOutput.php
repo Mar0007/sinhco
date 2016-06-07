@@ -332,85 +332,6 @@ class LinfoOutput {
 		</div>';
 
 
-	// Show memory?
-	if (!empty($settings['show']['ram'])) {
-		echo '
-		<div class="infoTable">
-			<h2>'.$lang['memory'].'</h2>
-			<table>
-				<colgroup>
-					<col style="width: 12%;" />
-					<col style="width: 23%;" />
-					<col style="width: 23%;" />
-					<col style="width: 23%;" />
-					<col style="width: 23%;" />
-				</colgroup>
-				<tr>
-					<th>'.$lang['type'].'</th>
-					<th>'.$lang['size'].'</th>
-					<th>'.$lang['used'].'</th>
-					<th>'.$lang['free'].'</th>
-					<th>'.$lang['percent_used'].'</th>
-				</tr>
-				<tr>
-					<td>'.$info['RAM']['type'].'</td>
-					<td>'.LinfoCommon::byteConvert($info['RAM']['total']).'</td>
-					<td>'.LinfoCommon::byteConvert($info['RAM']['total'] - $info['RAM']['free']).'</td>
-					<td>'.LinfoCommon::byteConvert($info['RAM']['free']).'</td>
-					<td>'.self::generateBarChart(round(($info['RAM']['total'] - $info['RAM']['free'])*100/$info['RAM']['total'])).'</td>
-				</tr>';
-				$have_swap = (isset($info['RAM']['swapFree']) || isset($info['RAM']['swapTotal']));
-				if ($have_swap && !empty($info['RAM']['swapTotal'])) {
-					// Show detailed swap info?
-					$show_detailed_swap = is_array($info['RAM']['swapInfo']) && count($info['RAM']['swapInfo']) > 0;
-					echo'
-					<tr>
-						<td'.($show_detailed_swap ? ' rowspan="2"' : '').'>Swap</td>
-						<td>'.LinfoCommon::byteConvert(@$info['RAM']['swapTotal']).'</td>
-						<td>'.LinfoCommon::byteConvert(@$info['RAM']['swapTotal'] - $info['RAM']['swapFree']).'</td>
-						<td>'.LinfoCommon::byteConvert(@$info['RAM']['swapFree']).'</td>
-						<td>'.self::generateBarChart(round(($info['RAM']['swapTotal'] - $info['RAM']['swapFree']) * 100 / $info['RAM']['swapTotal'])).'</td>
-					</tr>';
-					
-					// As in we have at least one swap device present. Show them.
-					if ($show_detailed_swap) {
-						echo '
-						<tr>
-							<td colspan="4">
-								<table class="mini center">
-									<colgroup>
-										<col style="width: 25%;" />
-										<col style="width: 25%;" />
-										<col style="width: 25%;" />
-										<col style="width: 25%;" />
-									</colgroup>
-									<tr>
-										<th>'.$lang['device'].'</th>
-										<th>'.$lang['type'].'</th>
-										<th>'.$lang['size'].'</th>
-										<th>'.$lang['used'].'</th>
-									</tr>';
-									foreach($info['RAM']['swapInfo'] as $swap)
-										echo '
-										<tr>
-											<td>'.$swap['device'].'</td>
-											<td>'.ucfirst($swap['type']).'</td>
-											<td>'.LinfoCommon::byteConvert($swap['size']).'</td>
-											<td>'.LinfoCommon::byteConvert($swap['used']).'</td>
-										</tr>
-										';
-									echo '
-								</table>
-							</td>
-						</tr>';
-					}
-				}
-
-				echo '
-			</table>
-		</div>';
-	}
-
 	// Network Devices?
 	if (!empty($settings['show']['network'])) {
 		$show_type = array_key_exists('nic_type', $info['contains']) ? $info['contains']['nic_type'] : true;
@@ -547,7 +468,85 @@ class LinfoOutput {
 	echo '
 	</div>
 	<div class="col">';
+//Here
+	// Show memory?
+	if (!empty($settings['show']['ram'])) {
+		echo '
+		<div class="infoTable">
+			<h2>'.$lang['memory'].'</h2>
+			<table>
+				<colgroup>
+					<col style="width: 12%;" />
+					<col style="width: 23%;" />
+					<col style="width: 23%;" />
+					<col style="width: 23%;" />
+					<col style="width: 23%;" />
+				</colgroup>
+				<tr>
+					<th>'.$lang['type'].'</th>
+					<th>'.$lang['size'].'</th>
+					<th>'.$lang['used'].'</th>
+					<th>'.$lang['free'].'</th>
+					<th>'.$lang['percent_used'].'</th>
+				</tr>
+				<tr>
+					<td>'.$info['RAM']['type'].'</td>
+					<td>'.LinfoCommon::byteConvert($info['RAM']['total']).'</td>
+					<td>'.LinfoCommon::byteConvert($info['RAM']['total'] - $info['RAM']['free']).'</td>
+					<td>'.LinfoCommon::byteConvert($info['RAM']['free']).'</td>
+					<td>'.self::generateBarChart(round(($info['RAM']['total'] - $info['RAM']['free'])*100/$info['RAM']['total'])).'</td>
+				</tr>';
+				$have_swap = (isset($info['RAM']['swapFree']) || isset($info['RAM']['swapTotal']));
+				if ($have_swap && !empty($info['RAM']['swapTotal'])) {
+					// Show detailed swap info?
+					$show_detailed_swap = is_array($info['RAM']['swapInfo']) && count($info['RAM']['swapInfo']) > 0;
+					echo'
+					<tr>
+						<td'.($show_detailed_swap ? ' rowspan="2"' : '').'>Swap</td>
+						<td>'.LinfoCommon::byteConvert(@$info['RAM']['swapTotal']).'</td>
+						<td>'.LinfoCommon::byteConvert(@$info['RAM']['swapTotal'] - $info['RAM']['swapFree']).'</td>
+						<td>'.LinfoCommon::byteConvert(@$info['RAM']['swapFree']).'</td>
+						<td>'.self::generateBarChart(round(($info['RAM']['swapTotal'] - $info['RAM']['swapFree']) * 100 / $info['RAM']['swapTotal'])).'</td>
+					</tr>';
+					
+					// As in we have at least one swap device present. Show them.
+					if ($show_detailed_swap) {
+						echo '
+						<tr>
+							<td colspan="4">
+								<table class="mini center">
+									<colgroup>
+										<col style="width: 25%;" />
+										<col style="width: 25%;" />
+										<col style="width: 25%;" />
+										<col style="width: 25%;" />
+									</colgroup>
+									<tr>
+										<th>'.$lang['device'].'</th>
+										<th>'.$lang['type'].'</th>
+										<th>'.$lang['size'].'</th>
+										<th>'.$lang['used'].'</th>
+									</tr>';
+									foreach($info['RAM']['swapInfo'] as $swap)
+										echo '
+										<tr>
+											<td>'.$swap['device'].'</td>
+											<td>'.ucfirst($swap['type']).'</td>
+											<td>'.LinfoCommon::byteConvert($swap['size']).'</td>
+											<td>'.LinfoCommon::byteConvert($swap['used']).'</td>
+										</tr>
+										';
+									echo '
+								</table>
+							</td>
+						</tr>';
+					}
+				}
 
+				echo '
+			</table>
+		</div>';
+	}
 	// Show hardware?
 	if (!empty($settings['show']['devices'])) {
 

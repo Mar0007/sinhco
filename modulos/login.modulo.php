@@ -15,10 +15,15 @@
 	
 	if( login_check($mysqli) )
 	{
+		if(isset($_SESSION['urltemp']) && $_SESSION['urltemp'] != "")
+		{
+			header("Location: " . $_SESSION['urltemp']);
+			return;
+		}
+		
 		header("Location: dashboard");
         return;
 	}		
-
 	//echo "<h3>$titulo</h3>";
 	echo "<p>$mensaje</p>"; 
 ?>

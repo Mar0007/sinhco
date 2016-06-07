@@ -26,9 +26,11 @@
         {
             if(!login_check($mysqli))
             {
+                $_SESSION['urltemp'] = $_SERVER['REQUEST_URI'];
                 header("Location: " . GetURL("login"));
                 die();
-            }                        
+            }
+            $_SESSION['urltemp'] = "";
             $OnDashboard = 1;
             if(URLParam(1)) $modulo = URLParam(1);            
             
@@ -37,9 +39,13 @@
             break;
         }
         case "404":
-        {
             require_once($tema."404.tema.php");
-        }
+            break;
+        case "login":
+            header("Location: " . GetURL("login"));
+            die();        
+            break;
+        
         default: 
             $SEGURIDAD = 1; 
             require_once($tema."index.tema.php");             

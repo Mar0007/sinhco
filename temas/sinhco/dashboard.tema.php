@@ -31,7 +31,7 @@
                         </li>
                         <li class="divider"></li>
                         </li>
-                        <li><a href="'.GetURL("logout.php").'"><i class="mdi-hardware-keyboard-tab"></i> Logout</a>
+                        <li><a href="'.GetURL("login.php?action=logout").'"><i class="mdi-hardware-keyboard-tab"></i> Logout</a>
                         </li>
                     </ul>
                     <a class="btn-flat dropdown-button waves-effect waves-light white-text profile-btn" href="#" data-activates="profile-dropdown">

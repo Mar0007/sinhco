@@ -11,37 +11,43 @@
 	
 	if(!esadmin($mysqli))
 	{
-		echo "<h2>No tiene permisos para ver este bloque.</h2>";
+		echo "<h2>No tiene permisos para ver este modulo.</h2>";
 		return;
 	}	
+	$accion = $_GET["accion"];
 	
-	$accion = $_GET["accion"];	
 	switch($accion)
 	{
 		case 1: // Consulta
-		
-				$stmt = $mysqli->select("bloques",["idbloque","bloque","tipo"]);				
-				
-				if( CheckDBError($mysqli) ) return;
+				$stmt = $mysqli->select("bloques",["idbloque","bloque","tipo","descripcion"],["tipo" => 0]);
+								
+				if(CheckDBError($mysqli))
+					return;
+
+				if(empty($stmt))
+				{
+					echo "none";
+					return;
+				}
 				
 				foreach ($stmt as $row) 
 				{
 					echo 
 					'
 						<li id="'.$row["idbloque"].'" style="display:none" class="dataitems collection-item avatar">
-							<i class="material-icons circle" style="background-color:#1665c1">picture_in_picture</i>
+							<i class="material-icons circle" style="background-color:#1665c1">view_module</i>
 							<a  class="black-text" href="#!">
 								<span class="title">'.$row["bloque"].'</span>								
 							</a>                 
-							<p class="grey-text lighten-2 title">Descripcion del el modulo muy descriptivo.</p>
+							<p class="grey-text lighten-2 title">'.$row['descripcion'].'</p>
 							<a class="">
 									'.GetDropDownSettingsRow($row["idbloque"],GetMenuArray($row["tipo"] == 0)).'
 							</a> 
-																				
 						</li>
-					';																						
+					';									
+					
 				}
-								
+							
 				break;			
 		case 2: // Insertar
 				break;
@@ -51,10 +57,14 @@
 				$idbloque = $_POST["idbloque"];
 				
 				$mysqli->delete("bloques",["idbloque" => $idbloque]);
-				if( CheckDBError($mysqli) ) return;
-				
-				echo "0";
-				break;
+
+				if(CheckDBError($mysqli))
+					return;
+
+				if(is_dir("../../uploads/images/editor/B_" . $idbloque . "/"))
+					deleteDir("../../uploads/images/editor/B_" . $idbloque . "/");
+
+				echo "0";				
 	}
 	
 	//Functions
@@ -77,14 +87,5 @@
 				"contenido" => "Eliminar"
 			)			
 		);		
-	}		
-		
-	function GetIconHTML($b)
-	{
-		if($b)
-			return "<i class=\"material-icons\">insert_drive_file</i>";
-		
-		return "<i class=\"material-icons\">storage</i>";
-	}	
-
+	}				
 ?>

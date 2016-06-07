@@ -24,13 +24,21 @@
 				$idmodulo 	= $_POST["idmodulo"];
 				$modulo   	= $_POST["titulo"];
 				$contenido  = $_POST["contenido"];
+				$desc  		= $_POST["descripcion"];
+				
+				if($mysqli->has("modulos",["idmodulo" => $idmodulo]))
+				{					
+					echo "104";
+					return;
+				}
 				
 				$mysqli->insert("modulos",
 				[
 					"idmodulo" => $idmodulo,
 					"modulo" => $modulo,
 					"tipo" => "0",
-					"contenido" => $contenido
+					"contenido" => $contenido,
+					"descripcion" => $desc
 				]);
 				if( CheckDBError($mysqli) ) return;
 				
@@ -38,17 +46,28 @@
 					
 				break;
 		case 3: //Actualizar
+				$InitID 	= $_POST["idinit"];
 				$idmodulo 	= $_POST["idmodulo"];
 				$modulo   	= $_POST["titulo"];
 				$contenido  = $_POST["contenido"];
+				$desc  		= $_POST["descripcion"];
+				
+				if($InitID != $idmodulo && $mysqli->has("modulos",["idmodulo" => $idmodulo]))
+				{					
+					echo "104";
+					return;
+				}
+				
 				
 				$mysqli->update("modulos",
 				[
+					"idmodulo" => $idmodulo,
 					"modulo" => $modulo,
-					"contenido" => $contenido
+					"contenido" => $contenido,
+					"descripcion" => $desc
 				],
 				[
-					"idmodulo" => $idmodulo
+					"idmodulo" => $InitID
 				]);
 				
 				if( CheckDBError($mysqli) ) return;

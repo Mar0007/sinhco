@@ -4,7 +4,7 @@
 defined('IN_LINFO') or exit;
 
 // If you experience timezone errors, uncomment (remove //) the following line and change the timezone to your liking
-// date_default_timezone_set('America/New_York');
+date_default_timezone_set('America/El_Salvador');
 
 /*
  * Usual configuration
@@ -26,21 +26,21 @@ $settings['show']['ip'] = true;
 $settings['show']['os'] = true;
 $settings['show']['load'] = true;
 $settings['show']['ram'] = true;
-$settings['show']['hd'] = true;
+$settings['show']['hd'] = false;
 $settings['show']['mounts'] = true;
 $settings['show']['mounts_options'] = false; // Might be useless/confidential information; disabled by default.
-$settings['show']['webservice'] = false; // Might be dangerous/confidential information; disabled by default.
+$settings['show']['webservice'] = true; // Might be dangerous/confidential information; disabled by default.
 $settings['show']['phpversion'] = false; // Might be dangerous/confidential information; disabled by default.
-$settings['show']['network'] = true;
+$settings['show']['network'] = false;
 $settings['show']['uptime'] = true;
-$settings['show']['cpu'] = true;
+$settings['show']['cpu'] = false;
 $settings['show']['process_stats'] = true; 
 $settings['show']['hostname'] = true;
 $settings['show']['distro'] = true; # Attempt finding name and version of distribution on Linux systems
-$settings['show']['devices'] = true; # Slow on old systems
-$settings['show']['model'] = true; # Model of system. Supported on certain OS's. ex: Macbook Pro
-$settings['show']['numLoggedIn'] = true; # Number of unqiue users with shells running (on Linux)
-$settings['show']['virtualization'] = true; # whether this is a VPS/VM and what kind
+$settings['show']['devices'] = false; # Slow on old systems
+$settings['show']['model'] = false; # Model of system. Supported on certain OS's. ex: Macbook Pro
+$settings['show']['numLoggedIn'] = false; # Number of unqiue users with shells running (on Linux)
+$settings['show']['virtualization'] = false; # whether this is a VPS/VM and what kind
 
 // CPU Usage on Linux (per core and overall). This requires running sleep(1) once so it slows
 // the entire page load down. Enable at your own inconvenience, especially since the load averages
