@@ -127,6 +127,7 @@
 			method: "POST",
 			data: {idmodulo:idmodulo,titulo:titulo,contenido:null,descripcion:descripcion}
 		}).done(function(data){
+			swal.close();
 			if(data == "0")
 			{
 				$('#datamodal').closeModal();				
@@ -149,11 +150,14 @@
 		ConfirmDelete("Borrar modulo","¿Esta seguro de borrar el modulo?","",
 		function()
 		{
+			ShowLoadingSwal();
 			$.ajax({
 				url:"<?php echo GetURL("modulos/modmodulos/servicemodulos.php?accion=4"); ?>",
 				method: "POST",
 				data: {idmodulo:id}
-			}).done(function(data){
+			}).done(function(data)
+			{
+				swal.close();
 				if(data == "0")
 				{
 					$("#"+id).fadeOut(function(){

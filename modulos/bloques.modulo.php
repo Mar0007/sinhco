@@ -125,7 +125,9 @@
 			url:"<?php echo GetURL("modulos/modcrearbloque/servicecrearbloque.php?accion=2")?>",
 			method: "POST",
 			data: {idbloque:idbloque,titulo:titulo,contenido:null,descripcion:descripcion}
-		}).done(function(data){
+		}).done(function(data)
+		{
+			swal.close();
 			if(data == "0")
 			{
 				$('#datamodal').closeModal();				
@@ -145,15 +147,18 @@
 	
 	//Functions		
 	function Eliminar(id)
-	{
+	{		
 		ConfirmDelete("Borrar bloque","¿Esta seguro de borrar el bloque?","",
 		function()
 		{
+			ShowLoadingSwal();
 			$.ajax({
 				url:"<?php echo GetURL("modulos/modbloques/servicebloques.php?accion=4")?>",
 				method: "POST",
 				data: {idbloque:id}
-			}).done(function(data){
+			}).done(function(data)
+			{
+				swal.close();
 				if(data == "0")
 				{
 					$("#"+id).fadeOut(function(){

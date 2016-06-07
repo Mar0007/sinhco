@@ -39,7 +39,7 @@
 <body>    
     <div class="row center " style="margin-top: 50px">
         <div class="col s12">
-            <img src="/sinhco/recursos/img/sinhco.png">
+            <img src="<?php echo GetURL("recursos/img/sinhco.png")?>">
         </div>  
     </div>
     <div class="row center ">
