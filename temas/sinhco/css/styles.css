@@ -556,7 +556,8 @@ nav ul li.active{
     max-height: 80px;
     max-width: 160px;
 }
-.dropdown-content{
+
+.more-menu.dropdown-content{
     left:auto !important;
     right: 1px !important;
     width: 160px !important;
