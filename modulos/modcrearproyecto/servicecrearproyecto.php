@@ -132,8 +132,8 @@
 					foreach ($a as $key) {
 						$Targetimage = $key;
 						$OldFilename = basename($mysqli->get("imagenes","ruta",["idimagen" => $Targetimage]));	
-						@unlink('../../uploads/images/'.$OldFilename);
-						@unlink('../../uploads/images/Proyecto-'.$IDProyecto.'.jpg');
+						@unlink('../../uploads/images/Proyectos/'.$OldFilename);
+						@unlink('../../uploads/images/Proyectos/Proyecto-'.$IDProyecto.'.jpg');
 						
 
 						$mysqli->delete("imagenes",
@@ -166,7 +166,7 @@
 					]
 					]);		
 						
-					@unlink('../../uploads/images/Proyecto-'.$IDProyecto.'.jpg');
+					@unlink('../../uploads/images/Proyectos/Proyecto-'.$IDProyecto.'.jpg');
 				
 				echo "0" ;
 			
@@ -181,7 +181,7 @@
 			{									
 				//First upload image
 				$sourcePath = $_FILES['file']['tmp_name'];					
-				$targetPath = "uploads/images/". $FileName;
+				$targetPath = "uploads/images/Proyectos/". $FileName;
 				$ImageTitle = $_POST['img-title'];
                 $IMGDescripcion = $_POST['img-descripcion'];
 				move_uploaded_file($sourcePath,"../../" . $targetPath);
@@ -221,7 +221,7 @@
 				
 			//If rollback, then delete the uploaded file
 			if(!$bSuccess)
-				@unlink("../../uploads/images/".$FileName);
+				@unlink("../../uploads/images/Proyectos/".$FileName);
 			
 			break;	
 			   
@@ -230,7 +230,7 @@
 		case 11: //Eliminar Imagen
 			$mysqli->action(function($mysqli)
 				{
-					//$IDProyecto = $_POST["idproyecto"];
+					$IDProyecto = $_POST["idproyecto"];
 					$IDImagen = $_POST["IDImagen"];	
 						
 					$OldFilename = basename($mysqli->get("imagenes","ruta",["idimagen" => $IDImagen]));					
@@ -238,7 +238,7 @@
 														
 					$mysqli->delete("imagenes",["idimagen" => $IDImagen]);								
 					
-					@unlink('../../uploads/images/'.$OldFilename);								
+					@unlink('../../uploads/images/Proyectos/'.$OldFilename);								
 					
 					echo "0";					
 				});	
@@ -261,7 +261,7 @@
 					if($_FILES['file']['error'] == UPLOAD_ERR_OK)
 					{
 						$sourcePath = $_FILES['file']['tmp_name'];					
-						$targetPath = "uploads/images/". $FileName;
+						$targetPath = "uploads/images/Proyectos/". $FileName;
 						$ImageTitle = $_POST['img-title'];
                         $IMGDescripcion = $_POST['img-descripcion'];
                         
@@ -307,7 +307,7 @@
 
 					//At last if everyting is fine delete old image
 					if(isset($OldImageName) && $OldImageName != "")
-						@unlink("../../uploads/images/".$OldImageName);
+						@unlink("../../uploads/images/Proyectos/".$OldImageName);
 										
 					//Return card
 					ProyectCard($mysqli,$idproyecto,$IDImagen);
@@ -316,7 +316,7 @@
 				
 				//If rollback, then delete the uploaded file
 				if(!$bSuccess)
-					@unlink("../../uploads/images/".$FileName);
+					@unlink("../../uploads/images/Proyectos/".$FileName);
 				
 				break;	
         case 13: //Add IMG
@@ -356,7 +356,13 @@ function ProyectCard($mysqli, $IDProyecto, $IDImagen = null)
 		if(CheckDBError($mysqli) || !$stmt) return;												
 		$stmt = $stmt->fetchAll();
 		
-		foreach ($stmt as $row) 
+        if(empty($stmt))
+        {
+            echo "none";
+            return;
+        }	
+		
+        foreach ($stmt as $row) 
 		{
 			echo "
         <li id=\"IMG_".$row["idimagen"]."\" class=\"dataproyectos col s12 m6 l8\">

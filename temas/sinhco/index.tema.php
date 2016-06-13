@@ -23,6 +23,7 @@
   
   <!--  Scripts-->
   <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="<?php echo GetURL($tema."js/customscripts.js")?>"></script>
   <script src="<?php echo GetURL($tema."js/materialize.min.js")?>"></script>
     
 </head>
@@ -90,7 +91,8 @@
         $(document).ready(function()
         {            
             $('.slider').slider({full_width: true, indicators:true});
-            $(".button-collapse").sideNav();            
+            $(".button-collapse").sideNav(); 
+            $('select').material_select();
 			$('.modal-trigger').leanModal();
             $('.parallax').parallax();
             $('.dropdown-button').dropdown({

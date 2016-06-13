@@ -45,7 +45,8 @@
 	AddHistory(($idproyecto != "") ? $stmt[0]["nombre"] : "Nuevo Proyecto","");
 ?>	
 
-    <input type="hidden" id="maxsize" value="<?php echo parse_size(ini_get('upload_max_filesize')) ?>">
+<input type="hidden" id="IDProyecto" value="<?php echo $idproyecto ?>">    
+<input type="hidden" id="maxsize" value="<?php echo parse_size(ini_get('upload_max_filesize')) ?>">
     <div class="sidebar-left blue darken-2  ">
         <div class="no-padding" style="">
             <div class="" style="height:100%;position:relative">            
@@ -230,8 +231,16 @@
             data: {IDProyecto:IDProyecto}		
             }).done(
                 function(data){
-                    $("#project-list").append(data);	
                     $("#img-loader").hide();
+                    if(data == "none")
+                    {
+                        $("#project-list").append('<li class="DataEmpty center"><div class="center grey-text">El proyecto ahora es visible. Es hora de agregar tu primera imagen.</div></li>');
+                        return;
+                    }
+                    
+                    $("#project-list").append(data);	
+                    
+                    
                     Materialize.showStaggeredList("#project-list");
                 }
             );
@@ -309,6 +318,7 @@
                 //Close modal
                 $("#modalFrmAdd").closeModal();                                
                 
+                $("#project-list").find('.DataEmpty').hide();
                 //Add data                
                 $("#project-list").prepend(data);
                 
@@ -403,7 +413,7 @@
                 
                 if ($("#FileInput2").val() != ""){
                     var extention = $("#FileInput2").val().substr($("#FileInput2").val().lastIndexOf('.')+1);
-                $("#profile-header .image-header").attr("src","/sinhco/uploads/images/Proyecto-"+$("#id-proyecto").val()+"."+extention+"?"+(new Date()).getTime());    
+                $("#profile-header .image-header").attr("src","/uploads/images/Proyecto-"+$("#id-proyecto").val()+"."+extention+"?"+(new Date()).getTime());    
                 }
                 
                                 
@@ -422,7 +432,7 @@
 	
 	function DeleteImage(id)
     {
-        var idproyecto = $("#idproyecto").val();
+        var idproyecto = $("#IDProyecto").val();
                
         ConfirmDelete("Borrar imagen","¿Está seguro de que quieres borrar la imagen?","",
         function()
@@ -438,10 +448,13 @@
                 if(data == "0")
                 {
                     $("#IMG_"+id).fadeOut(function(){
-                        $(this).remove();
+                        $(this).remove();                        
                     });
+                    if ( $('#project-list li').length == "2" ) 
+                        $("#project-list").find('.DataEmpty').show();
                     
                     Materialize.toast('Imagen eliminada', 3000);
+                    
                 }
                 else
                 {
