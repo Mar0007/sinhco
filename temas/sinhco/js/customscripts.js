@@ -8,8 +8,7 @@ var HTMLLoader =
   "<div class=\"circle\"></div>"+
   "</div><div class=\"circle-clipper right\">"+
   "<div class=\"circle\"></div>"+
-  "</div></div></div></div>";
-    
+  "</div></div></div></div>";    
 
 //Client side functions
 function InitDropdown()
@@ -203,4 +202,9 @@ function readURL(input)
                                 
         reader.readAsDataURL(input.files[0]);
     }
+}
+
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
 }

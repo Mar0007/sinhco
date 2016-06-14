@@ -1,3 +1,12 @@
+<?php
+    $Modulo = modulo($loginmod ,$mysqli, "bloque card-panel", "",true);
+    
+    if(empty($Modulo))
+    {
+        require_once($tema."404.tema.php");
+        return;
+    }
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,6 +15,7 @@
     <meta name="Author" content="Negocios Web">
     <meta name="Designer" content="UNICAH">
     <meta name="Date" content="17 de Septiembre de 2015">
+    <title><?php echo $WebTitle ?></title>
 
     <!-- JQuery -->
     <script type="text/javascript" src="<?php echo GetURL("recursos/jquery.js")?>"></script>				
@@ -51,7 +61,7 @@
     <div class="container center-wrapper" style="margin-top: 50px">        
         <div class="row">
             <?php
-                modulo('login',$mysqli,"bloque card-panel ");
+                echo $Modulo;
             ?>
         </div>
     </div>
