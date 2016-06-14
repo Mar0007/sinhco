@@ -125,7 +125,7 @@
 		echo 
 		'
             
-				   <li    id="User_'.$row["idusuario"].'" class="dataitems">
+				   <li    id="'.$row["idusuario"].'" class="dataitems">
                             <a href="usuarioperfil/'.$row["idusuario"].'">';
                     echo'
                                 <div class="col s12 m4 four-cards">                                    
@@ -134,11 +134,11 @@
                                             <img id="UserImage" class="circle responsive-img" style="width:90px;height:90px;object-fit:cover;" src="'.GetUserImagePath($row["idusuario"],true).'">
                                         </div>
 
-                                        <div id="user-overview'.$row["idusuario"].'" class="center card-content-custom">                                    
-                                            <div id="getid" style="display:none" class="grey-text card-subtitle-small ">'.$row["idusuario"].'</div>
+                                        <div id="user-overview'.$row["idusuario"].'" class="center card-content-custom">                                   
                                             <div class="black-text card-title-small">'.$row["nombre"]." ".$row["apellido"].'</div>
+                                            <input type="hidden" id="IDUsuario" value="'.$row["idusuario"].'">
                                             <div class="grey-text card-subtitle-small ">'.$row["email"].'</div>
-                                            <a style="margin-top:15px;" class=" btn-flat blue-text lighten-1" onclick="javascript:Eliminar('.$row["idusuario"].')">Eliminar</a>
+                                            <a style="margin-top:15px;" class=" btn-flat blue-text lighten-1" onclick="Eliminar(\''.$row["idusuario"].'\')">Eliminar</a>
                                         </div>
                                     </div> 
                                 </div>
