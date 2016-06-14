@@ -108,14 +108,15 @@
             
             $mysqli->update("usuarios",
                             [
-                               "password" = $encrypass,
-                                "llave" = $llave
+                               "password" => $encrypass,
+                                "llave" => $llave
                             ],[
                                 "AND" =>
                                 [
                                     "idusuario" => $idusuario
                                 ]
                             ]);
+            echo "0";
             break;
 				
 	}
