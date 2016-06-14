@@ -81,9 +81,9 @@
                 </div>
             </div>
             <input type="hidden" id="result_no" value="6">
-            <div class="section center-align">
+            <div id="pulldata" class="section center-align">
             <a id="loadMore" onclick="javascript:loadmore()" class="btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect  waves-circle">
-                <span><i class="material-icons">add</i></span>
+                <span><i class="material-icons">add</i></span>                
             </a>
         </div>
         </div>
@@ -116,8 +116,14 @@
         getresult:val
       },
       success: function (response) {
-        var content = document.getElementById("project-list");
-        content.innerHTML = content.innerHTML+response;         
+        var content = document.getElementById("project-list");   
+          if(response == "")
+              {
+                $("#loadMore").hide();
+                  $("#pulldata").append('<div class="DataEmpty center"><div class="center grey-text">Parece que has llegado al final.</div></div>');
+                        return;
+              }          
+        content.innerHTML = content.innerHTML+response;          
         // We increase the value by 2 because we limit the results by 2
         document.getElementById("result_no").value = Number(val)+6;
       }

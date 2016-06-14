@@ -49,8 +49,70 @@
         <!--END Module Title-->
         
         <!--Module Data-->
-        <div class="">
-            <ul id="proyectostb" class="fixed-drop no-margin"></ul>
+        <div class="row">
+            <ul id="proyectostb" class="fixed-drop no-margin">
+                <?php
+                    $stmt = $mysqli->select("proyectos",
+            [
+
+               "proyectos.idproyecto",
+
+                "proyectos.nombre",
+                "proyectos.lugar",
+                "proyectos.fecha" 
+
+            ],[
+               "ORDER" => "proyectos.idproyecto DESC",
+                "LIMIT"=>  6
+
+            ]);
+
+            if(!$stmt)
+            {
+                if($mysqli->error()[2] != "")
+                    echo "Error:".$mysqli->error()[2];
+
+                return;
+            }
+            
+            if(empty($stmt))
+            {
+                echo "none";
+                return;
+            }	
+            
+            foreach($stmt as $row){
+                echo 
+                '   <li    id="'.$row["idproyecto"].'" class="dataproyectos">
+                        <a href="crearproyecto/'.$row["idproyecto"].'">';
+                echo'
+                            <div class="col s12 m4 four-cards">                                    
+                                <div class="card custom-small">
+                                    <div class="card-image">   
+                                        <img id="ProyectImage" class="responsive-img" style="height:120px;width:100%; object-fit:cover" src="'.GetProyectImagePath($row["idproyecto"], false).'">
+                                    </div>
+
+                                    <div id="proyect-overview'.$row["idproyecto"].'" class="card-content-custom">                                            
+                                        <div class="black-text card-title-small">'.$row["nombre"].'</div>
+                                        <div class="grey-text card-subtitle-small ">'.$row["lugar"].'</div>
+                                    </div>
+                                </div> 
+                            </div>
+                            </a>
+                        </li>
+                ';
+            }           
+                ?>
+            </ul>
+            
+        </div>
+        <input type="hidden" id="result_no" value="6">
+        <div class="row">
+            <div id="pulldata" class="section center-align">
+                <a id="loadMore" onclick="javascript:loadmore()" class="btn-flat light-blue-text accent-4 z-depth-2 waves-effect"> Cargar más                    
+                </a>
+                <div id="loader"></div>
+            </div>
         </div>
         <!--END Module Data-->
     
@@ -139,8 +201,7 @@
 
 
 <script>
-    
-     
+        
     $(document).ready(function(){  
         
         //initialize datepicker
@@ -186,14 +247,47 @@
 			url:"<?php echo GetURL("modulos/modadminproyectos/serviceadminproyectos.php?accion=1") ?>"
 		}).done(
 			function(data){
+                if(data == "none")
+				{
+                    $("#proyectostb").append('<li class="DataEmpty center"><div class="center grey-text"Es hora de agregar tu primer proyecto.</div></li>');                    
+					return;
+				}
 				$("#proyectostb").append(data);	                
                 $(".dataproyectos").fadeIn();
 				//Materialize.showStaggeredList("#proyectostb");
 			}
 		);
+        
         //end get data
     }); //end document ready
-    
+    function loadmore()
+    {
+        $("#loadMore").hide();
+        $("#loader").append(preloader);
+      var val = document.getElementById("result_no").value;
+      $.ajax({
+      type: 'post',
+      url: "<?php echo GetURL("modulos/modadminproyectos/loadproyectos.php")?>",
+      data: {
+        getresult:val
+      },
+      success: function (response) {
+        var content = document.getElementById("proyectostb");
+          if(response == "")
+          {
+            $("#loadMore").hide();
+              $("#pulldata").append('<div class="DataEmpty center"><div class="center grey-text">Parece que has llegado al final.</div></div>');
+                    return;
+          }
+        $("#loader").hide();
+          $("#loadMore").show();
+        
+        content.innerHTML = content.innerHTML+response;         
+        // We increase the value by 2 because we limit the results by 2
+        document.getElementById("result_no").value = Number(val)+6;          
+      }
+      });
+    }
     
     //Opening new Proyect modal
     function OpenNewModal (){
