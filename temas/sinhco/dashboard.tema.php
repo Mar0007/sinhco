@@ -13,9 +13,7 @@
         require_once($tema."404.tema.php");
         return;
     }
-    
-            
-    
+                
     $MenuHTML = menu($mysqli, 2, 'side-nav fixed leftside-navigation' ,'slide-out',
     '
             <li class="user-details cyan darken-2">

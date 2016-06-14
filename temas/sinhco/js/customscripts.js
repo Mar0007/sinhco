@@ -21,6 +21,7 @@ var preloader = '<div class="preloader-wrapper small active">'+
       '</div>'+
     '</div>'+
   '</div>'
+  
 //Client side functions
 function InitDropdown()
 {
@@ -213,4 +214,9 @@ function readURL(input)
                                 
         reader.readAsDataURL(input.files[0]);
     }
+}
+
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
 }

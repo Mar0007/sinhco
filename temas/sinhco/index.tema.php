@@ -8,7 +8,6 @@
         return;
     }
 ?>
-
 <!DOCTYPE html>
 <html lang="es_HN">
 <head>

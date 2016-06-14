@@ -3,12 +3,16 @@
 	require_once("funciones.php");
     
     inicio_sesion();
+
+    $WebTitle = "Sinhco - Login";
+    $loginmod = "login";
     
     if(isset($_GET['action']))
     {
         $Action = strtolower($_GET['action']);
-        if($Action == "logout")
+        switch($Action)
         {
+            case "logout":
             //Borramos los datos de la variable de sesion;
             $_SESSION = array();
             
@@ -25,10 +29,15 @@
             
             //Regresamos al Index
             header('Location:'.GetURL("inicio"));
-            die();            
+            die();
+            break;
+            case "reset":
+            
+            break;            
         }
     }
     
+    /*
     if(login_check($mysqli))
     {
 		if(isset($_SESSION['urltemp']) && $_SESSION['urltemp'] != "")
@@ -40,6 +49,7 @@
         header("Location: dashboard");
         die();
     }
-                                          
+    */
+                                       
 	require_once($tema."login.tema.php");
 ?>
