@@ -247,31 +247,9 @@
                         <label for="nombre-producto">Producto</label>
                     </div>
                     <div class="input-field col s12">
-                        <textarea id="descripcion-producto" name="descripcion-producto" length="750" maxlength="750"class="materialize-textarea"><?php echo $stmt[0]["descripcion"] ?></textarea>
+                        <textarea id="descripcion-producto" name="descripcion-producto" length="300" maxlength="300" class="materialize-textarea"><?php echo $stmt[0]["descripcion"] ?></textarea>
                         <label for="descripcion-producto">Descripcion</label>
-                    </div> 
-                    <div class="input-field col s12">
-						<!-- <i class="material-icons prefix">assignment_ind</i> -->	
-                        <select id="categoria-producto" name="categoria-producto">
-                            <option value="" href="" disabled selected>Elija la categoria</option>
-                            <?php
-                            
-                                $stmt = $mysqli->select("categoria_producto",
-                                [
-                                    "idcategoria","nombre"
-                                ]);
-                                
-                                if($stmt)
-                                {
-                                    foreach($stmt as $row)
-                                        echo '<option value="'.$row["idcategoria"].'">'.$row["nombre"].'</option>';
-                                }
-                                                                          					
-                            ?>				
-                        </select>
-                        <label for="categoria-producto">Categorias</label>
-				    	</div>
-						
+                    </div> 						
 						<div class="input-field col s12">
 						<!--<i class="material-icons prefix">assignment_ind</i> -->	
                         <select id="proveedor-producto" name="proveedor-producto"> 
@@ -291,6 +269,15 @@
                             ?>				
                         </select>
                         <label for="proveedor-producto">Proveedores</label>
+				    	</div>
+                        
+                        <div class="input-field col s12">
+						<!-- <i class="material-icons prefix">assignment_ind</i> -->	
+                        <select id="categoria-producto" name="categoria-producto">
+                            <option value="" href="" disabled selected>Elija la categoria</option>
+                            	
+                        </select>
+                        <label for="categoria-producto">Categorias</label>
 				    	</div>
                     
                     <input  type="submit" style="display:none">
@@ -313,6 +300,10 @@
    
    
     $(document).ready(function(){
+        
+        $("#proveedor-producto").change(function(){
+            llenarproveedor();
+        });
         
          $("#FileInput").change(handleFileSelect);
         //UPDATE INPUTS
@@ -521,7 +512,7 @@
             return;
         }
 
-        formData.append("idproducto",$("#idproducto").val());
+       formData.append("idproducto",$("#idproducto").val());
                
         $.ajax({
            url:"<?php echo GetURL("modulos/modcrearproductos/servicecrearproducto.php?accion=3")?>",
@@ -538,10 +529,10 @@
                 
                 $("#sidename").text($("#nombre-producto").val());
                 $("#sidecontent").text($("#descripcion-producto").val());
-                $("#sidecategoria").text($("#categorianombre-producto").val());
+                $("#sidecategoria").text($("#categoria-producto :selected").text());
                 $("#sideproveedor").text($("#proveedor-producto :selected").text());
               
-                $("#profile-header .image-header").attr("src","/sinhco/uploads/images/productos/Producto-"+$("#idproducto").val()+"."+a+"?"+(new Date()).getTime());
+                $("#profile-header .image-header").attr("src","/uploads/images/productos/Producto-"+$("#idproducto").val()+"."+a+"?"+(new Date()).getTime());
                 
                 
             
@@ -658,7 +649,7 @@
     function eliminar(idproducto){    
        //S var a =  $("#"+$("#idproducto").val()).attr('src');
             
-        ConfirmDelete("Borrar Producto","Esta seguro que quiere eliminar este producto","Seguro?",
+        ConfirmDelete("Borrar Producto","Esta seguro que quiere eliminar este producto","Eliminar",
         function(){
             $.ajax({
 				    url:"<?php echo GetURL("modulos/modcrearproductos/servicecrearproducto.php?accion=4") ?>",
@@ -675,5 +666,23 @@
                     );
         }
         );   
-    } 	
+    }
+    
+    function llenarproveedor(){
+        var fillprov = $("#proveedor-producto").val();
+        
+         $.ajax({
+                url:"<?php echo GetURL("modulos/modadminproductos/serviceadminproductos.php?accion=5") ?>",
+                method: 'POST',
+                data:{fillprov:fillprov}
+              }).done(function(data){           
+                 
+                    $("#categoria-producto").html(data);
+                    $('select').material_select();
+                 
+              }
+                                      
+              );
+    
+    }
 </script>
