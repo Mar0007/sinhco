@@ -220,3 +220,103 @@ function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(email);
 }
+
+
+//Search
+$(document).ready(function() 
+{
+    if ((typeof renderResults != typeof(Function))) 
+    {
+        $("input[type=search]").parents().first().hide();
+        console.info("renderResults->Is not defined");
+        return;
+    } 
+
+    // icon click
+    $('ul#nav-mobile li.search .search-wrapper i.material-icons').click(function() {
+        if ($('.search-results .focused').length) {
+        $('.search-results .focused').first()[0].click();
+        } else if ($('.search-results').children().length) {
+        $('.search-results').children().first()[0].click();
+        }
+    });
+
+    var debounce = function (fn) {
+        var timeout;
+        return function () {
+        var args = Array.prototype.slice.call(arguments),
+            ctx = this;
+
+        clearTimeout(timeout);
+        timeout = setTimeout(function () {
+            fn.apply(ctx, args);
+        }, 100);
+        };
+    };    
+
+
+    $('input#search').bind('keyup', debounce(function (e) {
+        if ($(this).val() < 2) 
+        {
+            renderResults(true);
+            return;
+        }
+
+        if (e.which === 38 || e.which === 40 || e.keyCode === 13) return;
+
+
+        renderResults();
+    }));
+
+    $('input#search').bind('keydown', debounce(function (e) {
+        // Escape.
+        if (e.keyCode === 27) 
+        {
+            $(this).val('');
+            $(this).blur();
+            renderResults(true);
+            return;
+        } else if (e.keyCode === 13) 
+        {
+            // enter
+            if ($('.search-results .focused').length) {
+                $('.search-results .focused').first()[0].click();
+            } else if ($('.search-results').children().length) {
+                $('.search-results').children().first()[0].click();
+            }
+            return;
+        }
+
+        // Arrow keys.
+        var focused;
+        switch(e.which) {
+        case 38: // up
+            if ($('.search-results .focused').length) 
+            {
+                focused = $('.search-results .focused');
+                focused.removeClass('focused');
+                focused.prev().addClass('focused');
+            }
+            break;
+
+        case 40: // down
+            if (!$('.search-results .focused').length) 
+            {
+                focused = $('.search-results').children().first();
+                focused.addClass('focused');
+            } else {
+            focused = $('.search-results .focused');
+            if (focused.next().length) {
+                focused.removeClass('focused');
+                focused.next().addClass('focused');
+            }
+            }
+            break;
+
+        default: return; // exit this handler for other keys
+        }
+        e.preventDefault();
+    }));
+
+
+});
