@@ -164,6 +164,33 @@
 					echo "0";					
 				});
             break;
+            
+            case 5:
+            
+            $fillprov = $_POST['fillprov'];
+            
+           $stmt= $mysqli->select("categoria_producto",
+            [
+                "[><]categoria_proveedor" => "idcategoria"
+            ],
+            [
+                "idcategoria","nombre"
+            ],
+            [
+                "idproveedor" => $fillprov
+                
+            ]);
+            
+            if(CheckDBError($mysqli)) return ;
+                        
+            foreach($stmt as $row){
+                
+                echo '<option value="'.$row["idcategoria"].'">'.$row["nombre"].'</option>';
+            }
+                        
+                        
+                     
+                break;
         default:
             echo "aa";
             break;

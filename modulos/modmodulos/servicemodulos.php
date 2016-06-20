@@ -32,6 +32,7 @@
 				
 				foreach ($stmt as $row) 
 				{
+<<<<<<< HEAD
                     $content=substr(strip_tags($row["modulo"]), 0, 1);
 					echo 
 					'
@@ -48,6 +49,9 @@
 						</li>
 					';									
 					
+=======
+					echo GetRowHTML($row);					
+>>>>>>> 11a55e53e79d6fbef0a25f328af0595e0dace1e8
 				}
 							
 				break;			
@@ -66,7 +70,38 @@
 				if(is_dir("../../uploads/images/editor/M_" . $idmodulo . "/"))
 					deleteDir("../../uploads/images/editor/M_" . $idmodulo . "/");
 
-				echo "0";				
+				echo "0";
+		case 'search':
+				$Keyword = $_POST['search'];	
+				$stmt = $mysqli->select("modulos",["idmodulo","modulo","tipo","descripcion"],
+				[
+					"AND" => 
+					[
+						"tipo" => 0,
+						"OR" => 
+						[
+							"modulo[~]" => $Keyword,
+							"descripcion[~]" => $Keyword 							
+						]
+					]
+				]
+				);
+				//echo $mysqli->last_query();
+				
+				if(CheckDBError($mysqli))
+					return;
+
+				if(empty($stmt))
+				{
+					echo "none";
+					return;
+				}					
+				
+				foreach ($stmt as $row) 
+				{
+					echo GetRowHTML($row);					
+				}
+										
 	}
 	
 	//Functions
@@ -89,5 +124,24 @@
 				"contenido" => "Eliminar"
 			)			
 		);		
+	}
+
+
+	function GetRowHTML($row)
+	{
+		return
+		'
+			<li id="'.$row["idmodulo"].'" style="display:none" class="dataitems collection-item avatar">
+				<i class="material-icons circle" style="background-color:#1665c1">view_module</i>
+				<a  class="black-text" href="#!">
+					<span class="title">'.$row["modulo"].'</span>								
+				</a>                 
+				<p class="grey-text lighten-2 title">'.$row['descripcion'].'</p>
+				<a class="">
+						'.GetDropDownSettingsRow($row["idmodulo"],GetMenuArray($row["tipo"] == 0)).'
+				</a> 
+																	
+			</li>
+		';		
 	}				
 ?>

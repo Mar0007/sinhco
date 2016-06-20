@@ -54,7 +54,7 @@
                     <label for="Nombre">Nombre</label>
                 </div>
                 <div class="input-field col s12">
-                    <input id="Descripcion" name="Descripcion" type="text" class="validate" length="750">
+                    <input id="Descripcion" name="Descripcion" type="text" class="validate"  maxlength="300" length="300">
                     <label for="Descripcion">Descripcion</label>
                 </div>               
                 
@@ -93,35 +93,13 @@
                         <label for="nombre-producto">Producto</label>
                     </div>
                     <div class="input-field col s12">
-                        <input id="descripcion-producto" length="750" name="descripcion-producto" type="text" class="validate"  >
+                        <input id="descripcion-producto" length="300"  maxlength="300" name="descripcion-producto" type="text" class="validate"  >
                         <label for="descripcion-producto">Descripcion</label>
                     </div>
-			
-                    <div class="input-field col s12">
-						<!-- <i class="material-icons prefix">assignment_ind</i> -->	
-                        <select id="categoria-producto" name="categoria-producto">
-                            <option value="" href="" disabled selected>Elija la categoria</option>
-                            <?php
-                            
-                                $stmt = $mysqli->select("categoria_producto",
-                                [
-                                    "idcategoria","nombre"
-                                ]);
-                                
-                                if($stmt)
-                                {
-                                    foreach($stmt as $row)
-                                        echo '<option value="'.$row["idcategoria"].'">'.$row["nombre"].'</option>';
-                                }
-                                                                          					
-                            ?>				
-                        </select>
-                        <label for="categoria-producto">Categorias</label>
-				    	</div>
-						
-						<div class="input-field col s12">
+                    
+                    <div class="input-field col s12" >
 						<!--<i class="material-icons prefix">assignment_ind</i> -->	
-                        <select id="proveedores-producto" name="proveedores-producto">
+                        <select  id="proveedores-producto" name="proveedores-producto" >
                             <option value="" href="" disabled selected>Elija el Proveedor</option>
                             <?php
                             
@@ -136,10 +114,22 @@
                                         echo '<option value="'.$row["idproveedor"].'">'.$row["nombre"].'</option>';
                                 }
                                                                           					
-                            ?>				
+                            ?>
+                            				
                         </select>
                         <label for="proveedores-producto">Proveedores</label>
 				    	</div>
+			
+                    <div class="input-field col s12">
+						<!-- <i class="material-icons prefix">assignment_ind</i> -->	
+                        <select id="categoria-producto" name="categoria-producto">
+                            <option value="" href="" disabled selected>Elija la categoria</option>
+                            				
+                        </select>
+                        <label for="categoria-producto">Categorias</label>
+				    	</div>
+						
+						
                     <input  type="submit" style="display:none">
                 </div> 
             </div>
@@ -157,6 +147,11 @@
 <script>
  
  $(document).ready(function(){
+     
+     $("#proveedores-producto").change(function(){
+         llenarproveedor();
+     });
+     
       $('.slider').slider({full_width: true});
 	   $('select').material_select();
         $.ajax({
@@ -224,6 +219,7 @@ function CrearProducto (){
             return;
         }
         
+        
              $.ajax({
                 url:"<?php echo GetURL("modulos/modadminproductos/serviceadminproductos.php?accion=2") ?>",
                 method: 'POST',
@@ -286,6 +282,24 @@ function mostrarfrmagregar (){
                 Materialize.updateTextFields();                      
             }
         });
+    }
+    
+    function llenarproveedor(){
+        var fillprov = $("#proveedores-producto").val();
+        
+         $.ajax({
+                url:"<?php echo GetURL("modulos/modadminproductos/serviceadminproductos.php?accion=5") ?>",
+                method: 'POST',
+                data:{fillprov:fillprov}
+              }).done(function(data){           
+                 
+                    $("#categoria-producto").html(data);
+                    $('select').material_select();
+                 
+              }
+                                      
+              );
+    
     }
      
 

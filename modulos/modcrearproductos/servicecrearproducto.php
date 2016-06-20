@@ -87,7 +87,7 @@
                     $newproveedor = $_POST['proveedor-producto'];
                     $imagen		= $_FILES['imagen-producto']['tmp_name'];
 					
-				if($imagen != "")
+				if($_FILES['imagen-producto']['error'] == UPLOAD_ERR_OK)
 				{
 					$target_dir = "../../uploads/images/productos/Producto-";
 					$imageFileType = pathinfo($_FILES['imagen-producto']['name'],PATHINFO_EXTENSION);  										
@@ -105,7 +105,7 @@
 								unlink($Img);
 						}
 					}
-				}					
+									
 				
 					
 					$mysqli->update("productos",
@@ -121,7 +121,22 @@
 								"idproducto" => $idproducto
 								
 							]
-						]);				
+						]);		
+				} else 
+					$mysqli->update("productos",
+						[
+                            "nombre" => $newnombre,
+                            "descripcion"  => $newdescripcion,
+                            "idcategoria" => $newcategoria,
+                            "idproveedor" => $newproveedor
+                        ],[
+							"AND" => 
+							[
+								"idproducto" => $idproducto
+								
+							]
+						]);
+						
 						
 						if( CheckDBError($mysqli) ) return false;
 				     echo "0"; 
@@ -142,7 +157,7 @@
 						"idproducto"=>$IDproducto
 					]);
 					
-					//if( CheckDBError($mysqli) ) return false;
+					if( CheckDBError($mysqli) ) return false;
 
 					//Borra dentro de la base imagenes y la carpeta, cada imagen que encontro 
 					foreach ($a as $key) {
@@ -171,7 +186,7 @@
 						"idproducto" => $IDproducto					
 					]
 					]);	
-					//if( CheckDBError($mysqli) ) return false;		
+					if( CheckDBError($mysqli) ) return false;		
 					
 					//Borra el producto con el mismo idproducto
 					$mysqli->delete("productos",
@@ -183,7 +198,7 @@
 					]);		
 						
 					@unlink('../../uploads/images/productos/Producto-'.$IDproducto.'.jpg');
-				//if( CheckDBError($mysqli) ) return false;
+				if( CheckDBError($mysqli) ) return false;
 				echo "0" ;
 							
 				break;
