@@ -102,7 +102,7 @@
                 <div id="img-loader"></div>
             </div>
             <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-                <a id="crearProyecto" onclick="ItemModal()" data-target="frmagregar" class="btn-floating btn-large blue-grey darken-2 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Agregar imagen">
+                <a id="crearProyecto" onclick="ItemModal()" data-target="frmagregar" class="btn-floating btn-large light-blue accent-4 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Agregar imagen">
                                 <i class="large material-icons">add</i>
                 </a>                 
             </div> 
@@ -117,7 +117,7 @@
             <div id="contentUploads">	
                 <form id="frmUpload" method="post" autocomplete="off" enctype="multipart/form-data" style="max-height:120px">
                     <div style="position:relative">
-                        <img id="proyect-img" src="<?php echo GetURL("uploads/covers/camerabg.png")?>" style="width:100%; object-fit:cover; height:220px;" class="responsive-img"></img>                    
+                        <img id="proyect-img" src="<?php echo GetURL("uploads/covers/camerabg.png")?>" style="width:100%; object-fit:cover; height:220px;" class="responsive-img">                  
                         <div class="input-secondary-menu circle">
                             <div class="input-secondary-menu circle btn-floating btn-small transparent z-depth-0 waves-effect waves-circle file-field input-field" style="position:absolute;right:2px;top:-17px">
                                 <i class="material-icons white-text">camera_alt</i>

@@ -21,10 +21,10 @@
 		return;
 	}	
 		
-    if($_SESSION['idusuario'] == $idusuario){
+    if($_SESSION['idusuario'] == $idusuario || $_SESSION['idusuario'] == "admin"){
         echo '
             <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-            <a id="btnCrear" class="btn-floating btn-large blue-grey darken-2 tooltipped"  onclick="OpenModal()" data-position="left" data-delay="50" data-tooltip="Editar información">
+            <a id="btnCrear" class="btn-floating btn-large light-blue accent-4 tooltipped"  onclick="OpenModal()" data-position="left" data-delay="50" data-tooltip="Editar información">
                 <i class="large material-icons">mode_edit</i>
             </a>
         </div>
@@ -48,20 +48,21 @@
 	AddHistory(($idusuario != "") ? $stmt[0]["nombre"] : "Nuevo usuario","");
 ?>				
 <input type="hidden" id="maxsize" value="<?php echo parse_size(ini_get('upload_max_filesize')) ?>">
-<div class="container">
+<div id="profile-card" class="container">
 	<div class="row">
         <div class="card s12 m6">
             <div id="user-coverimg" class="" style="background-image:url()">
-                <img  class="user-cover" style="max-height: 245.6px;
+                <img id="user-setcover" class="user-cover" style="max-height: 245.6px;
 height: 240px; cursor:auto" src="<?php echo GetCoverImagePath($idusuario)?>">
             </div>
             
             <div id="user-displayimg" class="center">
-                <img  id="" class="user-img" style="cursor:auto" src="<?php echo GetUserImagePath($idusuario)?>">                 
+                <img  id="user-setimg" class="user-img" style="cursor:auto" src="<?php echo GetUserImagePath($idusuario)?>">                 
             </div>
             
             <div class="card-content center">
-                <h4 id="user-name" class=""><?php echo $stmt[0]["nombre"]." ".$stmt[0]["apellido"] ?></h4>
+                <h4 id="user-wholename" class=""><join id="user-name" ><?php echo $stmt[0]["nombre"]?></join> <join id="user-lastname"><?php echo $stmt[0]["apellido"]?></join></h4>
+                
                 <p id="user-username" class="grey-text"><?php echo $idusuario ?></p>
                 <p id="user-email" class="grey-text"><?php echo $stmt[0]["email"] ?></p>
                 <p id="user-state" class="grey-text"><?php echo "Usuario ".(($stmt[0]["estado"] == 1 ) ? "activo" : "inactivo") ?></p>
@@ -69,7 +70,7 @@ height: 240px; cursor:auto" src="<?php echo GetCoverImagePath($idusuario)?>">
         </div>
         
         <?php
-            if($_SESSION['idusuario'] == $idusuario){
+            if($_SESSION['idusuario'] == $idusuario || $_SESSION['idusuario'] == "admin"){
                 echo
                     '
                         <div class="divider"></div>
@@ -95,14 +96,15 @@ height: 240px; cursor:auto" src="<?php echo GetCoverImagePath($idusuario)?>">
     <div class="modal-content no-padding">
         <form id="frmusuario" autocomplete="off" method="POST" enctype="multipart/form-data" action="javascript:Editar()">
             <div id="user-backimg" class="" style="background-image:url();">
-                <img  class="user-cover" style="max-height: 245.6px;
-height: 240px;" src="<?php echo GetCoverImagePath($idusuario)?>">
+                <img id="user-cover" class="user-cover" style="max-height: 245.6px;
+height: 240px;" src="<?php echo GetURL("uploads/covers/cover-small.jpg")?>">
                 <input style="display:none" type="file" name="user-cover-img" id="FileInput2" accept=".png,.jpg"/>
                 <span style="visibility:hidden"><a id="" onclick="$('#user-backimg').find('#FileInput2').click();" class="waves-effect waves-circle input-secondary-menu white-text"><i class="material-icons" style="padding:4px">camera_alt</i></a></span>
+                <input id="InitImage" type="hidden" value="">
             </div>
             
             <div id="user-rndimg" class="center">
-                <img  id="" class="user-img" src="<?php echo GetUserImagePath($idusuario)?>"> 
+                <img  id="user-img" class="user-img" src="<?php echo GetUserImagePath($idusuario)?>"> 
                 <input style="display:none" type="file" name="user-img" id="FileInputRndImg" accept=".png,.jpg"/>
                 <span style="visibility:hidden"><a id="" onclick="$('#user-rndimg').find('#FileInputRndImg').click();" class="waves-effect waves-circle user-img-input img-input-btn  white-text"><i class="material-icons" style="padding:11px">camera_alt</i></a></span>
             </div>        
@@ -114,7 +116,7 @@ height: 240px;" src="<?php echo GetCoverImagePath($idusuario)?>">
                     </div>
                 <div class="row">                    		
                     <div class="input-field col s6">			
-                        <input id="usuario-nombre" name="nombre" type="text" class="validate" required value="<?php echo $stmt[0]["nombre"] ?>" >
+                        <input id="usuario-nombre" name="nombre" type="text" class="validate" required  >
                         <label for="usuario-nombre">Nombre</label>
                     </div>
                     <div class="input-field col s6">			
@@ -125,7 +127,7 @@ height: 240px;" src="<?php echo GetCoverImagePath($idusuario)?>">
                 
                 <div class="row">
                     <div class="input-field col s12 m6 l6">			
-                        <input id="usuario-email" name="email" type="email" class="validate" required value="<?php echo $stmt[0]["email"] ?>" >
+                        <input id="usuario-email" name="email" type="email" class="validate" required  >
                         <label for="usuario-email">Email</label>
                     </div>	
                     <div class="input-field col s12 m6 l6">
@@ -141,8 +143,8 @@ height: 240px;" src="<?php echo GetCoverImagePath($idusuario)?>">
 		</form>
 	</div>
      <div class="modal-footer">
-            <a id="btnSaveDialogUsr" class="btn blue darken-1 waves-effect " onclick="$('#modalFrmAdd').find('form').find(':submit').click()">Guardar<i class="material-icons right"></i></a>
-            <a id="btnCancelDialogUsr" class="btn-flat modal-action modal-close waves-effect waves-light">Cancelar<i class="material-icons right"></i></a>           
+            <a id="btnSaveDialogUsr" class="btn blue darken-1 waves-effect ">Guardar<i class="material-icons right"></i></a>
+            <a id="btnCancelDialogUsr" class="btn-flat modal-action modal-close  waves-effect waves-light">Cancelar<i class="material-icons right"></i></a>           
     </div> 
 </div>
 
@@ -221,17 +223,25 @@ height: 240px;" src="<?php echo GetCoverImagePath($idusuario)?>">
 	
     function OpenModal()
 	{
-		var frm = $('#modalFrmAdd').find('form');
-		frm.trigger('reset');
-							
-		//At last open it.
-		$('#modalFrmAdd').openModal({
-            dismissible: false,
-            complete: function() { 
-                //document.getElementById("custom-proyecto").reset();   
-                $("#modalFrmAdd").find("form").trigger("reset");
-                Materialize.updateTextFields();
+		$( "#btnSaveDialogUsr" ).unbind('click').click(function() {
+          if (!$("#frmusuario")[0].checkValidity())
+            {
+                $("#frmusuario").find(':submit').click();
+                Materialize.toast('Todos los campos son requeridos', 4000);
+                return;
             }
+            Editar();							
+       });
+        
+		//At last open it.
+        $("#modalFrmAdd").find("form").trigger("reset");        
+        $("#usuario-nombre").val($("#profile-card").find('#user-name').text());    
+        $("#usuario-apellido").val($("#profile-card").find('#user-lastname').text());    
+        $("#usuario-email").val($("#profile-card").find('#user-email').text());
+            
+        Materialize.updateTextFields();
+		$('#modalFrmAdd').openModal({
+            dismissible: false            
             });
         Materialize.updateTextFields();		
 	}
@@ -292,33 +302,42 @@ height: 240px;" src="<?php echo GetCoverImagePath($idusuario)?>">
 			contentType: false,
 			processData: false
 		}).done(function(data){
-			if(data == "0")
-			{
-				var nombre   = $("#usuario-nombre").val();
-                var apellido = $("#usuario-apellido").val();
-                
-                $("#user-name").text(nombre + " " + apellido);                                
-                $("#user-email").text($("#usuario-email").val());
-                
-                //UPDATE User cover
-                if ($("#FileInput2").val() != ""){
-                    var extention = $("#FileInput2").val().substr($("#FileInput2").val().lastIndexOf('.')+1);
-                $("#user-coverimg .user-cover").attr("src","/uploads/covers/Cover-"+$("#idusuario").val()+"."+extention+"?"+(new Date()).getTime());
-                
-                }
-                                
-                //UPDATE User image
-                if ($("#FileInputRndImg").val() != ""){
-                    var extention = $("#FileInputRndImg").val().substr($("#FileInputRndImg").val().lastIndexOf('.')+1);
-                $("#user-displayimg .user-img").attr("src","/uploads/avatars/"+$("#idusuario").val()+"."+extention+"?"+(new Date()).getTime());
-                $(".profile-image").attr("src","/uploads/avatars/"+$("#idusuario").val()+"."+extention+"?"+(new Date()).getTime());
-                }
-                                
-                Materialize.toast('Usuario actualizado', 3000);
-                $("#modalFrmAdd").closeModal();
-			}				
-			else
-				swal("Error", data, "error");
+            switch(data){
+                case "0":
+                    var nombre   = $("#usuario-nombre").val();
+                    var apellido = $("#usuario-apellido").val();
+
+                    $("#user-wholename").text(nombre + " " + apellido);                                
+                    $("#user-email").text($("#usuario-email").val());
+
+                    //UPDATE User cover
+                    if ($("#FileInput2").val() != ""){
+                        var extention = $("#FileInput2").val().substr($("#FileInput2").val().lastIndexOf('.')+1);
+                    $("#user-coverimg .user-cover").attr("src","/uploads/covers/Cover-"+$("#idusuario").val()+"."+extention+"?"+(new Date()).getTime());
+
+                    }
+
+                    //UPDATE User image
+                    if ($("#FileInputRndImg").val() != ""){
+                        var extention = $("#FileInputRndImg").val().substr($("#FileInputRndImg").val().lastIndexOf('.')+1);
+                    $("#user-displayimg .user-img").attr("src","/uploads/avatars/"+$("#idusuario").val()+"."+extention+"?"+(new Date()).getTime());
+                   // $(".profile-image").attr("src","/uploads/avatars/"+$("#idusuario").val()+"."+extention+"?"+(new Date()).getTime());
+                    }
+
+                    Materialize.toast('Usuario actualizado', 3000);
+                    $("#modalFrmAdd").closeModal();
+                    
+                    break;
+                case "1":
+                    swal("Error", "Otra persona ya está usando este correo electrónico.", "error");
+                    
+                    break;
+                default:
+                    swal("Error", data, "error");
+                    break;                
+            }
+			
+			
 		});					
 	}
 				

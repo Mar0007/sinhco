@@ -32,10 +32,11 @@
 				
 				foreach ($stmt as $row) 
 				{
+                    $content=substr(strip_tags($row["modulo"]), 0, 1);
 					echo 
 					'
 						<li id="'.$row["idmodulo"].'" style="display:none" class="dataitems collection-item avatar">
-							<i class="material-icons circle" style="background-color:#1665c1">view_module</i>
+							<h5 class=" circle" style="text-align:center; vertical-align:middle; line-height:40px; color:#FFF;background-color:#1665c1">'.$content.'</h5>
 							<a  class="black-text" href="#!">
 								<span class="title">'.$row["modulo"].'</span>								
 							</a>                 

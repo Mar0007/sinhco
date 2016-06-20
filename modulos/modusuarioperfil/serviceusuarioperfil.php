@@ -28,17 +28,14 @@
 				$nombre   	= $_POST["nombre"];
                 $apellido  	= $_POST["apellido"];
 				$email   	= $_POST["email"];
-				//$nacimiento = $_POST["nacimiento"];
-				//$admin   	= (isset($_POST["admin"])) ? true : false;
 				$estado   	= (isset($_POST["estado"]));
-				//$password   = $_POST["password"];
 				$imagen_usr		= $_FILES['user-img']['tmp_name'];
                 $imagen_cover_usr		= $_FILES['user-cover-img']['tmp_name'];
             
-				
-				//echo "Imagen->".$imagen."<br>";
-				
-				if($imagen_usr != "")
+				$getemail = $mysqli->get("usuarios","email",["idusuario"=> $idusuario]);
+            
+            if($getemail == $email){
+                if($imagen_usr != "")
 				{
 					$target_dir = "../../uploads/avatars/";
 					$imageFileType = pathinfo($_FILES['user-img']['name'],PATHINFO_EXTENSION);  										
@@ -93,10 +90,13 @@
 						]);				
 						
 						if( CheckDBError($mysqli) ) return false;
-				     echo "0";				
-				
-						
-				break;		
+				     echo "0";	         
+            }
+            else
+                echo "1";
+            
+                           
+            	break;		
 		case 4: //Eliminar
 				break;
         case 5: //Change Password
