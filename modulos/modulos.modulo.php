@@ -76,6 +76,11 @@
 	$(document).ready(function()
 	{						
 		//Get data
+		GetAjaxData();
+	});
+
+	function GetAjaxData()
+	{
 		$.ajax({
 			url:"<?php echo GetURL("modulos/modmodulos/servicemodulos.php?accion=1"); ?>"
 		}).done(
@@ -89,7 +94,7 @@
 				
 				if(data.indexOf("<li") > -1)
 				{
-					$("#datacontainer").append(data);
+					$("#datacontainer").html(data);
 					InitDropdown();
 					$(".dataitems").fadeIn();
 				}
@@ -98,8 +103,8 @@
 					Materialize.toast('Error al traer los modulos', 3000,"red");				
 					console.error("GetAjax->" + data);					
 				}
-			});		
-	});
+			});				
+	}
 
 	function OpenModal()
 	{
@@ -174,5 +179,19 @@
 		});
 		
 	}
+
+	var SearchModule = 
+	{	
+		DefaultAjaxURL    : "<?php echo GetURL("modulos/modmodulos/servicemodulos.php?accion=1"); ?>",
+		SearchAjaxURL     : "<?php echo GetURL("modulos/modmodulos/servicemodulos.php?accion=search")?>",
+		ContainerSelector : "#datacontainer",
+		//Optional
+		EmptyText 		  : 'No se encontro modulos',
+		DoneExtraAction   : function()
+		{
+			InitDropdown();
+			$(".dataitems").show();			
+		}
+	};
 		
 </script>

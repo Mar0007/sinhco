@@ -1,6 +1,17 @@
 <?php
     require_once '/recursos/medoo.php';    
-        
+    
+    //Mail info
+    $phpEmailUser = "fbsinhco@gmail.com";
+    $phpEmailPass = "Jugomontana";
+    
+    //PhpMailer
+    $UsePHPMailer = true;
+    $EmailHost = 'smtp.gmail.com';
+    $EmailPort = 587;
+    $EmailUseSMTPAuth = true;
+    $EmailSMTPSecure = 'tls'; 
+
     try
     {
         $mysqli = @ new medoo([

@@ -181,7 +181,7 @@ height: 240px;" src="<?php echo GetCoverImagePath($idusuario)?>">
 </div>
 <!--END CHANGE PASS MODAL-->
 <!-- Import SHA512 functions -->
-<script src="recursos/sha512.js"></script>
+<script src="<?php echo GetURL("recursos/sha512.js")?>"></script>
 
 <script>
 	$(document).ready(function(){	
@@ -193,7 +193,30 @@ height: 240px;" src="<?php echo GetCoverImagePath($idusuario)?>">
 			selectYears: 15, // Creates a dropdown of 15 years to control year
 			format: 'yyyy-mm-dd',
             max: true,
-		});		        
+		});	
+        //toggle submit button in modal
+         $('#newpass').keyup(function() {
+
+            var empty = false;
+            $('#newpass').each(function() {
+                if ($(this).val().length == 0) {
+                    empty = true;
+                }
+            });
+
+            if (empty) {
+                $('#guardar').addClass("disabled");
+                $('#guardar').removeClass("modal-close");
+                $('#guardar').removeClass("blue-text");
+               
+            } else {
+                $('#guardar').removeClass("disabled");
+                $('#guardar').addClass("modal-close");
+                $('#guardar').addClass("blue-text");
+            }
+        });
+        
+        //end toggle 
 	});	
 	
     function OpenModal()
@@ -230,6 +253,8 @@ height: 240px;" src="<?php echo GetCoverImagePath($idusuario)?>">
 		else{
             //ShowLoadingSwal();
 		var formData = new FormData($('#frmchangepass')[0]);
+        formData.set("newpass", hex_sha512(formData.get("newpass")));		
+		ShowLoadingSwal();
 		
 		$.ajax(
 			{
@@ -278,15 +303,15 @@ height: 240px;" src="<?php echo GetCoverImagePath($idusuario)?>">
                 //UPDATE User cover
                 if ($("#FileInput2").val() != ""){
                     var extention = $("#FileInput2").val().substr($("#FileInput2").val().lastIndexOf('.')+1);
-                $("#user-coverimg .user-cover").attr("src","/sinhco/uploads/covers/Cover-"+$("#idusuario").val()+"."+extention+"?"+(new Date()).getTime());
+                $("#user-coverimg .user-cover").attr("src","/uploads/covers/Cover-"+$("#idusuario").val()+"."+extention+"?"+(new Date()).getTime());
                 
                 }
                                 
                 //UPDATE User image
                 if ($("#FileInputRndImg").val() != ""){
                     var extention = $("#FileInputRndImg").val().substr($("#FileInputRndImg").val().lastIndexOf('.')+1);
-                $("#user-displayimg .user-img").attr("src","/sinhco/uploads/avatars/"+$("#idusuario").val()+"."+extention+"?"+(new Date()).getTime());
-                $(".profile-image").attr("src","/sinhco/uploads/avatars/"+$("#idusuario").val()+"."+extention+"?"+(new Date()).getTime());
+                $("#user-displayimg .user-img").attr("src","/uploads/avatars/"+$("#idusuario").val()+"."+extention+"?"+(new Date()).getTime());
+                $(".profile-image").attr("src","/uploads/avatars/"+$("#idusuario").val()+"."+extention+"?"+(new Date()).getTime());
                 }
                                 
                 Materialize.toast('Usuario actualizado', 3000);

@@ -535,8 +535,8 @@ nav ul li a:hover, nav ul a.active{
     background-color: transparent;
     
 }
-nav ul li.active-indicator{
-    /*background-color: transparent;*/
+nav ul li.active{
+    background-color: transparent;
     height: 64px !important;
     box-shadow: 0px -2px 0px 0px rgb(0, 145, 234) inset;
 }
@@ -763,4 +763,20 @@ textarea.materialize-textarea:focus.invalid + label:after {
   -ms-user-select: none;       /* Internet Explorer/Edge */
   user-select: none;           /* Non-prefixed version, currently
                                   not supported by any browser */
+}
+
+/* Search fix on chrome
+*/
+nav .nav-wrapper form, nav .nav-wrapper form .input-field {
+    height: 100%;
+}
+
+nav form .input-field input[type=search] {
+    padding-left:0px;
+    padding-right:4rem;
+    width:calc(100% - 4rem);
+}
+
+nav form .input-field input[type=search] ~ .material-icons {
+    color: inherit;
 }

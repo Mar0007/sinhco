@@ -21,7 +21,7 @@
 			return;
 		}
 		
-		header("Location: dashboard");
+		header("Location: ".GetURL(dashboard));
         return;
 	}		
 	//echo "<h3>$titulo</h3>";
@@ -29,10 +29,10 @@
 ?>
 <div class="row center">
     <?php
-						echo "<img id=\"UserImage\" class=\"circle responsive-img\" style=\"width:128px;height:auto\" src=\"".GetUserImagePath(0)."\">";
-					?>
+		echo "<img id=\"UserImage\" class=\"circle responsive-img\" style=\"width:128px;height:auto\" src=\"".GetUserImagePath(0)."\">";
+	?>
     
-<form id="loginform" action="login.php" method="POST" onsubmit="javascript:encriptarpassw()" autocomplete="off" name="loginform">
+<form id="loginform" action="login" method="POST" onsubmit="javascript:encriptarpassw()" autocomplete="off" name="loginform">
 	<div class="input-field col s12">		
 		<input type="text" name="idusuario" id="idusuario" />
 		<label for="idusuario">Usuario</label>
@@ -44,20 +44,17 @@
 	<input type="hidden" name="passw" id="passw" value=""/>
 	<input type="submit"  value="Ingresar" style="display:none"/>
 	
-    <a class="btn-floating btn-large right right-top-margin blue darken-1 waves-effect"   onclick="$('#loginform').find(':submit').click();">
+    <a class="btn-floating btn-large right right-top-margin blue darken-1 waves-effect" onclick="$('#loginform').find(':submit').click();">
         <i class="material-icons">send</i>
     </a>	
 </form>
+<a href="<?php echo GetURL("reset") ?>" style="margin-left:10px;bottom:0px;margin-top:60px" class="left">Recuperar contraseña</a>
     </div>
 <!-- Import SHA512 functions -->
-<script src="recursos/sha512.js"></script>
+<script src="<?php echo GetURL("recursos/sha512.js") ?>"></script>
 <script>		
 	
 	$(document).ready(function() {
-		<?php
-			if($mensaje != "")
-				echo "LoginFrm();";
-		?>					            
 	});	
 	
 	function encriptarpassw()

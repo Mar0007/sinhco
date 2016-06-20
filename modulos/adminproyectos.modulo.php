@@ -240,26 +240,10 @@
             }
         });
         
-        //end toggle
+        //end toggle        
         
-        //get data
-        $.ajax({
-			url:"<?php echo GetURL("modulos/modadminproyectos/serviceadminproyectos.php?accion=1") ?>"
-		}).done(
-			function(data){
-                if(data == "none")
-				{
-                    $("#proyectostb").append('<li class="DataEmpty center"><div class="center grey-text"Es hora de agregar tu primer proyecto.</div></li>');                    
-					return;
-				}
-				$("#proyectostb").append(data);	                
-                $(".dataproyectos").fadeIn();
-				//Materialize.showStaggeredList("#proyectostb");
-			}
-		);
-        
-        //end get data
     }); //end document ready
+    
     function loadmore()
     {
         $("#loadMore").hide();

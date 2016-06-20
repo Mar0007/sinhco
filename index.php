@@ -42,8 +42,13 @@
             require_once($tema."404.tema.php");
             break;
         case "login":
+        case "resetpass":
             header("Location: " . GetURL("login"));
             die();        
+            break;
+        case "reset":
+            $loginmod = "resetpass";
+            require_once($tema."login.tema.php");
             break;
         
         default: 
