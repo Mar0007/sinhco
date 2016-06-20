@@ -35,7 +35,7 @@
                 
                 <ul class="tabs">
                     <li onclick="llenar(1)" class="tab col s3"><a class="active" href="#test1">Dosificadores</a></li>
-                    <li onclick="llenar(2)" class="tab col s3"><a href="#test2">Hipoclorito de Calcio</a></li>
+                    <li onclick="llenar(2)" class="tab col s3"><a href="#test2">Pastillas Hipoclorito</a></li>
                 </ul> 
                        
             </div>
@@ -105,7 +105,7 @@
         var cells = $("#categories").children();
         Proveedor = cells[1].children[0].children[0].innerHTML ;
         var cells2 = $(".tabs").children();
-        Categoria= cells2[a-1].children[0].innerHTML;
+        Categoria = cells2[a-1].children[0].innerHTML;
 
           $.ajax({
                 url:"<?php echo GetURL("modulos/modproductos/serviceproductos.php?accion=2") ?>",

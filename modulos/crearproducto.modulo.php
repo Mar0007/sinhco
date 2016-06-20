@@ -508,7 +508,7 @@
         
         if(!formData.has('categoria-producto') || !formData.has('proveedor-producto'))
         {
-            Materialize.toast('<i class="material-icons">highlight_off</i> Todos los campos son requeridos', 4000,"red");
+            Materialize.toast(' Todos los campos son requeridos', 4000,"red");
             return;
         }
 
@@ -531,8 +531,10 @@
                 $("#sidecontent").text($("#descripcion-producto").val());
                 $("#sidecategoria").text($("#categoria-producto :selected").text());
                 $("#sideproveedor").text($("#proveedor-producto :selected").text());
-              
-                $("#profile-header .image-header").attr("src","/uploads/images/productos/Producto-"+$("#idproducto").val()+"."+a+"?"+(new Date()).getTime());
+                if ($("#FileInput2").val()!="") {
+                    $("#profile-header .image-header").attr("src","/uploads/images/productos/Producto-"+$("#idproducto").val()+"."+a+"?"+(new Date()).getTime());
+                }
+                
                 
                 
             
@@ -544,7 +546,7 @@
             }
             else
             {
-                Materialize.toast('<i class="material-icons">highlight_off</i> Error al guardar', 4000,"red");
+                Materialize.toast(' Error al guardar', 4000,"red");
                 console.error("Error->Editar():"+data);
             }
             
