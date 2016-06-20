@@ -123,6 +123,8 @@
 							]
 						]);		
 				} else 
+				
+				
 					$mysqli->update("productos",
 						[
                             "nombre" => $newnombre,
