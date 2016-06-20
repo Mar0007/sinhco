@@ -221,102 +221,127 @@ function validateEmail(email) {
     return re.test(email);
 }
 
+String.prototype.ltrim = function() {
+    var trimmed = this.replace(/^\s+/g, '');
+    return trimmed;
+};
 
-//Search
+
+// ----------- Search --------------
 $(document).ready(function() 
 {
-    if ((typeof renderResults != typeof(Function))) 
+    //Mirror search inputs
+    $('.mirror').on('keypress', function() {
+        $('.mirror').val($(this).val().ltrim());
+    });    
+    
+    if(typeof SearchModule === 'undefined' || SearchModule === null)
     {
-        $("input[type=search]").parents().first().hide();
+        $(".search-textbox").closest("form").hide();
         console.info("renderResults->Is not defined");
         return;
-    } 
+    }
 
-    // icon click
-    $('ul#nav-mobile li.search .search-wrapper i.material-icons').click(function() {
-        if ($('.search-results .focused').length) {
-        $('.search-results .focused').first()[0].click();
-        } else if ($('.search-results').children().length) {
-        $('.search-results').children().first()[0].click();
-        }
-    });
+    //Disable form submit
+    $('.search-textbox').parents("form").submit(function(e) {e.preventDefault()}); 
 
-    var debounce = function (fn) {
-        var timeout;
-        return function () {
-        var args = Array.prototype.slice.call(arguments),
-            ctx = this;
-
-        clearTimeout(timeout);
-        timeout = setTimeout(function () {
-            fn.apply(ctx, args);
-        }, 100);
-        };
-    };    
-
-
-    $('input#search').bind('keyup', debounce(function (e) {
+    //Bind on key events
+    $('.search-textbox').bind('keyup', debounce(function (e) {
         if ($(this).val() < 2) 
         {
-            renderResults(true);
+            renderResults(this,true);
             return;
         }
 
         if (e.which === 38 || e.which === 40 || e.keyCode === 13) return;
 
 
-        renderResults();
+        renderResults(this);
     }));
 
-    $('input#search').bind('keydown', debounce(function (e) {
+    $('.search-textbox').bind('keydown', debounce(function (e) {
         // Escape.
         if (e.keyCode === 27) 
         {
             $(this).val('');
             $(this).blur();
-            renderResults(true);
-            return;
-        } else if (e.keyCode === 13) 
-        {
-            // enter
-            if ($('.search-results .focused').length) {
-                $('.search-results .focused').first()[0].click();
-            } else if ($('.search-results').children().length) {
-                $('.search-results').children().first()[0].click();
-            }
+            renderResults(this,true);
             return;
         }
-
-        // Arrow keys.
-        var focused;
-        switch(e.which) {
-        case 38: // up
-            if ($('.search-results .focused').length) 
-            {
-                focused = $('.search-results .focused');
-                focused.removeClass('focused');
-                focused.prev().addClass('focused');
-            }
-            break;
-
-        case 40: // down
-            if (!$('.search-results .focused').length) 
-            {
-                focused = $('.search-results').children().first();
-                focused.addClass('focused');
-            } else {
-            focused = $('.search-results .focused');
-            if (focused.next().length) {
-                focused.removeClass('focused');
-                focused.next().addClass('focused');
-            }
-            }
-            break;
-
-        default: return; // exit this handler for other keys
-        }
-        e.preventDefault();
     }));
 
 
 });
+
+var debounce = function (fn) {
+    var timeout;
+    return function () {
+    var args = Array.prototype.slice.call(arguments),
+        ctx = this;
+
+    clearTimeout(timeout);
+    timeout = setTimeout(function () {
+        fn.apply(ctx, args);
+    }, 200);
+    };
+};
+
+var LastSearch = "";
+var AjaxRequest;
+function renderResults(searchinput,bClear)
+{
+    //Get Input
+    var search = $(searchinput).val();
+
+    //Check for changes
+    if(LastSearch == search) return;
+    
+    //Store last change
+    LastSearch = search;
+
+    //Cancel last Ajax
+    if(AjaxRequest) AjaxRequest.abort();
+
+    //Run Ajax
+    AjaxRequest = (bClear) ? $.get(SearchModule.DefaultAjaxURL) : 
+                             $.post(SearchModule.SearchAjaxURL,{search:search});
+    
+    //Bind events
+    AjaxRequest.done(SearchAjaxDone);
+    AjaxRequest.fail(SearchAjaxFail);
+}
+
+var SearchAjaxDone = function(data)
+{
+    if(data == "none")
+    {
+        if(SearchModule.EmptyText)
+            $(SearchModule.ContainerSelector).html('<li class="DataEmpty center"><div class="center grey-text">'+SearchModule.EmptyText+'</div></li>');
+        else
+            $(SearchModule.ContainerSelector).empty();
+        return;
+    }
+    
+    if(isHTML(data))
+    {
+        $(SearchModule.ContainerSelector).html(data);
+        if ((typeof SearchModule.DoneExtraAction === typeof(Function))) 
+            SearchModule.DoneExtraAction();         
+        return;
+    }
+    SearchAjaxFail({responseText:"SearchAjaxDone-> Data is not HTML"});
+};
+
+var SearchAjaxFail = function(AjaxObject)
+{
+    Materialize.toast('Error del servidor', 3000, "red");				
+    console.error("GetAjax->Search:" + AjaxObject.responseText);
+};
+
+function isHTML(str) 
+{
+    var doc = new DOMParser().parseFromString(str, "text/html");
+    return Array.from(doc.body.childNodes).some(node => node.nodeType === 1);
+}
+
+// ----------- END Search --------------

@@ -180,50 +180,18 @@
 		
 	}
 
-	var bInit = true;
-	function renderResults(bClear)
-	{
-		
-		if(bClear)
+	var SearchModule = 
+	{	
+		DefaultAjaxURL    : "<?php echo GetURL("modulos/modmodulos/servicemodulos.php?accion=1"); ?>",
+		SearchAjaxURL     : "<?php echo GetURL("modulos/modmodulos/servicemodulos.php?accion=search")?>",
+		ContainerSelector : "#datacontainer",
+		//Optional
+		EmptyText 		  : 'No se encontro modulos',
+		DoneExtraAction   : function()
 		{
-			if(!bInit)
-			{
-				bInit = true;
-				console.log("Clear");				
-				GetAjaxData();
-			}
-			return;	
-		}		
-		bInit = false;
-		console.log("Searching!!");
-		
-		var search = $("input#search").val();
-		$.ajax({
-			url:"<?php echo GetURL("modulos/modmodulos/servicemodulos.php?accion=search"); ?>",
-            method: "POST",
-            data: {search:search}		
-		}).done(
-			function(data)
-			{
-				$("#datacontainer").empty();
-				if(data == "none")
-				{
-					$("#datacontainer").append('<li class="DataEmpty center"><p class="center light">No hay modulos disponibles</p></li>');
-					return;
-				}
-				
-				if(data.indexOf("<li") > -1)
-				{
-					$("#datacontainer").append(data);
-					InitDropdown();
-					$(".dataitems").show();
-				}
-				else
-				{
-					Materialize.toast('Error al traer los modulos', 3000,"red");				
-					console.error("GetAjax->" + data);					
-				}
-			});						
-	}
+			InitDropdown();
+			$(".dataitems").show();			
+		}
+	};
 		
 </script>

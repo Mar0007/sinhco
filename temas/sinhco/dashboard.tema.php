@@ -45,7 +45,15 @@
                     <p class="user-roal">Admin</p>
                 </div>
             </div>
-            </li> 
+            </li>
+            <li>
+                <form class="hide-on-large-only" style="margin-top:-15px;margin-bottom:-10px">
+                    <div class="input-field card">
+                        <input type="search" class="mirror search-textbox" required style="padding-left:0.5rem; width:calc(100% - 0.5rem)">  
+                        <i class="material-icons black-text" style="top:6px" OnClick="$(this).parents().first().find(\'input\').focus()">search</i>
+                    </div>         
+                </form>           
+            </li>
     '       
     );
       
@@ -165,11 +173,10 @@
                              
                     
                     <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
-                    <form class="right" style="width:25%">
+                    <form class="right hide-on-med-and-down" style="width:25%">
                         <div class="input-field">
-                            <input id="search" type="search" required>
-                            <label for="search"><i class="material-icons">search</i></label>
-                            <i class="material-icons">close</i>
+                            <input type="search" class="mirror search-textbox" style="text-align:right" required>
+                            <i class="material-icons" OnClick="$(this).parents().first().find('input').focus()">search</i>
                         </div>         
                     </form>           
                     <!--div class="header-search-wrapper hide-on-med-and-down">
