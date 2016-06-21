@@ -31,28 +31,7 @@
 				}					
 				
 				foreach ($stmt as $row) 
-				{
-<<<<<<< HEAD
-                    $content=substr(strip_tags($row["modulo"]), 0, 1);
-					echo 
-					'
-						<li id="'.$row["idmodulo"].'" style="display:none" class="dataitems collection-item avatar">
-							<h5 class=" circle" style="text-align:center; vertical-align:middle; line-height:40px; color:#FFF;background-color:#1665c1">'.$content.'</h5>
-							<a  class="black-text" href="#!">
-								<span class="title">'.$row["modulo"].'</span>								
-							</a>                 
-							<p class="grey-text lighten-2 title">'.$row['descripcion'].'</p>
-							<a class="">
-									'.GetDropDownSettingsRow($row["idmodulo"],GetMenuArray($row["tipo"] == 0)).'
-							</a> 
-																				
-						</li>
-					';									
-					
-=======
 					echo GetRowHTML($row);					
->>>>>>> 11a55e53e79d6fbef0a25f328af0595e0dace1e8
-				}
 							
 				break;			
 		case 2: // Insertar
