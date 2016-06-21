@@ -100,23 +100,32 @@
 		case 4: //Eliminar
 				break;
         case 5: //Change Password
+            
             $idusuario 	= $_POST["idusuario"];
+            $currentpass = $_POST["currentpass"];
             $password = $_POST["newpass"];
             $llave = hash('sha512',rand());
             
-            $encrypass = hash('sha512',$password . $llave);
+            $getcurrentpass = $mysqli->get("usuarios","password",["idusuario"=> $idusuario]);
             
-            $mysqli->update("usuarios",
-                            [
-                               "password" => $encrypass,
-                                "llave" => $llave
-                            ],[
-                                "AND" =>
-                                [
-                                    "idusuario" => $idusuario
-                                ]
-                            ]);
-            echo "0";
+            if($currentpass == $getcurrentpass){
+                $encrypass = hash('sha512',$password . $llave);
+            
+                $mysqli->update("usuarios",
+                [
+                   "password" => $encrypass,
+                    "llave" => $llave
+                ],[
+                    "AND" =>
+                    [
+                        "idusuario" => $idusuario
+                    ]
+                ]);
+                echo "0";
+            }
+            else{
+                echo "1";
+            }
             break;
 				
 	}

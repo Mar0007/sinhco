@@ -160,8 +160,12 @@ height: 240px;" src="<?php echo GetURL("uploads/covers/cover-small.jpg")?>">
                         <label for="idusuario">Usuario</label>
                     </div>
                 <div class="input-field col s12">
+                    <input id="currentpass" name="currentpass" type="password" class="validate"  maxlength="50">
+                    <label for="currentpass">Contraseña actual</label>
+                </div>
+                <div class="input-field col s12">
                     <input id="newpass" name="newpass" type="password" class="validate"  maxlength="50">
-                    <label for="newpass">Contraseña</label>
+                    <label for="newpass">Nueva contraseña</label>
                 </div>
                 <div class="input-field col s12">
                     <input id="confirmpass" name="confrimpass" type="password" class="validate"  maxlength="50">
@@ -234,9 +238,11 @@ height: 240px;" src="<?php echo GetURL("uploads/covers/cover-small.jpg")?>">
        });
         
 		//At last open it.
-        $("#modalFrmAdd").find("form").trigger("reset");        
-        $("#usuario-nombre").val($("#profile-card").find('#user-name').text());    
-        $("#usuario-apellido").val($("#profile-card").find('#user-lastname').text());    
+        $("#modalFrmAdd").find("form").trigger("reset");   
+        $("#modalFrmAdd").find("#user-cover").attr('src', $("#profile-card").find("#user-setcover").attr('src'));
+        $("#modalFrmAdd").find("#user-img").attr('src', $("#profile-card").find("#user-setimg").attr('src'));
+        $("#usuario-nombre").val($("#user-wholename").find('#user-name').text());    
+        $("#usuario-apellido").val($("#user-wholename").find('#user-lastname').text());    
         $("#usuario-email").val($("#profile-card").find('#user-email').text());
             
         Materialize.updateTextFields();
@@ -263,7 +269,8 @@ height: 240px;" src="<?php echo GetURL("uploads/covers/cover-small.jpg")?>">
 		else{
             //ShowLoadingSwal();
 		var formData = new FormData($('#frmchangepass')[0]);
-        formData.set("newpass", hex_sha512(formData.get("newpass")));		
+        formData.set("newpass", hex_sha512(formData.get("newpass")));
+        formData.set("currentpass", hex_sha512(formData.get("currentpass")));		
 		ShowLoadingSwal();
 		
 		$.ajax(
@@ -282,7 +289,11 @@ height: 240px;" src="<?php echo GetURL("uploads/covers/cover-small.jpg")?>">
                 $("#modalFrmAdd").closeModal();
 			}				
 			else
-				swal("Error", data, "error");
+                if(data == "1"){
+                    Materialize.toast('Contraseña actual no concuerda', 3000);
+                }
+                else
+                    swal("Error", data, "error");
 		});	
         }
     }
@@ -307,7 +318,8 @@ height: 240px;" src="<?php echo GetURL("uploads/covers/cover-small.jpg")?>">
                     var nombre   = $("#usuario-nombre").val();
                     var apellido = $("#usuario-apellido").val();
 
-                    $("#user-wholename").text(nombre + " " + apellido);                                
+                    $("#user-name").text(nombre);                                
+                    $("#user-lastname").text(apellido);
                     $("#user-email").text($("#usuario-email").val());
 
                     //UPDATE User cover
