@@ -138,7 +138,7 @@
  <div id="modalFrmAdd" class="modal modal-fixed-footer custom-item" style="width:474px">
         <div id="top-content" class="modal-content no-padding">
             <div id="TabImg">				
-                <form id="frmUpload" class= method="post" enctype="multipart/form-data" style="max-height:120px">
+                <form id="frmUpload" class="disable-enter" method="post" enctype="multipart/form-data" style="max-height:120px">
                     <div style="position:relative">
                         <img id="proyect-img" src="<?php echo GetURL("uploads/covers/camerabg.png")?>" style="width:100%; object-fit:cover; height:220px;" class="responsive-img"></img>
                         <div class="CornerShadow">
@@ -149,11 +149,11 @@
                         </div>
                     </div>
                     <div class="description">
-                        <span class="right grey-text">Tamaño maximo: <?php echo ini_get('upload_max_filesize') ?></span>
+                        <span class="right grey-text" style="margin-top:-25px">Tamaño maximo: <?php echo ini_get('upload_max_filesize') ?></span>
                         <input id="InitImage" type="hidden" value="">
                         <div class="input-field col s12">
                             <input id="img-title" length="50" name="img-title" type="text" class="validate"> 
-                            <label for="img-title">Título de la imagen</label>
+                            <label for="img-title" style="left:0">Título de la imagen</label>
                         </div>
                         
                         <label>Alineacion del Texto</label><br>
