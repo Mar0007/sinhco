@@ -33,7 +33,7 @@
                         <h2 class="light center blue-grey-text text-darken-2">Norweco</h2>                
                     </div>
                 
-                <ul class="tabs">
+                <ul class="tabs" style="overflow: hidden">
                     <li onclick="llenar(1)" class="tab col s3"><a class="active" href="#test1">Dosificadores</a></li>
                     <li onclick="llenar(2)" class="tab col s3"><a href="#test2">Pastillas Hipoclorito</a></li>
                 </ul> 
