@@ -24,7 +24,7 @@
 <main>
         <div id="sinhco-intro" class="section"></div>
         
-        <div class="section ">
+        <div class="section no-pad-bot">
             <div class="row ">
                 <div class="row"> <!-- SECTION TITLE -->
                     <h2 class="light center blue-grey-text text-darken-3">Sinhco</h2>
@@ -44,50 +44,13 @@
                     </h2>
                 </div>
             </div>
-                    
-            <div id="mision-vision" class="row banner-pad">
-                <div class="col s12 m6">
-                  <div class="">
-                    <h2 class="center light-blue-text text-accent-4"><i style="font-size:54px" class="material-icons">my_location</i></h2>
-                    <h5 class="center">Misión</h5>
-
-                    <p class="medium">Ser la empresa líder ofreciendo productos de ingeniería a nuestros clientes con el mejor servicio profesional satisfaciendo sus necesidades y superando sus expectativas.</p>
-                  </div>
+            
+            <div class="parallax-container">
+                <div class="section no-pad-bot">
+                    <div class="parallax"><img class="" src="/recursos/recursos/img/team.jpg"></div>
                 </div>
-                <div class="col s12 m6">
-                    <div class="">
-                        <h2 class="center light-blue-text text-accent-4"><i style="font-size:54px" class="material-icons">visibility</i></h2>
-                        <h5 class="center">Visión</h5>
-
-                        <p class="medium">Consolidarnos como la mejor empresa en ofrecer soluciones de obras civiles, mecánicas e hidráulicas teniendo siempre como base la satisfacción de nuestros clientes a través del mejoramiento continuo.</p>
-                      </div>
-                </div>
-                <div class="col s12 m6">
-                  <div class="">
-                    <h2 class="center light-blue-text text-accent-4"><i style="font-size:54px" class="material-icons">work</i></h2>
-                    <h5 class="center">Valores</h5>
-
-                    <p class="medium">Nos centramos en la prática de los valores de la empresa, que han sido hasta el momento los pilares fundamentales de la calidad de los servicios que prestamos a nuestros clientes.</p>
-                  </div>
-                </div>
-                <div class="col s12 m6">
-                    <div class="">
-                        <h2 class="center light-blue-text text-accent-4"><i style="font-size:54px" class="material-icons">trending_up</i></h2>
-                        <h5 class="center">Política de Calidad</h5>
-
-                        <p class="medium">Nos fundamentamos en los códigos y normas nacionales e internacionales de construcción.</p>                        
-                      </div>
-                </div>
-            </div>
-        </div> <!-- FOR CONTAINER end -->
-        
-        <div class="parallax-container z-depth-1">
-            <div class="section no-pad-bot">
-                <div class="parallax"><img class="" src="../recursos/img/team.jpg"></div>
-            </div>
-        </div>
-        
-        <div class="section banner z-depth-1">
+            </div>    
+            <div class="section banner z-depth-1">
             <div class="container">
                 <h1 class="no-mar-bot thin">Nuestro equipo</h1>
                 <h5 class="medium">Profesionales con más de 10 años de experiencia.</h5>
@@ -95,111 +58,62 @@
             </div>
             <div class="section"></div>            
         </div>
-        
-        <div id="outro" class="section indigo-bg"></div>
-        
-        <div class="section indigo-bg"><!-- FOR CONTAINER end -->
-            <div class="row"> <!-- SECTION TITLE -->
-                <h2 class="light center blue-grey-text text-darken-3">Personal técnico y profesional</h2>
-                <p class="center light"></p>
-            </div>
-            <div class="row container">
-                <div class="">
-                    <div class="col s12 m6 l4 ">
-                          <div class="card">
-                            <div class="card-image waves-effect waves-block waves-light">
-                              <img class="activator responsive-img" src="../recursos/Recursos/imgProfiles/1451456913_brodie.jpg">                              
-                            </div>
-                              <div class="card-content">
-                                  <span class="activator card-title">Marlon Mejia</span>
-                                  <p class="grey-text"> Gerente general</p>
-                              </div>
-                              <div class="card-reveal">
-                                  <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-                                  <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                              </div>
-                          </div>
+            <div id="mision-vision" class="row banner-pad indigo-bg no-mar-bot">
+                <div class="col s12 m6">
+                    <div class="center">
+                        <a  class="btn-floating btn-large grey lighten-5 ">
+                            <span><i class="material-icons light-blue-text text-accent-4">my_location</i></span>
+                        </a>
+                        <h5 class="center grey-text text-darken-1">Misión</h5>
+                        <div class="container">
+                            <p class="">Ser la empresa líder ofreciendo productos de ingeniería a nuestros clientes con el mejor servicio profesional satisfaciendo sus necesidades y superando sus expectativas.</p>
                         </div>
-                    <div class="col s12 m6 l4">
-                          <div class="card">
-                            <div class="card-image waves-effect waves-block waves-light">
-                              <img class="activator responsive-img" src="../recursos/Recursos/imgProfiles/594partner-profile-pic-An.jpg">                              
-                            </div>
-                              <div class="card-content">
-                                  <span class="activator card-title">Nombre Persona</span>
-                                  <p class="grey-text"> Ingeniero industrial</p>
-                              </div>
-                              <div class="card-reveal">
-                                  <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-                                  <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                              </div>
-                          </div>
+                    </div>
+                </div>
+                <div class="col s12 m6">
+                    <div class="center">
+                        <a  class="btn-floating btn-large grey lighten-5 ">
+                            <span><i class="material-icons light-blue-text text-accent-4">visibility</i></span>
+                        </a>
+                        <h5 class="center grey-text text-darken-1">Visión</h5>
+                        <div class="container">
+                            <p class="">Consolidarnos como la mejor empresa en ofrecer soluciones de obras civiles, mecánicas e hidráulicas teniendo siempre como base la satisfacción de nuestros clientes a través del mejoramiento continuo.</p>
                         </div>
-                    <div class="col s12 m6 l4">
-                          <div class="card">
-                            <div class=" card-image waves-effect waves-block waves-light">
-                              <img class="activator responsive-img" src="../recursos/Recursos/imgProfiles/17.jpg">
-                            </div>
-                              <div class="card-content">
-                                  <span class="activator card-title">Nombre Persona</span>
-                                  <p class="grey-text"> Ingeniero Mecánico</p>
-                              </div>
-                              <div class="card-reveal">
-                                  <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-                                  <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                                </div>
-                          </div>
+                    </div>
+                </div>
+                <div class="col s12 description" style="height:15vh"></div>
+                <div class="col s12 m6">
+                    <div class="center">
+                        <a  class="btn-floating btn-large grey lighten-5 ">
+                            <span><i class="material-icons light-blue-text text-accent-4">work</i></span>
+                        </a>
+                        <h5 class="center grey-text text-darken-1">Valores</h5>
+                        <div class="container">
+                            <p class="">Nos centramos en la prática de los valores de la empresa, que han sido hasta el momento los pilares fundamentales de la calidad de los servicios que prestamos a nuestros clientes.</p>
                         </div>
-                    <div class="col s12 m6 l4">
-                          <div class="card">
-                            <div class="card-image waves-effect waves-block waves-light">
-                              <img class="activator responsive-img" src="../recursos/Recursos/imgProfiles/9240314_300x300.jpg">                              
-                            </div>
-                              <div class="card-content">
-                                  <span class="activator card-title">Nombre Persona</span>
-                                  <p class="grey-text"> Ingeniero Civil</p>
-                              </div>
-                              <div class="card-reveal">
-                                  <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-                                  <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                                </div>
-                          </div>
+                    </div>
+                </div>
+                <div class="col s12 m6">
+                    <div class="center">
+                        <a  class="btn-floating btn-large grey lighten-5 ">
+                            <span><i class="material-icons light-blue-text text-accent-4">trending_up</i></span>
+                        </a>
+                        <h5 class="center grey-text text-darken-1">Política de calidad</h5>
+                        <div class="container">
+                            <p class="">Nos fundamentamos en los códigos y normas nacionales e internacionales de construcción.</p>
                         </div>
-                    <div class="col s12 m6 l4">
-                          <div class="card">
-                            <div class="card-image waves-effect waves-block waves-light">
-                              <img class="activator responsive-img" src="../recursos/Recursos/imgProfiles/p27-partner-profile-papaste.jpg">                              
-                            </div>
-                              <div class="card-content">
-                                  <span class="activator card-title">Marlon Mejia</span>
-                                  <p class="grey-text"> Ingeniero Eléctrico</p>
-                              </div>
-                              <div class="card-reveal">
-                                  <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-                                  <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                                </div>
-                          </div>
-                        </div>
-                    <div class="col s12 m6 l4">
-                          <div class="card">
-                            <div class="card-image waves-effect waves-block waves-light">
-                              <img class="activator responsive-img" src="../recursos/Recursos/imgProfiles/daniel_reed.JPG">                              
-                            </div>
-                              <div class="card-content">
-                                  <span class="activator card-title">Nombre Persona</span>
-                                  <p class="grey-text"> Jefe de construcción</p>
-                              </div>
-                              <div class="card-reveal">
-                                  <span class="card-title grey-text text-darken-4">Card Title<i class="material-icons right">close</i></span>
-                                  <p>Here is some more information about this product that is only revealed once clicked on.</p>
-                                </div>
-                          </div>
-                        </div>
+                    </div>
                 </div>
             </div>
-           
         </div> <!-- FOR CONTAINER end -->
-        <div class="row z-depth-1 no-mar-bot" >
+        
+            
+        
+        
+        
+        <div class="divider"></div>
+        
+        <div class="row no-mar-bot" >
             <div class="col s12 m6 overlay" onClick="style.pointerEvents='none'"></div>
             <iframe class="z-depth-1 col s12 m6" src="https://www.google.com/maps/embed?pb=!1m21!1m12!1m3!1d808.1360470850257!2d-88.02854280558509!3d15.529307168419324!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m6!3e0!4m0!4m3!3m2!1d15.5294691!2d-88.0278752!5e0!3m2!1ses-419!2shn!4v1459358314568" width="100%" height="640" frameborder="0" style="border:2" allowfullscreen></iframe>
             <div class="col s12 m6 banner-pad">

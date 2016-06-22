@@ -13,6 +13,16 @@
 		echo "<h1>No tiene permisos para ver este modulo.</h1>";
 		return;
 	}
+ if($_SESSION['idusuario'] == "admin"){
+        echo '
+            <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+            <a id="btnCrear" href="javascript:OpenModal()" class="btn-floating btn-large light-blue accent-4 tooltipped" data-position="left" data-delay="50" data-tooltip="Crear Modulo">
+                <i class="large material-icons">add</i>
+            </a>
+        </div> 
+            
+        ';
+    }
 ?>
 
 <div class="row">
@@ -30,11 +40,7 @@
 		</ul>
     
         <!--Module Action Button-->
-        <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-            <a id="btnCrear" href="javascript:OpenModal()" class="btn-floating btn-large blue-grey darken-2 tooltipped" data-position="left" data-delay="50" data-tooltip="Crear Modulo">
-                <i class="large material-icons">add</i>
-            </a>
-        </div>   
+          
     </div>
 </div>
 

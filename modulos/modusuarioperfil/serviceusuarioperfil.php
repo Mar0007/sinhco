@@ -106,9 +106,11 @@
             $password = $_POST["newpass"];
             $llave = hash('sha512',rand());
             
-            $getcurrentpass = $mysqli->get("usuarios","password",["idusuario"=> $idusuario]);
+            $LoginInfo = $mysqli->select("usuarios",["password","llave"],["idusuario"=> $idusuario]);
+            if( CheckDBError($mysqli) ) return;
             
-            if($currentpass == $getcurrentpass){
+            if(hash('SHA512', $currentpass . $LoginInfo[0]["llave"]) == $LoginInfo[0]["password"])
+            {
                 $encrypass = hash('sha512',$password . $llave);
             
                 $mysqli->update("usuarios",
@@ -121,6 +123,22 @@
                         "idusuario" => $idusuario
                     ]
                 ]);
+                echo "0";
+            }
+            else{
+                echo "1";
+            }
+            break;
+        case 6:
+            
+            $idusuario = $_POST["idusuario"];
+            $currentpass = $_POST["password"];
+            
+            $LoginInfo = $mysqli->select("usuarios",["password","llave"],["idusuario"=> $idusuario]);
+            if( CheckDBError($mysqli) ) return;
+            
+            if(hash('SHA512', $currentpass . $LoginInfo[0]["llave"]) == $LoginInfo[0]["password"])
+            {
                 echo "0";
             }
             else{

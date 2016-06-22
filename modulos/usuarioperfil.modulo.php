@@ -78,8 +78,8 @@ height: 240px; cursor:auto" src="<?php echo GetCoverImagePath($idusuario)?>">
                             <ul class="collection" style="border:none !important">
                                 <li class="collection-item avatar" style="background-color:transparent">
                                       <i class="material-icons circle blue darken-2">security</i>
-                                      <span class="title medium">Restablecer contraseña</span>
-                                      <p class="grey-text">Si olvidaste la contraseña que usas para iniciar sesión quizás tengas que restablecerla.</p>
+                                      <span class="title medium">Cambiar contraseña</span>
+                                      <p class="grey-text">Elige una contraseña segura. Al cambiar de contraseña, saldrás de la cuenta.</p>
                                       <a style="cursor:pointer" onclick="javascript:OpenChangePass()">CAMBIAR CONTRASEÑA</a>
                                 </li>
                             </ul>                
@@ -149,7 +149,7 @@ height: 240px;" src="<?php echo GetURL("uploads/covers/cover-small.jpg")?>">
 </div>
 
 <!--CHANGE PASS MODAL-->
-<div id="change-pass" class="modal create-item">
+<div id="change-pass" class="modal create-item" style="min-height:70%">
     <div class="modal-content">
         <h5>Cambiar contraseña</h5>
         
@@ -164,12 +164,12 @@ height: 240px;" src="<?php echo GetURL("uploads/covers/cover-small.jpg")?>">
                     <label for="currentpass">Contraseña actual</label>
                 </div>
                 <div class="input-field col s12">
-                    <input id="newpass" name="newpass" type="password" class="validate"  maxlength="50">
-                    <label for="newpass">Nueva contraseña</label>
+                    <input id="newpass" name="newpass" type="password" class="validate" pattern=".{8,}"  maxlength="50" required title="Utiliza 8 caracteres como mínimo.">
+                    <label for="newpass">Contraseña nueva</label>
                 </div>
                 <div class="input-field col s12">
-                    <input id="confirmpass" name="confrimpass" type="password" class="validate"  maxlength="50">
-                    <label for="confirmpass">Confirmar contraseña</label>
+                    <input id="confirmpass" name="confrimpass" type="password" class="validate" pattern=".{8,}"  maxlength="50">
+                    <label for="confirmpass">Confirmar la contraseña nueva</label>
                 </div>               
                <!-- <input  id="sendForm" type="submit" style="visibility:hidden" disabled="disabled">-->
             </div> 
@@ -186,6 +186,7 @@ height: 240px;" src="<?php echo GetURL("uploads/covers/cover-small.jpg")?>">
 
 </div>
 <!--END CHANGE PASS MODAL-->
+
 <!-- Import SHA512 functions -->
 <script src="<?php echo GetURL("recursos/sha512.js")?>"></script>
 
@@ -234,22 +235,26 @@ height: 240px;" src="<?php echo GetURL("uploads/covers/cover-small.jpg")?>">
                 Materialize.toast('Todos los campos son requeridos', 4000);
                 return;
             }
-            Editar();							
+            OpenSwal();
        });
         
-		//At last open it.
+		//Reset inputs.
         $("#modalFrmAdd").find("form").trigger("reset");   
+        //Get cover image.
         $("#modalFrmAdd").find("#user-cover").attr('src', $("#profile-card").find("#user-setcover").attr('src'));
+        //Get profile image.
         $("#modalFrmAdd").find("#user-img").attr('src', $("#profile-card").find("#user-setimg").attr('src'));
+        //Fill inputs
         $("#usuario-nombre").val($("#user-wholename").find('#user-name').text());    
         $("#usuario-apellido").val($("#user-wholename").find('#user-lastname').text());    
         $("#usuario-email").val($("#profile-card").find('#user-email').text());
             
         Materialize.updateTextFields();
+        //Open Modal.
 		$('#modalFrmAdd').openModal({
             dismissible: false            
-            });
-        Materialize.updateTextFields();		
+        });
+       // Materialize.updateTextFields();		
 	}
     function OpenChangePass()
 	{
@@ -267,41 +272,43 @@ height: 240px;" src="<?php echo GetURL("uploads/covers/cover-small.jpg")?>">
 			return swal("Error","Contraseñas no concuerdan",'error');
 						
 		else{
-            //ShowLoadingSwal();
-		var formData = new FormData($('#frmchangepass')[0]);
-        formData.set("newpass", hex_sha512(formData.get("newpass")));
-        formData.set("currentpass", hex_sha512(formData.get("currentpass")));		
-		ShowLoadingSwal();
-		
-		$.ajax(
-			{
-			url:"<?php echo GetURL("modulos/modusuarioperfil/serviceusuarioperfil.php?accion=5") ?>",
-			method: "POST",
-			data: formData,
-			cache: false,
-			contentType: false,
-			processData: false
-		}).done(function(data){
-			if(data == "0")
-			{
-				                                
-                Materialize.toast('Contraseña actualizada', 3000);
-                $("#modalFrmAdd").closeModal();
-			}				
-			else
-                if(data == "1"){
-                    Materialize.toast('Contraseña actual no concuerda', 3000);
-                }
+            ShowLoadingSwal();
+            
+            var formData = new FormData($('#frmchangepass')[0]);
+            
+            formData.set("newpass", hex_sha512(formData.get("newpass")));
+            formData.set("currentpass", hex_sha512(formData.get("currentpass")));		
+            
+            $.ajax(
+                {
+                url:"<?php echo GetURL("modulos/modusuarioperfil/serviceusuarioperfil.php?accion=5") ?>",
+                method: "POST",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false
+            }).done(function(data){
+                if(data == "0")
+                {
+
+                    Materialize.toast('Contraseña actualizada', 3000);
+                    $("#modalFrmAdd").closeModal();
+                }				
                 else
-                    swal("Error", data, "error");
-		});	
+                    if(data == "1"){
+                        Materialize.toast('Contraseña actual no concuerda', 3000);
+                    }
+                    else
+                        swal("Error", data, "error");
+            });	
+            swal.close();
         }
     }
 	//Functions		
 	function Editar()
 	{									
 		
-		//ShowLoadingSwal();
+		ShowLoadingSwal();
 		var formData = new FormData($('#frmusuario')[0]);
 		
 		$.ajax(
@@ -318,6 +325,7 @@ height: 240px;" src="<?php echo GetURL("uploads/covers/cover-small.jpg")?>">
                     var nombre   = $("#usuario-nombre").val();
                     var apellido = $("#usuario-apellido").val();
 
+                    //Update Info
                     $("#user-name").text(nombre);                                
                     $("#user-lastname").text(apellido);
                     $("#user-email").text($("#usuario-email").val());
@@ -332,8 +340,8 @@ height: 240px;" src="<?php echo GetURL("uploads/covers/cover-small.jpg")?>">
                     //UPDATE User image
                     if ($("#FileInputRndImg").val() != ""){
                         var extention = $("#FileInputRndImg").val().substr($("#FileInputRndImg").val().lastIndexOf('.')+1);
-                    $("#user-displayimg .user-img").attr("src","/uploads/avatars/"+$("#idusuario").val()+"."+extention+"?"+(new Date()).getTime());
-                   // $(".profile-image").attr("src","/uploads/avatars/"+$("#idusuario").val()+"."+extention+"?"+(new Date()).getTime());
+                        
+                        $("#user-displayimg .user-img").attr("src","/uploads/avatars/"+$("#idusuario").val()+"."+extention+"?"+(new Date()).getTime());
                     }
 
                     Materialize.toast('Usuario actualizado', 3000);
@@ -349,8 +357,50 @@ height: 240px;" src="<?php echo GetURL("uploads/covers/cover-small.jpg")?>">
                     break;                
             }
 			
-			
+			swal.close();
 		});					
 	}
+    
+    function OpenSwal()
+    {
+        swal({
+          title: "Escribe tu contraseña",
+          text: "Por tu seguridad debes de escribir tu contraseña para poder continuar.",
+          type: "input",
+          closeOnConfirm: false         
+        }, function (inputValue) {
+          if (inputValue === false) return false;
+          if (inputValue === "") {
+            swal.showInputError("Debes ingresar tu contraseña para continuar.");
+            return false
+          }
+            CheckPassword(inputValue);         
+        });
+    }
+    
+    function CheckPassword (password)
+    {
+        var password = hex_sha512(password);
+        var idusuario = $("#idusuario").val();
+        $.ajax(
+			{
+			url:"<?php echo GetURL("modulos/modusuarioperfil/serviceusuarioperfil.php?accion=6") ?>",
+			method: "POST",
+			data: {password:password, idusuario:idusuario}			
+		}).done(function(data){
+			if(data == "0")
+			{
+				swal.close();
+                Editar();                
+			}				
+			else
+                if(data == "1"){
+                    swal.showInputError("Contraseña actual no concuerda");
+                    return false                   
+                }
+                else
+                    swal("Error", data, "error");
+		});
+    }
 				
 </script>
