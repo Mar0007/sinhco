@@ -141,7 +141,7 @@
             "[><]imagenes" => "idimagen"
         ],
         [
-            "imagenes.img","imagenes.ruta"
+            "imagenes.img","imagenes.ruta","imagenes.alineacion"
         ],
         [
             "AND" =>
@@ -150,8 +150,7 @@
                 "slider_img_mod.idmodulo" => $idmodulo
             ],
             "ORDER" => "orden ASC"
-        ]);
-        
+        ]);                
         
         if(!$stmt)
         {
@@ -159,14 +158,28 @@
                 echo "Error on -> ShowSlider():". $mysqli->error()[2];
                 
 			return "";            
-        }                
+        }
+    
+        if(count($stmt) <= 1)
+        {
+            $row = $stmt[0];
+            
+            return 
+            '
+                <div'.$idcss.' class="hero-bg hero-slider '. $clasecss .'" style="background-image:url('.htmlentities('"'.$row['ruta'].'"').');">
+                </div>
+                <div class="hero-caption'.(empty($row["alineacion"]) ? "" : " ".$row["alineacion"]."-align").'" style="opacity: 1; transform: translateX(0px) translateY(0px);">
+                    <p class="flow-text">Blue city</p>
+                </div>
+            ';
+        }              
         
         foreach ($stmt as $row)
         {
             $Result .= 
             "<li>
                 <img src=\"". $row['ruta'] ."\">
-                <div class=\"caption right-align\">
+                <div class=\"caption".(empty($row["alineacion"]) ? "" : " ".$row["alineacion"]."-align")."\">
                     <p class=\"flow-text\">".$row['img']."</p>
                 </div>
              </li>";

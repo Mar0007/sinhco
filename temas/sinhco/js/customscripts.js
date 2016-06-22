@@ -226,6 +226,17 @@ String.prototype.ltrim = function() {
     return trimmed;
 };
 
+$(document).ready(function()
+{
+    $('.disable-enter').on('keyup keypress', function(e) {
+        var keyCode = e.keyCode || e.which;
+        if (keyCode === 13) 
+        {
+            e.preventDefault();
+            return false;
+        }
+    });    
+});
 
 // ----------- Search --------------
 $(document).ready(function() 
