@@ -31,9 +31,7 @@
 				}					
 				
 				foreach ($stmt as $row) 
-				{
 					echo GetRowHTML($row);					
-				}
 							
 				break;			
 		case 2: // Insertar

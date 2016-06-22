@@ -125,7 +125,7 @@
             <ul id="data-list"></ul>            
             <!-- Fixed action button -->
             <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-                <a id="creatItem" onclick="ItemModal()" data-target="frmagregar" class="btn-floating btn-large blue-grey darken-2 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Agregar imagen">
+                <a id="creatItem" onclick="ItemModal()" data-target="frmagregar" class="btn-floating btn-large light-blue accent-4 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Agregar imagen">
                     <i class="large material-icons">add</i>
                 </a>                 
             </div> 
@@ -138,41 +138,52 @@
  <div id="modalFrmAdd" class="modal modal-fixed-footer custom-item" style="width:474px">
         <div id="top-content" class="modal-content no-padding">
             <div id="TabImg">				
-                <form id="frmUpload" class= method="post" enctype="multipart/form-data" style="max-height:120px">
+                <form id="frmUpload" class="disable-enter" method="post" enctype="multipart/form-data" style="max-height:120px">
+
                     <div style="position:relative">
-                        <img id="proyect-img" src="<?php echo GetURL("uploads/covers/camerabg.png")?>" style="width:100%; object-fit:cover; height:220px;" class="responsive-img"></img>
-                        <div class="CornerShadow">
-                            <div class="btn-floating btn-small transparent z-depth-0 waves-effect waves-circle file-field input-field" style="position:absolute;right:2px;top:-15px">
+                        <img id="proyect-img" src="<?php echo GetURL("uploads/covers/camerabg.png")?>" style="width:100%; object-fit:cover; height:220px;" class="responsive-img">
+                        <div class="input-secondary-menu circle">
+                            <div class="input-secondary-menu circle btn-floating btn-small transparent z-depth-0 waves-effect waves-circle file-field input-field" style="position:absolute;right:2px;top:-17px">
                                 <i class="material-icons white-text">camera_alt</i>
                                 <input id="FileInput" required name="file" type="file" accept=".jpg,.png">
-                            </div>                        
+                            </div>                             
                         </div>
                     </div>
                     <div class="description">
-                        <span class="right grey-text">Tamaño maximo: <?php echo ini_get('upload_max_filesize') ?></span>
+                        <span class="right grey-text" style="margin-top:-25px">Tamaño maximo: <?php echo ini_get('upload_max_filesize') ?></span>
                         <input id="InitImage" type="hidden" value="">
-                        <div class="input-field col s12">
-                            <input id="img-title" length="50" name="img-title" type="text" class="validate"> 
-                            <label for="img-title">Título de la imagen</label>
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <input id="img-title" maxlength="50" length="50" name="img-title" type="text" class="validate"> 
+                                <label for="img-title">Título de la imagen</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12">
+                                <label>Alineación del Texto</label><br>
+                                <input name="TextAlign" type="radio" checked id="RLeft" value="left"/>
+                                <label for="RLeft">Izquierda</label>
+                                <input name="TextAlign" type="radio" id="RRight" value="right"/>
+                                <label for="RRight">Derecha</label>
+                                <input name="TextAlign" type="radio" id="RCenter" value="center"/>
+                                <label for="RCenter">Centro</label>      
+                            </div>
+
                         </div>
                         
-                        <label>Alineacion del Texto</label><br>
-                        <input name="TextAlign" type="radio" checked id="RLeft" value="left"/>
-                        <label for="RLeft">Izquierda</label>
-                        <input name="TextAlign" type="radio" id="RRight" value="right"/>
-                        <label for="RRight">Derecha</label>
-                        <input name="TextAlign" type="radio" id="RCenter" value="center"/>
-                        <label for="RCenter">Centro</label>                    
-                        
                         <input type="submit" style="display:none">
-                        <div id="TabModulos" style="margin-top:15px">
-                            <span class="grey-text"> Modulos Disponibles </span>
-                            <div class="divider"></div>
-                            <ul id="ModulosDisponibles" style="display:inline-block"></ul>
-                            <p></p>
-                            <span class="grey-text"> Modulos Asignados </span>
-                            <div class="divider"></div>                        
-                            <ul id="ModulosAsignados" style="display:inline-block"></ul>                       	
+                        <div class="row">
+                            <div class="col s12">
+                                <div id="TabModulos" style="margin-top:15px">
+                                    <span class="grey-text text-darken-4"> Mostrar imagen en </span>
+                                    <div class="divider"></div>
+                                    <ul id="ModulosDisponibles" style="display:inline-block"></ul>
+                                    <p></p>
+                                    <span class="grey-text text-darken-4"> Visible para </span>
+                                    <div class="divider"></div>
+                                    <ul id="ModulosAsignados" style="display:inline-block"></ul>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </form>

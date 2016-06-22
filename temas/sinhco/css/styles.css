@@ -290,7 +290,22 @@ nav {
     background-color: #90caf9;
 }
 
-#hero-img {
+/**/
+.hero-caption {
+  color: #fff;
+  position: absolute;
+  top: 15%;
+  left: 15%;
+  width: 70%;
+  opacity: 0;
+}
+
+.hero-caption p {
+  color: #e0e0e0;
+}
+/**/
+
+#hero-img, .hero-slider {
     position: relative;
     height: 100vh;
 }

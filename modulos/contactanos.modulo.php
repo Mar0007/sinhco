@@ -10,11 +10,11 @@
 ?>
 
 <section id="hero-slider">
-        <div id="hero-img" class="hero-bg"></div>
+        
         <div class="section banner banner-pad-bot z-depth-1">
             <div class="container">
                 <h1 class="no-mar-bot thin">Contáctanos</h1>
-                <h5 class="medium">Estamos a su disposición y nos encantaría poder atenderle.</h5>
+                <h5 class="medium">Estamos a tu disposición y nos encantaría poder atenderte.</h5>
             </div>
             <a href="#email-form" class="fab-btn right banner-fab hide-on-med-and-down btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect wave-light">
                 <span><i class="material-icons">expand_more</i></span>
@@ -27,7 +27,7 @@
         <div class="section"><!-- FOR CONTAINER end -->
             <div id="" class="row"> <!-- SECTION TITLE -->
                 <h2 class="light center blue-grey-text text-darken-2">Déjanos un mensaje</h2>
-                <p class="center light">Llene el siguiente formulario de contacto para enviarnos un correo electrónico. Le responderemos en un plazo de 24 horas.</p>
+                <p class="center light">Llena el siguiente formulario de contacto para enviarnos un correo electrónico. Te responderemos en un plazo de 24 horas.</p>
             </div>
             <div class="row container section">
                 <form class="col s12">

@@ -118,7 +118,7 @@
     
         <!--Module Action Button-->
         <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-            <a id="crearProyecto" onclick="OpenNewModal()" data-target="frmagregar" class="btn-floating btn-large blue-grey darken-2 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Nuevo proyecto">
+            <a id="crearProyecto" onclick="OpenNewModal()" data-target="frmagregar" class="btn-floating btn-large light-blue accent-4 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Nuevo proyecto">
                 <i class="large material-icons">add</i>
             </a>               
         </div>

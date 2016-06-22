@@ -100,13 +100,17 @@
     <script src="<?php echo GetURL("recursos/perfect-scrollbar/js/perfect-scrollbar.jquery.js")?>"></script>
     
     <script>
+        //var timer = new InactivityTimer("/logout", 60000);
+
         $(document).ready(function() 
         {
+
             $(".button-collapse").sideNav();
             swal.setDefaults({ html: 'true' });
             //$('#main').perfectScrollbar();
             
             // Search class for focus
+            /*
             $('.header-search-input').focus(
             function(){
                 $(this).parent('div').addClass('header-search-wrapper-focus');
@@ -114,6 +118,7 @@
             function(){
                 $(this).parent('div').removeClass('header-search-wrapper-focus');
             });
+            */
             
             // Perfect Scrollbar
             $('select').not('.disabled').material_select();
@@ -125,8 +130,50 @@
                 var righttnav = $("#chat-out").height();
             $('.rightside-navigation').height(righttnav).perfectScrollbar({
                 suppressScrollX: true
-            });                         
+            });
+                                     
         });
+
+function InactivityTimer(path, delay) {
+
+  // private instance var
+  var timeout;
+  console.log("Timer->Start");
+
+  // private functions
+  function logout() {
+    alert("you've been logged out");
+    window.location.href = path || "/";
+  }
+
+  function reset() {
+    stop();
+    start();
+    console.log("Timer->reset");
+  }
+
+  function start() {
+    if (!timeout) {
+      timeout = setTimeout(logout, delay || 60000);
+    }
+  }
+
+  function stop() {
+    if (timeout) {
+      clearTimeout(timeout);
+      timeout = null;
+    }
+  }
+
+  // export public api
+  this.start = start;
+  this.stop  = stop;
+  this.reset = reset;
+
+  // init
+  document.addEventListener("mousemove", reset);
+  document.addEventListener("keypress",  reset);
+}
 
     </script>
     

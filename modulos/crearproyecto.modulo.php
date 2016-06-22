@@ -83,8 +83,14 @@
                 <input style="display:none" type = "file" id = "imagen" name = "imagen"/>
                 <div class="description">
                     <h6 id="hope"class="white-text light" style=" display:none;margin-top:4%; padding-left:4%;padding-bottom:1%"><?php echo $idproyecto ?></h6>
+                    
                     <h5 id="sidename" class="white-text " style="overflow:hidden;margin:0px; padding-left:4%"><?php echo $stmt[0]["nombre"] ?></h5>
-                    <h6 id="sideplace" class="white-text light" style="margin-top:2%; padding-left:4%;padding-bottom:1%"><?php echo $stmt[0]["lugar"] ?> - <?php echo date("F j, Y", $date) ?> </h6>
+                                                            
+                    <h6 id="sideplace-date" class="white-text light" style="margin-top:2%; padding-left:4%;padding-bottom:1%">
+                        <join id="sideplace"><?php echo $stmt[0]["lugar"] ?></join> - 
+                        <join id="sidedate"><?php echo date("F j, Y", $date) ?></join> 
+                    </h6>
+                    
                     <h6 id="sidecontent" class="white-text medium" style="margin-top:4%; padding-left:4%;padding-bottom:1%"><?php echo $stmt[0]["contenido"] ?></h6>
                 </div>
 
@@ -102,7 +108,7 @@
                 <div id="img-loader"></div>
             </div>
             <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-                <a id="crearProyecto" onclick="ItemModal()" data-target="frmagregar" class="btn-floating btn-large blue-grey darken-2 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Agregar imagen">
+                <a id="crearProyecto" onclick="ItemModal()" data-target="frmagregar" class="btn-floating btn-large light-blue accent-4 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Agregar imagen">
                                 <i class="large material-icons">add</i>
                 </a>                 
             </div> 
@@ -117,7 +123,7 @@
             <div id="contentUploads">	
                 <form id="frmUpload" method="post" autocomplete="off" enctype="multipart/form-data" style="max-height:120px">
                     <div style="position:relative">
-                        <img id="proyect-img" src="<?php echo GetURL("uploads/covers/camerabg.png")?>" style="width:100%; object-fit:cover; height:220px;" class="responsive-img"></img>                    
+                        <img id="proyect-img" src="<?php echo GetURL("uploads/covers/camerabg.png")?>" style="width:100%; object-fit:cover; height:220px;" class="responsive-img">                  
                         <div class="input-secondary-menu circle">
                             <div class="input-secondary-menu circle btn-floating btn-small transparent z-depth-0 waves-effect waves-circle file-field input-field" style="position:absolute;right:2px;top:-17px">
                                 <i class="material-icons white-text">camera_alt</i>
@@ -164,7 +170,7 @@
             <a class="" action="">
             <div id="proyectimg" class="card-image">
                 <?php               
-                    echo "<img id=\"Proyect-Image\" class=\"image-header\" style=\"height:auto;width:100%\" src=\"".GetProyectImagePath($idproyecto)."\">";
+                    echo "<img id=\"Proyect-Image\" class=\"image-header\" style=\"height:auto;width:100%\" src=\"".GetProyectImagePath(0)."\">";
                 ?>
                 <input style="display:none" type="file" name="imagen-proyecto" id="FileInput2" accept=".png,.jpg"/>
             </div>           
@@ -174,19 +180,19 @@
             <div class="description">
                 <div class="row card-content">               
                     <div class="input-field col s12">
-                        <input id="nombre-proyecto" length="50" maxlength="50" name="nombre-proyecto" type="text" class="validate" required value="<?php echo $stmt[0]["nombre"] ?>"> 
+                        <input id="nombre-proyecto" length="50" maxlength="50" name="nombre-proyecto" type="text" class="validate" required > 
                         <label for="nombre-proyecto">Proyecto</label>
                     </div>
                     <div class="input-field col s12">
-                        <input id="lugar-proyecto" length="25" maxlength="25" name="lugar-proyecto" type="text" class="validate" required value="<?php echo $stmt[0]["lugar"] ?>" >     
+                        <input id="lugar-proyecto" length="25" maxlength="25" name="lugar-proyecto" type="text" class="validate" required >     
                         <label for="lugar-proyecto">Lugar</label>
                     </div> 
                     <div class="input-field col s12">
-                        <input id="fecha-proyecto" name="fecha-proyecto" type="date"  class=" datepicker validate" required value="<?php echo $stmt[0]["fecha"] ?>"  >
+                        <input id="fecha-proyecto" name="fecha-proyecto" type="date"  class=" datepicker validate" required >
                         <label class="active" for="fecha-proyecto">Fecha</label>
                     </div>
                     <div class="input-field col s12">
-                        <textarea id="contenido-proyecto" name="contenido-proyecto" length="300" maxlength="300" class="materialize-textarea"><?php echo $stmt[0]["contenido"] ?></textarea>
+                        <textarea id="contenido-proyecto" name="contenido-proyecto" length="300" maxlength="300" class="materialize-textarea"></textarea>
                         <label for="contenido-proyecto">Descripción</label>
                     </div> 
                     <input  type="submit" style="display:none">
@@ -365,6 +371,12 @@
             $("#custom-proyecto").closeModal();                                
            // location.href= "crearproducto/"+idproducto; 						
         });*/
+        $("#custom-proyecto").find("#Proyect-Image").attr('src', $("#profile-header").find("#IMG_"+idproyecto).attr('src'));
+        $("#nombre-proyecto").val($("#profile-header").find('#sidename').text());    
+        $("#lugar-proyecto").val($("#sideplace-date").find('#sideplace').text());    
+        $("#fecha-proyecto").val($("#sideplace-date").find('#sidedate').text());    
+        $("#contenido-proyecto").val($("#profile-header").find('#sidecontent').text());
+        Materialize.updateTextFields(); 
         
         $('#custom-proyecto').openModal({
             dismissible: false,
@@ -407,7 +419,7 @@
                 var Lugar = $("#lugar-proyecto").val();
                 var Fecha = CustomParseDate($("#fecha-proyecto").val());
                 
-                $("#sideplace").text(Lugar + " - " + Fecha);
+                $("#sideplace-date").text(Lugar + " - " + Fecha);
                 
                 $("#sidecontent").text($("#contenido-proyecto").val());
                 

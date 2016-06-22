@@ -32,7 +32,7 @@
     
         <!--Module Action Button-->
         <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-            <a id="btnCrear" class="btn-floating btn-large blue-grey darken-2 tooltipped"  onclick="OpenModal()" data-position="left" data-delay="50" data-tooltip="Crear usuario">
+            <a id="btnCrear" class="btn-floating btn-large light-blue accent-4 tooltipped"  onclick="OpenModal()" data-position="left" data-delay="50" data-tooltip="Crear usuario">
                 <i class="large material-icons">add</i>
             </a>
         </div>   
@@ -144,16 +144,28 @@
 			cache: false,
 			contentType: false,
 			processData: false
-		}).done(function(data){
-			$("#modalFrmAdd").closeModal();
+		}).done(function(data){			
 			if(data.indexOf("<li") > -1)
 			{
+                $("#modalFrmAdd").closeModal();
 				swal.close();			
 				$("#datacontainer").append(data);				
 				$("#"+idusuario).fadeIn();
 			}
 			else
-				swal("Error", data, "error");
+            {
+                if(data =="1")
+                {
+                   
+                    swal("Error","Otra persona ya está usando este nombre de usuario.","error");
+                }
+                else{
+                    if(data =="2")
+                        swal("Error","Otra persona ya está usando este correo electrónico.","error");
+                    else
+                        swal("Error", data, "error");
+                }
+            }
 		});								
 	}
 
@@ -175,8 +187,13 @@
                             Materialize.toast('Usuario eliminado', 3000);
                         }
                         else{
-                            Materialize.toast('No se pudo eliminar el usuario', 4000);
-                            console.error("Error en Eliminar()->"+data);
+                            if(data == "1"){
+                                Materialize.toast('El usuario admin no se puede eliminar', 4000);
+                            }
+                            else{
+                                Materialize.toast('No se pudo eliminar el usuario', 4000);
+                                console.error("Error en Eliminar()->"+data);
+                            }
                         }
                     }
                 );
