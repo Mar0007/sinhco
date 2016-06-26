@@ -22,10 +22,10 @@
 <section id="hero-slider">        
         <div class="section banner banner-pad-bot z-depth-1">
             <div class="container">
-                <h1 class="no-mar-bot thin">Proyectos</h1>
-                <h5 class="medium">Brindando soluciones reales y prácticas</h5>
+                <h1 class="no-mar-bot thin">Servicios</h1>
+                <h5 class="medium">Nos especializamos en diferentes áreas.</h5>
             </div>
-            <a href="#proyectos" class="smoothScroll fab-btn right banner-fab hide-on-med-and-down btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect wave-light">
+            <a href="#services" class="smoothScroll fab-btn right banner-fab hide-on-med-and-down btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect wave-light">
                     <span><i class="material-icons">expand_more</i></span>
                 </a>
         </div>
@@ -36,7 +36,8 @@
     <div class="row"> <!-- SECTION TITLE -->
         <h2 class="light center blue-grey-text text-darken-3">Nuestros servicios</h2>                
     </div>
-    
+
+<div id="services" class="indigo-bg section"></div>
 <div class="row container"> <!-- SECTION CONTENT -->
     <?php
         foreach ($Categorias as $row) 
@@ -88,7 +89,7 @@ function OpenModal(id)
     
     //Update modal title
     $("#modalTitle").text($("#SCard_"+id).find(".card-title").text());
-    
+
     //Open modal and show loading animation
     $("#datacontainer").html(HTMLLoader);
     $("#modalservice").openModal();
