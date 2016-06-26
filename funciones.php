@@ -697,6 +697,16 @@
 			return GetURL("uploads/images/productos/Rotoplas.jpg");		
 	}
 
+   function GetServiceImagePath($id, $bIsService = false)
+	{        
+        $Prefix = ($bIsService) ? "../../" : "";
+        $result = glob($Prefix . "uploads/images/servicios/Servicio-".$id.".*");
+		if(count($result) > 0 )
+			return GetImageURL(ltrim($result[0],"/."),500,500);
+		else
+			return GetURL("uploads/images/proyect-default.jpg");		
+	}    
+
 	function GetStrWithRange($str)
 	{				
 		$result = "";
@@ -713,10 +723,10 @@
         return unserialize(strtolower(serialize($array)));
     }         
     
-	function GetDropDownSettingsRow($id,$Items)
+	function GetDropDownSettingsRow($id,$Items,$classcss = 'dropdown-button btn-flat secondary-content grey-text',$stylecss="")
 	{
 		$HTMLResult = 
-		"<a class='dropdown-button btn-flat secondary-content grey-text lighten-1' href='#' data-activates='cbSettingsRow_$id'><i class=\"material-icons\">more_vert</i></a>
+		"<a class='".$classcss."' href='#' style=\"".$stylecss."\" data-activates='cbSettingsRow_$id'><i class=\"material-icons\">more_vert</i></a>
 			<ul id='cbSettingsRow_$id' class='more-menu dropdown-content'>";
 			
 		

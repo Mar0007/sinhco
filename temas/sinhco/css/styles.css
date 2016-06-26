@@ -73,7 +73,7 @@
         width: 95% !important;
         height: 210px !important;
     }
-    .modal{
+    .modal:not(.bottom-sheet){
         width:95% !important;
     }
     
@@ -171,7 +171,7 @@ nav {
 
 /** MODALS **/
 
-.modal{
+.modal:not(.bottom-sheet){
     width:55%;  
     top:20% !important;
 }

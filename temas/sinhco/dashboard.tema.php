@@ -19,7 +19,7 @@
             <li class="user-details cyan darken-2">
             <div class="row">
                 <div class="col s4 m4 l4">
-                    <img src=' . GetUserImagePath($idusuario) . ' alt="" class="circle valign profile-image" style="width:60px; height:60px">
+                    <img src=' . GetImageURL(GetUserImagePath($idusuario),64,64) . ' alt="" class="circle valign profile-image" style="width:60px; height:60px">
                 </div>
                 <div class="col s8 m8 l8">
                     <ul id="profile-dropdown" class="dropdown-content">
@@ -179,7 +179,7 @@ function InactivityTimer(path, delay) {
     
     <style>
         .user-details {
-            background: url("<?php echo GetCoverImagePath($idusuario)?>") no-repeat center center
+            background: url("<?php echo GetImageURL(GetCoverImagePath($idusuario),500,500)?>") no-repeat center center
         }
                  
     </style>
