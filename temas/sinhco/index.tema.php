@@ -88,7 +88,9 @@
 </body> 
     <script>        
         $(document).ready(function()
-        {            
+        {           
+            smoothScroll(); 
+    
             $('.slider').slider({full_width: true, indicators:true});
             $(".button-collapse").sideNav(); 
             $('select').material_select();

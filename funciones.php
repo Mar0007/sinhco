@@ -141,7 +141,7 @@
             "[><]imagenes" => "idimagen"
         ],
         [
-            "imagenes.img","imagenes.ruta","imagenes.alineacion"
+            "imagenes.img","imagenes.ruta","imagenes.alineacion","imagenes.descripcion"
         ],
         [
             "AND" =>
@@ -169,7 +169,7 @@
                 <div'.$idcss.' class="hero-bg hero-slider '. $clasecss .'" style="background-image:url('.htmlentities('"'.$row['ruta'].'"').');">
                 </div>
                 <div class="hero-caption'.(empty($row["alineacion"]) ? "" : " ".$row["alineacion"]."-align").'" style="opacity: 1; transform: translateX(0px) translateY(0px);">
-                    <p class="flow-text">Blue city</p>
+                    <p class="flow-text">'.$row['descripcion'].'</p>
                 </div>
             ';
         }              
@@ -626,7 +626,62 @@
         return $response;                
     }
 
+    function SendContactMail($FromEmail, $FromName, $Subject,$Message)
+    {
+        require dirname(__FILE__) . '/config.php';
+        require dirname(__FILE__) . '/recursos/PHPMailer/PHPMailerAutoload.php';
 
+        $response = new StdClass;
+        $ToEmail = "fbsinhco@gmail.com";
+        
+        if(!$UsePHPMailer)
+        {            
+            $headers = "MIME-Version: 1.0" . "\r\n";
+            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+            $headers .= 'From:'.$FromEmail.  "\r\n";
+            
+            $errLevel = error_reporting(E_ALL ^ E_NOTICE);
+            $bError = !mail($FromEmail,$subject,$Message["html"],$headers);
+            error_reporting($errLevel);
+            
+            if($bError) $response->error  = error_get_last()["message"];            
+        }
+        else 
+        {
+            $mail = new PHPMailer;
+            $mail->CharSet = "UTF-8";
+            $mail->isSMTP();
+
+            $mail->Host = $EmailHost;
+            $mail->Port = $EmailPort;
+            $mail->SMTPSecure = $EmailSMTPSecure; 
+            $mail->SMTPAuth = $EmailUseSMTPAuth;
+
+            $mail->Username = $phpEmailUser;
+            $mail->Password = $phpEmailPass;
+            $mail->setFrom($FromEmail, $FromName);
+            $mail->addReplyTo($FromEmail, $FromName);
+            $mail->addAddress($ToEmail, 'Sinhco');
+            $mail->isHTML(true);
+            $mail->Subject = $Subject;
+            
+            $mail->msgHTML($Message["html"]);
+            $mail->AltBody = $Message["text"];
+            
+            $bError = !$mail->send();
+            if($bError) $response->error  = $mail->ErrorInfo;            
+        }
+        if ($bError)
+        {
+            $response->status = 172;
+            if(!$UsePHPMailer) $response->error  = $mail->ErrorInfo;
+        }
+        else
+            $response->status = 200;
+
+
+        return $response;                
+    }
     function crypto_rand_secure($min, $max) 
     {
             $range = $max - $min;

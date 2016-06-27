@@ -28,7 +28,7 @@
                         <li><a href="#"><i class="mdi-communication-live-help"></i> Ayuda</a>
                         </li>
                         <li class="divider"></li>
-                        </li>
+                        
                         <li><a href="'.GetURL("login.php?action=logout").'"><i class="mdi-hardware-keyboard-tab"></i> Logout</a>
                         </li>
                     </ul>
@@ -84,8 +84,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Sweet Alert -->
-    <script src="<?php echo GetURL("recursos/sweetalert/dist/sweetalert.min.js")?>"></script>
-    <link rel="stylesheet" type="text/css" href="<?php echo GetURL("recursos/sweetalert/dist/sweetalert.css")?>">        
+    <script src="<?php echo GetURL("recursos/sweetalert/dist2/sweetalert2.min.js")?>"></script>
+    <link rel="stylesheet" type="text/css" href="<?php echo GetURL("recursos/sweetalert/dist2/sweetalert2.css")?>">        
     
     <!-- Custom CSS -->
     <link type="text/css" rel="stylesheet" href="<?php echo GetURL($tema."css/styles.css")?>" media="screen,projection">

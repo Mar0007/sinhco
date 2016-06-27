@@ -18,6 +18,12 @@
             "LIMIT"=> [$no, 6]
         ]);
 
+        
+        if(empty($stmt)){
+            echo "none";
+            return;
+        }
+        
         if(!$stmt)
         {
             if($mysqli->error()[2] != "")
@@ -25,11 +31,6 @@
 
             return;
         }
-        if(empty($stmt)){
-            echo "no-more";
-            return;
-        }
-            
         
 		foreach($stmt as $row){
             $content=substr(strip_tags($row["contenido"]), 0, 100) . "...";

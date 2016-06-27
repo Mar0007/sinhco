@@ -21,6 +21,8 @@
         </div>
 </section>
 
+
+
 <main>
         <div id="sinhco-intro" class="section"></div>
         
@@ -31,7 +33,8 @@
                     <p class="center light">Servicios de Ingeniería Hidráulica y Construcción</p>
                 </div>
                 <div class="section"></div>
-                <div id="" class="center col s12 m6 l6">
+                <div class="container">
+                    <div id="" class="center col s12 m6 l6">
                     <img style="height:200px; weight:200px;" class="" src="<?php echo GetURL("uploads/static/logo2.png");?>">
                 </div>
                 <div class="col s12 m6 l6">
@@ -43,6 +46,7 @@
                         </a>
                     </h2>
                 </div>
+                </div>
             </div>
             
             <div class="parallax-container">
@@ -50,14 +54,7 @@
                     <div class="parallax"><img class="" src="/recursos/recursos/img/team.jpg"></div>
                 </div>
             </div>    
-            <div class="section banner z-depth-1">
-            <div class="container">
-                <h1 class="no-mar-bot thin">Nuestro equipo</h1>
-                <h5 class="medium">Profesionales con más de 10 años de experiencia.</h5>
-				<!--<a href="products.html" class="light-blue-text text-accent-4 medium">VER TODOS LOS PRODUCTOS<span><i class="fix-icon center light-blue-text text-accent-4 material-icons">navigate_next</i></span></a>-->
-            </div>
-            <div class="section"></div>            
-        </div>
+            
             <div id="mision-vision" class="row banner-pad indigo-bg no-mar-bot">
                 <div class="col s12 m6">
                     <div class="center">
@@ -108,30 +105,55 @@
         </div> <!-- FOR CONTAINER end -->
         
             
+        <div class="section banner z-depth-1">
+            <div class="container">
+                <h1 class="no-mar-bot thin">Nuestra ubicación</h1>
+                <h5 class="medium">Estamos ubicados en la capital industrial del país.</h5>
+                <!--<a href="products.html" class="light-blue-text text-accent-4 medium">VER TODOS LOS PRODUCTOS<span><i class="fix-icon center light-blue-text text-accent-4 material-icons">navigate_next</i></span></a>-->
+            </div>
+            <div class="section"></div>            
+        </div>
         
         
-        
-        <div class="divider"></div>
         
         <div class="row no-mar-bot" >
             <div class="col s12 m6 overlay" onClick="style.pointerEvents='none'"></div>
-            <iframe class="z-depth-1 col s12 m6" src="https://www.google.com/maps/embed?pb=!1m21!1m12!1m3!1d808.1360470850257!2d-88.02854280558509!3d15.529307168419324!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m6!3e0!4m0!4m3!3m2!1d15.5294691!2d-88.0278752!5e0!3m2!1ses-419!2shn!4v1459358314568" width="100%" height="640" frameborder="0" style="border:2" allowfullscreen></iframe>
-            <div class="col s12 m6 banner-pad">
-                  <div class="col s12">
-                    <h2 class="center light-blue-text text-accent-4"><i style="font-size:54px" class="material-icons">location_on</i></h2>
-                    <h5 class="center">Visítanos</h5>
-                    <p class="medium center flow-text">Nuestra sede está en la Colonia Universidad 24 calle, entre 9 y 11 ave, # 3, San Pedro Sula, Cortes y atendemos en cualquier zona del país.</p>
-                  </div>
-                    <!--<div class="col s12 m6 ">
-                      <div class="">
-                            <h2 class="center light-blue-text text-accent-4"><i style="font-size:54px" class="material-icons">phone</i></h2>
-                            <h5 class="center">Llámanos</h5>
-                            <p class="flow-text center light">Comunícate con nosotros.</p>
-                            <p class="center light">(504) 2551-5555 </p>
-                            <p class="center light">(504) 2566-0455 </p>  
-                            <p class="center light">(504) 2566-0670 </p>
+            <iframe class="col s12 " src="https://www.google.com/maps/embed?pb=!1m21!1m12!1m3!1d808.1360470850257!2d-88.02854280558509!3d15.529307168419324!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m6!3e0!4m0!4m3!3m2!1d15.5294691!2d-88.0278752!5e0!3m2!1ses-419!2shn!4v1459358314568" width="100%" height="540" frameborder="0" style="border:2" allowfullscreen></iframe>
+        </div>
+        <div class="row no-mar-bot banner-pad">
+            <div class="center col s12 m6">
+                  <div class="center ">
+                      <a  class="btn-floating btn-large grey lighten-5 ">
+                            <span><i class="material-icons light-blue-text text-accent-4">location_on</i></span>
+                        </a>
+                    
+                    <h5 class="center grey-text text-darken-1">Visítanos</h5>
+                    <div class="container">
+                        <p class="">Nuestra sede está en la Colonia Universidad 24 calle, entre 9 y 11 ave, # 3, San Pedro Sula, Cortes y atendemos en cualquier zona del país.</p>
                       </div>
-                </div> 
+                  </div>
+            </div>
+            <div class="center col s12 m6 banner-pad ">
+                      <div class="">
+                          <a  class="btn-floating btn-large grey lighten-5 ">
+                              <span><i class="material-icons light-blue-text text-accent-4">phone</i></span>
+                          </a>
+                            <h5 class="grey-text text-darken-1">Llámanos</h5>
+                            <div class="container">
+                                <p class="">Puedes comunicarte con nosotros de 09:00am a 4:00pm, de lunes a viernes. Llamando a los teléfonos:</p>
+                        <div class="col s12 m12 l4">
+                            <p class="">(504) 2551-5555 </p>
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <p class="">(504) 2566-0455 </p>  
+                        </div>
+                        <div class="col s12 m12 l4">
+                            <p class="">(504) 2566-0670 </p>      
+                        </div>
+                          </div>
+                      </div>
+            
+               <!-- </div> 
                     <div class="col s12 m6 ">
                       <div class="">
                             <h2 class="center light-blue-text text-accent-4"><i style="font-size:54px" class="material-icons">email</i></h2>

@@ -339,7 +339,7 @@ nav {
 }
 .floating-btn{
     position: absolute;
-    bottom: -28px;
+    margin-top: -38px;
     right:32px;
     z-index: 2;
 }
@@ -592,6 +592,10 @@ nav ul li.active{
 
 .dropdown-content li span{
      color:#039be5;
+}
+.btn-floating.btn-large.nohover:hover{
+    cursor: default !important;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12) !important;
 }
 
 /*Inputs color*/

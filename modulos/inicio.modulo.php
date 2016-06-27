@@ -20,40 +20,50 @@
 </a>
 <div id="sinhco-intro" class="section"></div>
 <div class="section"><!-- FOR CONTAINER end -->
-	<div class="row"> <!-- SECTION TITLE -->
+	<div class="row container"> <!-- SECTION TITLE -->
 		<h2 class="light center blue-grey-text text-darken-2">Sinhco</h2>
 		<p class="center light">Especializados en el suministro e instalación de obras civiles, hidráulicas y eléctricas,incluyendo la comercialización de equipos.</p>
 	</div>
 	<div class="row">
-		<div class="col s12 m4">
-			<div class="">
-			<h2 class="center light-blue-text text-accent-4"><i style="font-size:54px" class="material-icons">group</i></h2>
-			<h5 class="center">La Empresa</h5>
-
-			<p class="light">Conformada por profesionales de la ingeniería civil, industrial, mecánica, electrónica y eléctrica con más de 15 años de experiencia en cada rama, personal técnico y auxiliar calificado.</p>
-			</div>
-		</div>        
-		<div class="col s12 m4">
-			<div class="">
-				<h2 class="center light-blue-text text-accent-4"><i style="font-size:54px" class="material-icons">shopping_cart</i></h2>
-				<h5 class="center">Productos</h5>
-
-				<p class="light">Marcas reconocidas y de alta calidad, circunstancia que nos permite manejar un alto control de calidad y ofrecer a nuestros clientes garantías de funcionamiento e instalación.</p>
-				</div>
-		</div>
-		<div class="col s12 m4">
-			<div class="">
-			<h2 class="center light-blue-text text-accent-4"><i style="font-size:54px" class="material-icons">location_on</i></h2>
-			<h5 class="center">Visítanos</h5>
-			<p class="light">Nuestra sede está en San Pedro Sula, Cortes y atendemos en cualquier zona del país.</p>
-			</div>
-		</div>
+        <div class="col s12 m4">
+            <div class="center">
+                <a  class="btn-floating btn-large grey lighten-5 ">
+                    <span><i class="material-icons light-blue-text text-accent-4">group</i></span>
+                </a>
+                <h5 class="grey-text text-darken-1">La Empresa</h5>
+                <div class="container">
+                    <p class="">Conformada por profesionales de la ingeniería civil, industrial, mecánica, electrónica y eléctrica con más de 15 años de experiencia en cada rama, personal técnico y auxiliar calificado.</p>                    
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m4">
+            <div class="center">
+                <a  class="btn-floating btn-large grey lighten-5 ">
+                    <span><i class="material-icons light-blue-text text-accent-4">shopping_cart</i></span>
+                </a>
+                <h5 class="grey-text text-darken-1">Productos</h5>
+                <div class="container">
+                    <p class="">Marcas reconocidas y de alta calidad, circunstancia que nos permite manejar un alto control de calidad y ofrecer a nuestros clientes garantías de funcionamiento e instalación.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col s12 m4">
+            <div class="center">
+                <a  class="btn-floating btn-large grey lighten-5 ">
+                    <span><i class="material-icons light-blue-text text-accent-4">headset_mic</i></span>
+                </a>
+                <h5 class="grey-text text-darken-1">Servicios</h5>
+                <div class="container">
+                    <p class="">Ingeniería hidráulica, mecánica y civil, entre otros. Ofreciendo calidad basada en tecnología de punta y con el respaldo de personal capacitado y comprometido.</p>
+                </div>
+            </div>
+        </div>
 	</div>
 </div> <!-- FOR CONTAINER end -->
 
 <div class="parallax-container z-depth-1">
 	<div class="section no-pad-bot">
-		<div class="parallax"><img class="" src="../recursos/img/parallax.jpg"></div>
+		<div class="parallax"><img class="" src="/recursos/recursos/img/parallax.jpg"></div>
 	</div>
 </div>
 
@@ -67,7 +77,7 @@
 		<div class="col s12 m4 l4">
 			<div class="card">
 				<div class="card-image">
-					<img src="../recursos/img/norweco.png">
+					<img src="/recursos/recursos/img/norweco.png">
 					<a href="products.html" class="card-floating-btn card-fab-btn right btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect wave-light">
 						<span><i class="material-icons">open_in_new</i></span>
 					</a>
@@ -81,7 +91,7 @@
 		<div class="col s12 m4 l4">
 			<div class="card">
 				<div class="card-image">
-					<img src="../recursos/img/rotoplas.png">
+					<img src="/recursos/recursos/img/rotoplas.png">
 					<a href="products.html" class="card-floating-btn card-fab-btn right btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect wave-light">
 						<span><i class="material-icons">open_in_new</i></span>
 					</a>
@@ -95,7 +105,7 @@
 		<div class="col s12 m4 l4">
 			<div class="card">
 				<div class="card-image">
-					<img  src="../recursos/img/fill-rite.png">
+					<img  src="/recursos/recursos/img/fill-rite.png">
 					<a href="products.html" class="card-floating-btn card-fab-btn right btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect wave-light">
 						<span><i class="material-icons">open_in_new</i></span>
 					</a>                                
@@ -128,36 +138,18 @@
 		<div class="col m12">
 			<ul class="row brand-list">
 				<li class="col s12 m6 l3">
-					<img src="../recursos/img/Gildan.png">
+					<img src="/recursos/recursos/img/Gildan.png">
 				</li>
 				<li class="col s12 m6 l3">
-					<img src="../recursos/img/collective.jpg">
+					<img src="/recursos/recursos/img/collective.jpg">
 				</li>
 				<li class="col s12 m6 l3">
-					<img src="../recursos/img/colonia.png">
+					<img src="/recursos/recursos/img/colonia.png">
 				</li>
 				<li class="col s12 m6 l3">
-					<img src="../recursos/img/antorcha.png">
+					<img src="/recursos/recursos/img/antorcha.png">
 				</li>
 			</ul>             
 		</div>
 	</div> <!-- FOR CONTAINER end -->
 
-<!-- Modal Structure -->
-<div id="modal1" class="modal">
-	<div class="modal-content no-padding">
-		<div class="row">
-			<div id="product-img" class="col s12 m12 l5 no-padding">
-				<img class="responsive-img" src="../recursos/img/tanque.jpg">
-			</div>
-			<div class="col s12 m12 l7 description">
-				<span><i class="modal-action modal-close material-icons right">close</i></span>
-				<h4 class="">Tanques para Agua y Químicos</h4>
-				<h6 class="grey-text text-lighten-1">Almacenamiento</h6>
-				<p class="flow-text">Los tanques Rotoplas son ideales para el acopio de agua en granjas durante tiempos de sequía, así como para el almacenamiento de melazas, alimentos y más de 300 sustancias químicas tales como: ácidos, cloruros y fosfatos.</p>     
-				<div style="height:30px" class="section "></div>
-				<a  style="bottom: 45px; right: 24px;" class="right btn waves-effect wave-light light-blue accent-4">Ver producto</a>                          
-			</div>
-		</div>
-	</div>
-</div>

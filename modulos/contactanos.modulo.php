@@ -16,7 +16,7 @@
                 <h1 class="no-mar-bot thin">Contáctanos</h1>
                 <h5 class="medium">Estamos a tu disposición y nos encantaría poder atenderte.</h5>
             </div>
-            <a href="#email-form" class="fab-btn right banner-fab hide-on-med-and-down btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect wave-light">
+            <a href="#email-form" class="fab-btn smoothScroll right banner-fab hide-on-med-and-down btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect wave-light">
                 <span><i class="material-icons">expand_more</i></span>
             </a>
         </div>        
@@ -27,37 +27,37 @@
         <div class="section"><!-- FOR CONTAINER end -->
             <div id="" class="row"> <!-- SECTION TITLE -->
                 <h2 class="light center blue-grey-text text-darken-2">Déjanos un mensaje</h2>
-                <p class="center light">Llena el siguiente formulario de contacto para enviarnos un correo electrónico. Te responderemos en un plazo de 24 horas.</p>
+                <p class="center">Llena el siguiente formulario de contacto para enviarnos un correo electrónico. Te responderemos en un plazo de 24 horas.</p>
             </div>
             <div class="row container section">
-                <form class="col s12">
+                <form class="col s12" method="post" action="javascript:SendEmail()" autocomplete="off">
                     <div class="row">
                         <div class="input-field col s6">
-                            <input id="first_name" type="text" class="validate">
+                            <input id="first_name" name="nombre" type="text" class="validate" required>
                             <label for="first_name">Nombre</label>
                         </div>
                         <div class="input-field col s6">
-                            <input id="last_name" type="text" class="validate">
+                            <input id="last_name" name="apellido" type="text" class="validate" required>
                             <label for="last_name">Apellido</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s6">
-                            <input id="email" type="email" class="validate">
+                            <input id="email" name="email" type="email" class="validate" required>
                             <label for="email">Email</label>
                         </div>
                         <div class="input-field col s6">
-                            <input id="company" type="text" class="validate">
+                            <input id="company" name="empresa" type="text" class="validate" required>
                             <label for="company">Empresa</label>
                         </div>
                     </div>    
                     <div class="row">
                         <div class="input-field col s6">
-                            <input id="number" type="text" class="validate">
+                            <input id="number" name="telefono" type="text" class="validate" required>
                             <label for="number">Teléfono</label>
                         </div>
                         <div class="input-field col s6">
-                            <select>
+                            <select id="subject" name="asunto" required>
                                 <option value="" disabled selected>Escoge una categoría</option>
                                 <option value="1">Cotización</option>
                                 <option value="2">Servicio al cliente</option>
@@ -68,11 +68,12 @@
                   </div>
                     <div class="row">
                         <div class="input-field col s12">
-                            <textarea id="textarea1" class="materialize-textarea"></textarea>
-                            <label for="textarea1">Textarea</label>
+                            <textarea id="message" maxlength="1500" length="1500" name="mensaje" class="materialize-textarea" required></textarea>
+                            <label for="message">Textarea</label>
                         </div>
-                    </div>                    
-                    <a href="#!" class="right btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect wave-light">
+                    </div>   
+                    <input type="submit" style="display:none">
+                    <a id="btnSend" onclick="$(this).parents().find(':submit').click();" class="right btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect wave-light">
                         <span><i class="material-icons">send</i></span>
                     </a>        
                 </form>
@@ -81,7 +82,7 @@
         
         <div class="parallax-container z-depth-1">
             <div class="section no-pad-bot">
-                <div class="parallax"><img class="" src="../recursos/img/contact.jpg"></div>
+                <div class="parallax"><img class="" src="/recursos/recursos/img/contact.jpg"></div>
             </div>
         </div>
         
@@ -89,52 +90,148 @@
         <div class="section"><!-- FOR CONTAINER end -->
             <div class="row"> <!-- SECTION TITLE -->
                 <h2 class="light center blue-grey-text text-darken-3">Más opciones</h2>
-                <p class="center light">Obten más información acerca de cómo contactarnos para obtner información sobre nuestros servicios.</p>
+                <p class="center">Comunícate con nosotros para obtner información sobre nuestros servicios.</p>
             </div>
             <div class="row">
                 <div class="col s12 m4">
-                    <div class="">
-                        <h2 class="center light-blue-text text-accent-4">
-                            <i style="font-size:54px" class="material-icons">phone</i>
-                        </h2>
-                        <h5 class="center">Llámanos</h5>
-                        <p class="light">Puedes comunicarte con nosotros de 09:00am a 4:00pm, de lunes a viernes. Llamando a los teléfonos:</p>
-                        <div class="col s12 m12 l4">
-                            <p class="light">(504) 2551-5555 </p>
-                        </div>
-                        <div class="col s12 m12 l4">
-                            <p class="light">(504) 2566-0455 </p>  
-                        </div>
-                        <div class="col s12 m12 l4">
-                            <p class="light">(504) 2566-0670 </p>      
+                    <div class="center">
+                        <a  class="btn-floating btn-large nohover grey lighten-5 ">
+                            <span><i class="material-icons light-blue-text text-accent-4">phone</i></span>
+                        </a>
+                        <h5 class="grey-text text-darken-1">Llámanos</h5>
+                        <div class="container">
+                            <p class="">Puedes comunicarte con nosotros de 09:00am a 4:00pm, de lunes a viernes. Llamando a los teléfonos:</p>
+                            <div class="col s12 m12 l4">
+                                <p class="">(504) 2551-5555 </p>
+                            </div>
+                            <div class="col s12 m12 l4">
+                                <p class="">(504) 2566-0455 </p>  
+                            </div>
+                            <div class="col s12 m12 l4">
+                                <p class="">(504) 2566-0670 </p>      
+                            </div>
                         </div>
                     </div>
                 </div>        
                 <div class="col s12 m4">
-                    <div class="">
-                        <h2 class="center light-blue-text text-accent-4">
-                            <i style="font-size:54px" class="material-icons">location_on</i>
-                        </h2>
-                        <h5 class="center">Visítanos</h5>
-                        <p class="light">Estamos ubicados en la Colonia Universidad 24 calle, entre 9 y 11 ave, # 3, San Pedro Sula, Honduras.</p>
+                    <div class="center ">
+                        <a  class="btn-floating btn-large nohover grey lighten-5 ">
+                            <span><i class="material-icons light-blue-text text-accent-4">email</i></span>
+                        </a>                    
+                        <h5 class="center grey-text text-darken-1">Déjanos un mensaje</h5>
+                        <div class="container">
+                            <p class="">sinhco.hn@gmail.com</p>
+                            <p class="">gerencia@sinhco.com</p>
+                            <p class="">proyectos@sinhco.com</p>
+                        </div>
                     </div>
                 </div>
                 <div class="col s12 m4">
-                    <div class="">
-                        <h2 class="center light-blue-text text-accent-4">
-                            <i style="font-size:54px" class="material-icons">thumb_up</i>
-                        </h2>
-                        <h5 class="center">Facebook</h5>
-                        <p class="light">Obten información inmediata en línea durante el horario laboral mencionado anteriormente.</p>
-                        <p>
-                            <a href="#!" class="light-blue-text text-accent-4 medium">Visita nuestro Facebook
-                                <span>
-                                    <i class="fix-icon center light-blue-text text-accent-4 material-icons">navigate_next</i>
-                                </span>
-                            </a>
-                        </p>
-                    </div>
+                    <div class="center ">
+                        <a  class="btn-floating btn-large nohover grey lighten-5 ">
+                            <span><i class="material-icons light-blue-text text-accent-4">thumb_up</i></span>
+                        </a>                    
+                        <h5 class="center grey-text text-darken-1">Facebook</h5>
+                        <div class="container">
+                            <p class="">Obten información inmediata en línea durante el horario laboral mencionado anteriormente.</p>
+                            <p>
+                                <a href="#!" class="light-blue-text text-accent-4 medium">Visita nuestro Facebook
+                                    <span>
+                                        <i class="fix-icon center light-blue-text text-accent-4 material-icons">navigate_next</i>
+                                    </span>
+                                </a>
+                            </p>
+                        </div>
+                    </div>                    
                 </div>
             </div>
         </div> <!-- FOR CONTAINER end -->        
     </main>
+
+
+<script>
+var ajax_request;
+    
+    function SendEmail(){
+        if($("#btnSend").hasClass("disabled"))
+        return;        
+    
+        if(ajax_request) ajax_request.abort();
+
+        var nombre = $("#first_name").val();
+        var apellido = $("#last_name").val();
+        var email = $("#email").val();
+        var empresa = $("#company").val();
+        var telefono = $("#number").val();
+        var asunto = $("#subject").val();
+        var mensaje = $("#message").val();
+        
+
+        $("#btnSend").addClass("disabled");
+       /* $("#btnSend i").fadeOut(0,function(){
+            $("#btnSend").append(SmallLoader);
+        });*/
+
+        ajax_request = $.ajax({
+            url: "<?php echo GetURL("modulos/modcontactanos/servicecontactanos.php?accion=1")?>",
+            method: "POST",
+            dataType: "JSON",
+            data: {nombre:nombre, apellido:apellido, email:email, empresa:empresa, telefono:telefono, asunto:asunto,mensaje:mensaje}
+        });
+
+        ajax_request.done(function(data)
+        {                
+            $("#btnSend").removeClass("disabled");
+            /*$("#btnSend .preloader-wrapper").fadeOut(0,function()
+            {
+                $("#btnSend i").fadeIn();
+                $(this).remove();
+            });*/
+
+            if(data["status"] == 200)
+            {
+                Materialize.toast('Correo enviado', 2000,"green",
+                function()
+                {
+                    location.href="<?php echo GetURL("xinicio")?>";
+                });
+                return;
+            }
+
+            if(data["status"] == 172)
+            {
+                Materialize.toast('No se pudo enviar el correo', 3000,"red");
+                console.error("Error->SendResetEmail(): "+data["error"]);
+                return;
+            }
+
+            if(data["status"] == 404)
+            {
+                //Materialize.toast('No hay ningun usuario asociado a ese correo', 3000,"red");
+                Materialize.toast('No se encontro ese correo', 3000,"red");
+                return;            
+            }
+
+            if(data["status"] == 999)
+            {
+                Materialize.toast('Por favor espere '+data["left"]+"seg para volver a intentar", 3000,"red");
+                return;
+            }
+
+            Materialize.toast('Error interno: No se pudo enviar el correo', 3000,"red");
+            console.error("JSON-Error->SendResetEmail(): "+data);
+        });	
+
+        ajax_request.fail(function(AjaxObject)
+        {
+            $("#btnSend").removeClass("disabled");
+            /*$("#btnSend .preloader-wrapper").fadeOut(0,function()
+            {
+                $("#btnSend i").fadeIn();
+                $(this).remove();
+            });    */    
+            Materialize.toast('Error interno: No se pudo enviar el correo', 3000,"red");
+            console.error("JSON-Error->SendResetEmail(): "+AjaxObject.responseText);
+        });		        
+    }
+</script>

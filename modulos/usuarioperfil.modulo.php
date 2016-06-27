@@ -94,7 +94,7 @@ height: 240px; cursor:auto" src="<?php echo GetCoverImagePath($idusuario)?>">
 
 <div id="modalFrmAdd" class="modal new-user modal-fixed-footer">
     <div class="modal-content no-padding">
-        <form id="frmusuario" autocomplete="off" method="POST" enctype="multipart/form-data" action="javascript:Editar()">
+        <form id="frmusuario" class="disable-enter" autocomplete="off" method="POST" enctype="multipart/form-data" action="javascript:Editar()">
             <div id="user-backimg" class="" style="background-image:url();">
                 <img id="user-cover" class="user-cover" style="max-height: 245.6px;
 height: 240px;" src="<?php echo GetURL("uploads/covers/cover-small.jpg")?>">
@@ -365,10 +365,10 @@ height: 240px;" src="<?php echo GetURL("uploads/covers/cover-small.jpg")?>">
     {
         swal({
           title: "Escribe tu contraseña",
-          text: "Por tu seguridad debes de escribir tu contraseña para poder continuar.",
-          type: "input",
-          closeOnConfirm: false         
-        }, function (inputValue) {
+          html: "Por tu seguridad debes de escribir tu contraseña para poder continuar.",
+          input: "password",
+          closeOnConfirm: false,
+        }).then( function (inputValue) {
           if (inputValue === false) return false;
           if (inputValue === "") {
             swal.showInputError("Debes ingresar tu contraseña para continuar.");

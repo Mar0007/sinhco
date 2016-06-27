@@ -45,6 +45,11 @@
                                 "LIMIT"=> 6
                             ]);
                             
+                            if(empty($stmt)){
+                                echo '<div  style="padding-top:5%" class="DataEmpty center"><div class="center grey-text"> No hay proyectos recientes.</div></div>';
+                                return;
+                            }
+                            
                             if(!$stmt)
                             {
                                 if($mysqli->error()[2] != "")
@@ -89,22 +94,15 @@
         </div>
     </main>
 
-<script>
-    
-    $(function() {  
-      $('.smoothScroll').click(function() {
-        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
-          var target = $(this.hash);
-          target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
-          if (target.length) {
-            $('html,body').animate({
-              scrollTop: target.offset().top
-            }, 800); 
-            return false;
-          }
-        }
-      });
-    });
+<script>    
+   $(document).ready(function(){
+       var n = $('ul#project-list > li').length;
+                    
+        if( n >= 6)
+            $("#loadMore").show();                        
+        else
+            $("#loadMore").hide();
+   });
     
     function loadmore()
     {
@@ -118,11 +116,22 @@
       success: function (response) {
         var content = document.getElementById("project-list");   
           if(response == "")
-              {
+          {
                 $("#loadMore").hide();
+                  $("#loader").hide();
                   $("#pulldata").append('<div class="DataEmpty center"><div class="center grey-text">Parece que has llegado al final.</div></div>');
                         return;
-              }          
+          }  
+          else
+          {          
+              if(response =="none"){
+                  $("#project-lis").append('<div  style="padding-top:10%" class="DataEmpty center"><div class="center grey-text">No existen proyectos. Es hora de agregar tu primer proyecto.</div></div>');
+                    $("#loadMore").hide();
+              }
+                  
+              $("#loader").hide();
+              $("#loadMore").show();
+          }
         content.innerHTML = content.innerHTML+response;          
         // We increase the value by 2 because we limit the results by 2
         document.getElementById("result_no").value = Number(val)+6;

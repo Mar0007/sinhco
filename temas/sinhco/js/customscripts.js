@@ -40,7 +40,7 @@ function ShowLoadingSwal()
 {
     swal({
         title: "Cargando...",
-        text: "<div class=\"preloader-wrapper big active\">"+
+        html: "<div class=\"preloader-wrapper big active\">"+
             "<div class=\"spinner-layer spinner-blue-only\">"+
                 "<div class=\"circle-clipper left\">"+
                 "<div class=\"circle\"></div>"+
@@ -49,10 +49,26 @@ function ShowLoadingSwal()
                 "</div><div class=\"circle-clipper right\">"+
                 "<div class=\"circle\"></div>"+
                 "</div></div></div>",
-        html: true,
+        
         allowEscapeKey:false,
         showConfirmButton: false
     });		  
+}
+
+function smoothScroll ()
+{
+    $('.smoothScroll').click(function() {
+        if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+          var target = $(this.hash);
+          target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+          if (target.length) {
+            $('html,body').animate({
+              scrollTop: target.offset().top
+            }, 800); 
+            return false;
+          }
+        }
+      });    
 }
 
 function toggleFullScreen() 

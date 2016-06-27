@@ -39,12 +39,13 @@
 	}    
     
 ?>
+<input type="hidden" id="maxsize" value="<?php echo parse_size(ini_get('upload_max_filesize')) ?>">
 <div class="row">
     <div class="container">
         <!--Module Title-->
         <div class="row">
             <h3 class="light center blue-grey-text text-darken-3">Administrar Proyectos</h3>
-            <p class="center light">Cree y organice los proyectos.</p>            
+            <!--<p class="center light">Cree y organice los proyectos.</p>            -->
         </div>
         <!--END Module Title-->
         
@@ -52,56 +53,7 @@
         <div class="row">
             <ul id="proyectostb" class="fixed-drop no-margin">
                 <?php
-                    $stmt = $mysqli->select("proyectos",
-            [
-
-               "proyectos.idproyecto",
-
-                "proyectos.nombre",
-                "proyectos.lugar",
-                "proyectos.fecha" 
-
-            ],[
-               "ORDER" => "proyectos.idproyecto DESC",
-                "LIMIT"=>  6
-
-            ]);
-
-            if(!$stmt)
-            {
-                if($mysqli->error()[2] != "")
-                    echo "Error:".$mysqli->error()[2];
-
-                return;
-            }
-            
-            if(empty($stmt))
-            {
-                echo "none";
-                return;
-            }	
-            
-            foreach($stmt as $row){
-                echo 
-                '   <li    id="'.$row["idproyecto"].'" class="dataproyectos">
-                        <a href="crearproyecto/'.$row["idproyecto"].'">';
-                echo'
-                            <div class="col s12 m4 four-cards">                                    
-                                <div class="card custom-small">
-                                    <div class="card-image">   
-                                        <img id="ProyectImage" class="responsive-img" style="height:120px;width:100%; object-fit:cover" src="'.GetProyectImagePath($row["idproyecto"], false).'">
-                                    </div>
-
-                                    <div id="proyect-overview'.$row["idproyecto"].'" class="card-content-custom">                                            
-                                        <div class="black-text card-title-small">'.$row["nombre"].'</div>
-                                        <div class="grey-text card-subtitle-small ">'.$row["lugar"].'</div>
-                                    </div>
-                                </div> 
-                            </div>
-                            </a>
-                        </li>
-                ';
-            }           
+                    
                 ?>
             </ul>
             
@@ -109,7 +61,7 @@
         <input type="hidden" id="result_no" value="6">
         <div class="row">
             <div id="pulldata" class="section center-align">
-                <a id="loadMore" onclick="javascript:loadmore()" class="btn-flat light-blue-text accent-4 z-depth-2 waves-effect"> Cargar más                    
+                <a id="loadMore" style="" onclick="javascript:loadmore()" class="btn-flat light-blue-text accent-4 z-depth-2 waves-effect"> Cargar más                    
                 </a>
                 <div id="loader"></div>
             </div>
@@ -203,6 +155,29 @@
 <script>
         
     $(document).ready(function(){  
+        //get proyects
+        $.ajax({
+			url:"<?php echo GetURL("modulos/modadminproyectos/serviceadminproyectos.php?accion=1") ?>"
+		}).done(
+			function(data){
+                if(data.indexOf("<li") > -1)
+                {
+				    $("#proyectostb").append(data);
+                    var n = $('ul#proyectostb > li').length;
+                    
+                    if( n >= 6)
+                        $("#loadMore").show();                        
+                    else
+                        $("#loadMore").hide();
+                }
+                else{
+                    $("#proyectostb").append('<div  style="padding-top:10%" class="DataEmpty center"><div class="center grey-text">No existen proyectos. Es hora de agregar tu primer proyecto.</div></div>');
+                    $("#loadMore").hide();
+                }
+            });
+        
+        //get proyects
+        
         
         //initialize datepicker
         
@@ -260,6 +235,7 @@
           if(response == "")
           {
             $("#loadMore").hide();
+            $("#loader").hide();      
               $("#pulldata").append('<div class="DataEmpty center"><div class="center grey-text">Parece que has llegado al final.</div></div>');
                     return;
           }
