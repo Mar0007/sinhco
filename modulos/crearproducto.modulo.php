@@ -159,9 +159,10 @@
                         }                    
                     ?>
                     </ul>
+                    <h6 id="sideproveedor" class="white-text medium" style="margin-top:4%; padding-left:4%;padding-bottom:1%"> <?php echo $stmt[0]["Pnombre"]." - ".$stmt[0]["Cnombre"]  ?></h6>
+                    
                     <h6 id="sidecontent" class="white-text medium" style="margin-top:4%; padding-left:4%;padding-bottom:1%"><?php echo $stmt[0]["descripcion"] ?></h6>
-                    <h6 id="sidecategoria" class="white-text medium" style="margin-top:4%; padding-left:4%;padding-bottom:1%"><?php echo $stmt[0]["Cnombre"] ?></h6>
-                    <h6 id="sideproveedor" class="white-text medium" style="margin-top:4%; padding-left:4%;padding-bottom:1%"><?php echo $stmt[0]["Pnombre"] ?></h6>
+                    
                 </div>
 
                 </div>
@@ -178,7 +179,7 @@
                 <div id="img-loader"></div>
             </div>
             <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-                <a id="crearproducto" onclick="ItemModal()" data-target="frmagregar" class="btn-floating btn-large blue-grey darken-2 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Agregar imagen">
+                <a id="crearproducto" onclick="ItemModal()" data-target="frmagregar" class="btn-floating btn-large light-blue accent-4 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Agregar imagen">
                                 <i class="large material-icons">add</i>
                 </a>                 
             </div> 
@@ -192,7 +193,7 @@
         <div id="top-content" class="modal-content">            
             <h5 class="light">Agregar una imagen</h5>
             <div id="contentUploads">				
-                <form id="frmUpload" method="post" enctype="multipart/form-data" style="max-height:120px">
+                <form id="frmUpload"  disable-enter method="post" enctype="multipart/form-data" style="max-height:120px">
                     <div style="position:relative">
                         <img id="proyect-img" src="<?php echo GetURL("uploads/covers/camerabg.png")?>" style="width:100%; object-fit:cover; height:220px;" class="responsive-img"></img>
                         <div class="CornerShadow">
@@ -320,8 +321,14 @@
 		data: {IDproducto:IDproducto}		
         }).done(
             function(data){
+                 $("#img-loader").hide();
+                if(data == "none")
+                    {
+                        $("#project-list").append('<li class="DataEmpty center"><div class="center grey-text">El producto ahora es visible. Es hora de agregar tu primera imagen.</div></li>');
+                        return;
+                    }
                 $("#project-list").append(data);	
-                $("#img-loader").hide();
+               
                 Materialize.showStaggeredList("#project-list");
             }
         );
@@ -486,11 +493,14 @@
         });
         
         $('#custom-producto').openModal({
+             dismissible: false,
             complete: function() { 
-                                             
+                $("#custom-producto").find("form").trigger("reset");                     
                 Materialize.updateTextFields();                      
             }
-        })
+        });
+      
+        $("#contenido-producto").trigger("keyup");
     }
     
     function ModalAdd(){
@@ -529,17 +539,12 @@
                 
                 $("#sidename").text($("#nombre-producto").val());
                 $("#sidecontent").text($("#descripcion-producto").val());
-                $("#sidecategoria").text($("#categoria-producto :selected").text());
-                $("#sideproveedor").text($("#proveedor-producto :selected").text());
+                //$("#sidecategoria").text($("#categoria-producto :selected").text());
+                $("#sideproveedor").text($("#proveedor-producto :selected").text()+" - "+$("#categoria-producto :selected").text());
                 if ($("#FileInput2").val()!="") {
                     $("#profile-header .image-header").attr("src","/uploads/images/productos/Producto-"+$("#idproducto").val()+"."+a+"?"+(new Date()).getTime());
                 }
-                
-                
-                
-            
-                
-                
+   
                 Materialize.toast('Guardando...', 3000);
                 $("#custom-producto").closeModal();
                                                                                    
@@ -651,7 +656,7 @@
     function eliminar(idproducto){    
        //S var a =  $("#"+$("#idproducto").val()).attr('src');
             
-        ConfirmDelete("Borrar Producto","Esta seguro que quiere eliminar este producto","Eliminar",
+        ConfirmDelete("Borrar Producto","Esta acción no se puede deshacer","Borrar producto permanentemente",
         function(){
             $.ajax({
 				    url:"<?php echo GetURL("modulos/modcrearproductos/servicecrearproducto.php?accion=4") ?>",

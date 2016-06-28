@@ -57,21 +57,22 @@
                                             <div class="card medium z-depth-1 ">
                                             
                                                 <div class=" card-image  waves-effect waves-block waves-light" style="object-fit:cover">
-                                                    <img class="responsive-img activator"  src="'.GetProductImagePath($row["idproducto"], true).'">      
+                                                    <img class="responsive-img activator"  src="'.GetProductImagePath($row["idproducto"], true).'"> 
                                                     
                                                 </div>
                                             
                                                 <div class="card-content">
                                                     
                                                     <span class="card-title activator">'.$row["nombre"].'<i class="material-icons right">more_vert</i></span>
+                                                    <div class="card-action">
+                                                        <a href="productview/'.$row["idproducto"].'">VER producto</a>
+                                                    </div>
                                                     
                                                 </div>
                                                 <div class="card-reveal">
                                                     <span class="card-title">'.$row["nombre"].'<i class="material-icons right">close</i></span>                            
                                                     <p class="flow-text">'.$content.'</p>
-                                                    <div class="card-action">
-                                                        <a href="productview/'.$row["idproducto"].'">VER producto</a>
-                                                    </div>
+                                                    
                                                 </div>
                                             
                                             </div>           
@@ -123,7 +124,7 @@
                                         <li id="'.$row["idproducto"].'" class="dataproductos col s12 m6 l6">
                                             <div class="card medium z-depth-1 ">
                                             
-                                                <div class=" card-image  waves-effect waves-block waves-light" style="object-fit:cover">
+                                                <div class=" card-image adas-producto waves-effect waves-block waves-light" style="object-fit:cover">
                                                     <img class="responsive-img activator"  src="'.GetProductImagePath($row["idproducto"], true).'">      
                                                     
                                                 </div>
@@ -196,7 +197,7 @@
                                         <li id="'.$row["idproducto"].'" class="dataproductos col s12 m6 l6">
                                             <div class="card medium z-depth-1 ">
                                             
-                                                <div class=" card-image  waves-effect waves-block waves-light" style="object-fit:cover">
+                                                <div class=" card-image  waves-effect waves-block waves-light " style="object-fit:cover " >
                                                     <img class="responsive-img activator"  src="'.GetProductImagePath($row["idproducto"], true).'">      
                                                     
                                                 </div>

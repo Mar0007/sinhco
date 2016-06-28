@@ -37,14 +37,27 @@
 		return;
 	}	
 ?>			
-
+<section id="hero-slider">     
+    <div id="hero-img" class="hero-bg " style="background-image:url(<?php echo GetProductImagePath($idproductos)?>)">
+        
+    </div>
+        <div class="section banner banner-pad-bot z-depth-1">
+            <div class="container">
+                <h1 class="no-mar-bot thin"><?php echo $stmt[0]["nombre"] ?></h1>
+                
+            </div>
+            <a href="#background" class="smoothScroll fab-btn right banner-fab hide-on-med-and-down btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect wave-light">
+                    <span><i class="material-icons">expand_more</i></span>
+                </a>
+        </div>
+</section>
 
 <main>
         <div id="background" class="indigo-bg section"></div>
        
         <div class="section indigo-bg"><!-- FOR CONTAINER end -->
             <div class="row container"> <!-- SECTION TITLE -->
-                <h2 class="light center blue-grey-text text-darken-3"><?php echo $stmt[0]["nombre"] ?></h2>
+                
                 
                 <p class="center flow-text"><?php echo $stmt[0]["descripcion"] ?></p>
             </div>

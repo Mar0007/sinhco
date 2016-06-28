@@ -216,7 +216,7 @@
 					if(CheckDBError($mysqli)) return false;
 														
 					$mysqli->delete("imagenes",["idimagen" => $IDImagen]);								
-					
+					$mysqli->delete("productos_img",["idimagen" => $IDImagen]);
 					@unlink('../../uploads/images/productos/'.$OldFilename);								
 					
 					echo "0";					
@@ -312,6 +312,12 @@ function ProyectCard($mysqli, $IDproducto, $IDImagen = null)
 		$stmt = $mysqli->query($strSQL);								
 		if(CheckDBError($mysqli) || !$stmt) return;												
 		$stmt = $stmt->fetchAll();
+		
+		if(empty($stmt))
+        {
+            echo "none";
+            return;
+        }
 		
 		foreach ($stmt as $row) 
 		{

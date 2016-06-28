@@ -35,9 +35,9 @@
                 
                 <ul class="tabs">
                     <li onclick="llenar(1)" class="tab col s3"><a class="active" href="#test1">Almacenamiento</a></li>
-                    <li onclick="llenar(2)" class="tab col s3"><a href="#test2">Quimicos</a></li>
+                    <li onclick="llenar(2)" class="tab col s3"><a href="#test2">Químicos</a></li>
                     <li onclick="llenar(3)" class="tab col s3"><a href="#test3">Biodigestores</a></li>
-                    <li onclick="llenar(4)" class="tab col s3"><a href="#test4">Fosas Septicas</a></li>
+                    <li onclick="llenar(4)" class="tab col s3"><a href="#test4">Fosas Sépticas</a></li>
                 </ul> 
                        
             </div>
@@ -144,8 +144,8 @@
                     else {
                         // alert("no productos");
                         $('#test'+a).attr('style', "height:540px");
-                        $("#test"+a+" ul").html("<h2 class=\"light center blue-grey-text text-darken-2\">No hay productos de esta categoria</h2>");
-                        
+                        $("#test"+a+" ul").html("<div style=\"padding-top:20%\" class=\"center grey-text\">No hay productos de esta categoria</div>");
+                        $("#loadMore").hide();
                     }
                         
                 });

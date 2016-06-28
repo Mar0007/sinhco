@@ -125,7 +125,8 @@
                    else {
                       // alert("no productos");
                        $('#test'+a).attr('style', "height:540px");
-                       $("#test"+a+" ul").html("<h2 class=\"light center blue-grey-text text-darken-2\">No hay productos de esta categoria</h2>");
+                       $("#test"+a+" ul").html("<div style=\"padding-top:20%\" class=\"center grey-text\">No hay productos de esta categoria</div>");
+                       $("#loadMore").hide();
                     
                    }
                        

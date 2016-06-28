@@ -34,7 +34,7 @@
     
         <!--Module Action Button-->
         <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-            <a id="crearproducto" onclick="mostrarfrmagregar()" data-target="frmagregar" class="btn-floating btn-large blue-grey darken-2 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Nuevo producto">
+            <a id="crearproducto" onclick="mostrarfrmagregar()" data-target="frmagregar" class="btn-floating btn-large light-blue accent-4 modal-trigger tooltipped" data-position="left" data-delay="50" data-tooltip="Nuevo producto">
                 <i class="large material-icons">add</i>
             </a>               
         </div>
@@ -75,7 +75,7 @@
 <!-------------------------------------------- MODAL EDITAR INFO producto ------------------------------------->
 <div    id="custom-producto" class="modal modal-fixed-footer custom-item">
     <div class="modal-content no-padding">
-        <form id="frmcustomproducto" autocomplete="off" method="POST" enctype="multipart/form-data" action="javascript:CrearProducto()">
+        <form id="frmcustomproducto" autocomplete="off" class="disable-enter" method="POST" enctype="multipart/form-data" action="javascript:CrearProducto()">
             <a class="" action="">
             <div id="proyectimg" class="card-image">
                 <?php               
@@ -158,7 +158,22 @@
 			url:"<?php echo GetURL("modulos/modadminproductos/serviceadminproductos.php?accion=1") ?>"
 		}).done(
 			function(data){
-				$("#productocard").append(data);
+                
+                 if(data.indexOf("<li") > -1)
+                {
+				    $("#productocard").append(data);
+                    var n = $('ul#productocard > li').length;
+                    
+                    if( n >= 6)
+                        $("#loadMore").show();                        
+                    else
+                        $("#loadMore").hide();
+                }
+                else{
+                    $("#productocard").append('<div  style="padding-top:10%" class="DataEmpty center"><div class="center grey-text">No existen productos. Es hora de agregar tu primer producto.</div></div>');
+                    $("#loadMore").hide();
+                }
+				//$("#productocard").append(data);
 				
 			}
 		);
