@@ -293,7 +293,68 @@
     
 	//function mostrarpanel($bloques,$idmodulo,$mysqli){}	
 	//function panel($bloques, $idmodulo, $mysqli) {}    
-    function bloque($idbloque, $mysqli, $clasecss="", $idcss=""){}
+    function bloque($idbloque, $mysqli, $clasecss="", $idcss="",$bGetHTML = false)
+    {
+        if($bGetHTML) ob_start();
+        
+        if($idcss != "")	$idcss 	  = "id=\"$idcss\"";
+        if($clasecss != "") $clasecss = "class=\"$clasecss\"";
+                
+        echo "<div $clasecss $idcss>";
+        
+        //Check in database
+        $stmt = $mysqli->select("bloques",
+        [
+            "bloque", "contenido", "tipo"
+        ],
+        [
+            "idbloque" => $idbloque
+        ]);
+        
+        
+        if(!$stmt)
+        {
+            if( !CheckDBError($mysqli) )
+            {
+                if($bGetHTML) ob_end_clean();
+                echo '<script>console.error("B404: Bloque no esta declarado")</script>';
+                return false;
+                //echo "<h3>Error, el modulo no esta declarado en la base de datos.</h3>";                
+            }                
+        }
+        else
+        {        
+            if( $stmt[0]["tipo"] == 1  || $stmt[0]["tipo"] == -1)
+            {
+                try{
+                if( file_exists("bloques/".$idbloque.".modulo.php") )
+                    require_once("bloques/".$idbloque.".modulo.php");
+                else
+                    echo "<h3>No existe el bloque: " . $idbloque ."</h3>";
+                }
+                catch (Exception $e) 
+                {
+                    if($bGetHTML) ob_end_clean();
+                    echo '<script>console.error("B503: Exception-> '.$e->getMessage().'")</script>';
+                    return false;                    
+                }
+            }
+            else
+            {
+                //echo "<h1>". $stmt[0]["modulo"] ."</h1>";
+                echo $stmt[0]["contenido"];
+            }
+        }
+        
+        echo "</div>";
+        
+        if($bGetHTML)
+        {
+            $buffer = ob_get_contents();
+            ob_end_clean();
+            return $buffer;
+        }
+    }
     
     function modulo($idmodulo, $mysqli, $clasecss="", $idcss="", $bGetHTML = false)
     {
