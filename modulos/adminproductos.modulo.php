@@ -53,10 +53,28 @@
                     <input id="Nombre" name="Nombre" type="text" class="validate" length ="50">
                     <label for="Nombre">Nombre</label>
                 </div>
-                <div class="input-field col s12">
-                    <input id="Descripcion" name="Descripcion" type="text" class="validate"  maxlength="300" length="300">
-                    <label for="Descripcion">Descripcion</label>
-                </div>               
+                <div class="input-field col s12" >
+						<!--<i class="material-icons prefix">assignment_ind</i> -->	
+                        <select  id="proveedores" name="proveedores" >
+                            <option value="" href="" disabled selected>Elija el Proveedor</option>
+                            <?php
+                            
+                                $stmt = $mysqli->select("proveedores",
+                                [
+                                    "idproveedor","nombre"
+                                ]);
+                                
+                                if($stmt)
+                                {
+                                    foreach($stmt as $row)
+                                        echo '<option value="'.$row["idproveedor"].'">'.$row["nombre"].'</option>';
+                                }
+                                                                          					
+                            ?>
+                            				
+                        </select>
+                        <label for="proveedores">Proveedores</label>
+				</div>              
                 
             </div>           
         </form>       
@@ -92,11 +110,7 @@
                         <input id="nombre-producto" length="50" name="nombre-producto" type="text" class="validate" > 
                         <label for="nombre-producto">Producto</label>
                     </div>
-                    <div class="input-field col s12">
-                        <input id="descripcion-producto" length="300"  maxlength="300" name="descripcion-producto" type="text" class="validate"  >
-                        <label for="descripcion-producto">Descripcion</label>
-                    </div>
-                    
+                                        
                     <div class="input-field col s12" >
 						<!--<i class="material-icons prefix">assignment_ind</i> -->	
                         <select  id="proveedores-producto" name="proveedores-producto" >
@@ -118,7 +132,7 @@
                             				
                         </select>
                         <label for="proveedores-producto">Proveedores</label>
-				    	</div>
+				    </div>
 			
                     <div class="input-field col s12">
 						<!-- <i class="material-icons prefix">assignment_ind</i> -->	
@@ -127,9 +141,12 @@
                             				
                         </select>
                         <label for="categoria-producto">Categorias</label>
-				    	</div>
+				    </div>
 						
-						
+					<div class="input-field col s12">
+                        <textarea id="descripcion-producto" length="300"  maxlength="300" name="descripcion-producto" type="text" class="validate materialize-textarea" required></textarea>
+                        <label for="descripcion-producto">Descripcion</label>
+                    </div>	
                     <input  type="submit" style="display:none">
                 </div> 
             </div>
@@ -149,6 +166,10 @@
  $(document).ready(function(){
      
      $("#proveedores-producto").change(function(){
+         llenarproveedor();
+     });
+     
+     $("#proveedores").change(function(){
          llenarproveedor();
      });
      
@@ -288,7 +309,8 @@ function mostrarfrmagregar (){
             dismissible: false,
             ready: function() {
                $("#nombre-producto").val($("#Nombre").val());
-               $("#descripcion-producto").val($("#Descripcion").val());
+                $("#proveedores-producto").val($("#proveedores").val());
+                $('select').material_select();
                 Materialize.updateTextFields();
             },
             complete: function() { 
@@ -300,7 +322,13 @@ function mostrarfrmagregar (){
     }
     
     function llenarproveedor(){
-        var fillprov = $("#proveedores-producto").val();
+        if ($("#proveedores").val()) {
+            var fillprov = $("#proveedores").val();
+        }
+        else {
+            var fillprov = $("#proveedores-producto").val();    
+        }
+        
         
          $.ajax({
                 url:"<?php echo GetURL("modulos/modadminproductos/serviceadminproductos.php?accion=5") ?>",

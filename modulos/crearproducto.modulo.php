@@ -59,7 +59,7 @@
 	}	
 
     AddHistory("Productos",GetURL("dashboard/adminproductos"),true);
-	AddHistory(($idproducto != "") ? $stmt[0]["nombre"] : "Nuevo Poroducto","");
+	AddHistory(($idproducto != "") ? $stmt[0]["nombre"] : "Nuevo Producto","");
 
     
 ?>	
