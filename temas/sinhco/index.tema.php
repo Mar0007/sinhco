@@ -35,7 +35,7 @@
                         <a href="<?php echo GetURL("inicio");?>" class="brand-logo light-blue-text text-accent-4"><img class="logo responsive-img" src="<?php echo GetURL("uploads/static/logo.png");?>"></a>
                         <a href="#" data-activates="mobile-demo" class="button-collapse light-blue-text text-accent-4"><i class="material-icons">menu</i></a>
                           <?php
-                            echo menu($mysqli,3,"right hide-on-med-and-down");
+                            echo menu($mysqli,3,"right boxline hide-on-med-and-down");
                             echo menu($mysqli,3,"side-nav","mobile-demo");                            
                           ?>                       
                     </div>

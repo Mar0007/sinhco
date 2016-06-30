@@ -368,6 +368,15 @@ height: 240px;" src="<?php echo GetURL("uploads/covers/cover-small.jpg")?>">
           html: "Por tu seguridad debes de escribir tu contraseña para poder continuar.",
           input: "password",
           closeOnConfirm: false,
+            inputValidator: function(value) {
+            return new Promise(function(resolve, reject) {
+              if (CheckPassword(value) === "0") {
+                resolve();
+              } else {
+                reject('Contraseña no concuerda.');
+              }
+            });
+          }
         }).then( function (inputValue) {
           if (inputValue === false) return false;
           if (inputValue === "") {
@@ -394,7 +403,7 @@ height: 240px;" src="<?php echo GetURL("uploads/covers/cover-small.jpg")?>">
                 Editar();                
 			}				
 			else
-                if(data == "1"){
+                if(data == "1"){                    
                     swal.showInputError("Contraseña actual no concuerda");
                     return false                   
                 }
@@ -402,5 +411,5 @@ height: 240px;" src="<?php echo GetURL("uploads/covers/cover-small.jpg")?>">
                     swal("Error", data, "error");
 		});
     }
-				
+				    
 </script>

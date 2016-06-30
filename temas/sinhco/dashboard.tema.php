@@ -7,6 +7,7 @@
     if($TituloModulo) AddHistory($TituloModulo,"");
     
     //<--- Get Module ---> 
+    if($modulo == 'inicio') $modulo = 'dashboard';
     $ModuloHTML = modulo($modulo ,$mysqli, "", "ModuleView",true);
     if(!$ModuloHTML)
     {

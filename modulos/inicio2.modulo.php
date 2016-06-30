@@ -73,49 +73,28 @@
 		<h3 class="light center blue-grey-text text-darken-2">Nuestros productos</h3>
 		<p class="center light">Conoce nuestra variedad de productos</p>
 	</div>
-	<div class="row"> <!-- SECTION CONTENT -->
-		<div class="col s12 m4 l4">
-			<div class="card">
-				<div class="card-image">
-					<img src="/recursos/recursos/img/norweco.png">
-					<a href="products.html" class="card-floating-btn card-fab-btn right btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect wave-light">
-						<span><i class="material-icons">open_in_new</i></span>
-					</a>
-				</div>
-				<div class="card-content">
-					<h2 class="card-title">Norweco</h2>
-					<p class="medium grey-text truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse condimentum maximus orci at porttitor.</p>
-				</div>                       
-			</div>
-		</div>
-		<div class="col s12 m4 l4">
-			<div class="card">
-				<div class="card-image">
-					<img src="/recursos/recursos/img/rotoplas.png">
-					<a href="products.html" class="card-floating-btn card-fab-btn right btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect wave-light">
-						<span><i class="material-icons">open_in_new</i></span>
-					</a>
-				</div>
-				<div class="card-content">
-					<h2 class="card-title">Rotoplas</h2>
-					<p class="medium grey-text truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse condimentum maximus orci at porttitor.</p>
-				</div>                     
-			</div>
-		</div>
-		<div class="col s12 m4 l4">
-			<div class="card">
-				<div class="card-image">
-					<img  src="/recursos/recursos/img/fill-rite.png">
-					<a href="products.html" class="card-floating-btn card-fab-btn right btn-floating btn-large light-blue accent-4 z-depth-2 waves-effect wave-light">
-						<span><i class="material-icons">open_in_new</i></span>
-					</a>                                
-				</div>                            
-				<div class="card-content">
-					<h2 class="card-title">Fill-Rite</h2>
-					<p class="medium grey-text truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse condimentum maximus orci at porttitor.</p>
-				</div>                       
-			</div>				    
-	</div>
+	<div class="row container"> <!-- SECTION CONTENT -->
+        <div class="col s12 m6 l6">
+          <div class="card">
+            <div class="card-image">
+              <img src="/uploads/static/norweco.jpg">              
+            </div>            
+            <div class="card-action">
+              <a href="norweco">Ver productos</a>
+            </div>
+          </div>
+        </div>
+        <div class="col s12 m6 l6">
+          <div class="card ">
+            <div class="card-image">
+              <img src="/uploads/static/rotoplas.jpg">
+            </div>            
+            <div class="card-action">
+              <a href="productos">Ver productos</a>
+            </div>
+          </div>
+        </div>
+		
 	</div>
 </div><!-- FOR CONTAINER end -->
 
