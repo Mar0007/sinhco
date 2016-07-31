@@ -1,5 +1,5 @@
 <?php
-    require_once '/recursos/medoo.php';    
+    require_once 'recursos/medoo.php';    
     
     //Mail info
     $phpEmailUser = "fbsinhco@gmail.com";
