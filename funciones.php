@@ -644,11 +644,13 @@
         if(!$UsePHPMailer)
         {            
             $headers = "MIME-Version: 1.0" . "\r\n";
-            $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-            $headers .= 'From: <no-reply@Sinhco.com>' . "\r\n";
+            $headers .= "Content-type: text/html; charset=UTF-8" . "\r\n";
+            $headers .= "From: <no-reply@". implode('.', array_slice(explode('.', $_SERVER['HTTP_HOST']), -2)) .">" . "\r\n" .
+                        "Reply-To: ". $phpEmailUser . "\r\n" .
+                        "X-Mailer: PHP/" . phpversion();
             
             $errLevel = error_reporting(E_ALL ^ E_NOTICE);
-            $bError = !mail($ToEmail,$subject,$Message["html"],$headers);
+            $bError = !mail($ToEmail,$Subject,$Message["html"],$headers);
             error_reporting($errLevel);
             
             if($bError) $response->error  = error_get_last()["message"];            

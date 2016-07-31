@@ -35,7 +35,7 @@
         <input type="hidden" id="Usertoken" value="<?php echo $UserToken?>">
         <!-- Import SHA512 functions -->
         <script src="<?php echo GetURL("recursos/sha512.js") ?>"></script>
-        <a class="btn-floating btn-medium blue darken-1 waves-effect" style="position:absolute;top:10px;left:10px" href="login">
+        <a class="btn-floating btn-medium blue darken-1 waves-effect" style="position:absolute;top:10px;left:10px" href="<?php echo GetURL("login")?>">
             <i class="material-icons">arrow_back</i>
         </a>	
 
@@ -175,7 +175,7 @@ function UpdatePass()
 </div>
 <div class="divider"></div>
 <div class="row center">
-    <a href="login" style="position:relative;top:20px;">Usar una cuenta diferente</a>
+    <a href="<?php echo GetURL("login")?>" style="position:relative;top:20px;">Usar una cuenta diferente</a>
 </div>
 
 <script>

@@ -18,7 +18,7 @@ $smtp->do_debug = SMTP::DEBUG_CONNECTION;
 
 try {
     //Connect to an SMTP server
-    if (!$smtp->connect('mail.example.com', 25)) {
+    if (!$smtp->connect('smtp.gmail.com', 25)) {
         throw new Exception('Connect failed');
     }
     //Say hello
