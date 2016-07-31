@@ -28,7 +28,7 @@
     $IDSlider = 0;
     
 	//Get proyect info
-	$stmtSlider = $mysqli->select("Slider",["nombre"],["idslider" => $IDSlider])[0];    
+	$stmtSlider = $mysqli->select("slider",["nombre"],["idslider" => $IDSlider])[0];    
     if( CheckDBError($mysqli) ) return;
 ?>
 

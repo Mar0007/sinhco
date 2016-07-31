@@ -17,17 +17,17 @@
     {
           //Pre-check token
           define('SECONDS_PER_DAY', 86400);
-          if(!$mysqli->has('usuario_reset',
+          if(!$mysqli->has("usuario_reset",
           [
             "AND" =>
             [
               "idusuario" => $UserID,
               "token"     => $UserToken, 
-              "fecha[<>]" => [date("Y-m-d", time() - 1 * SECONDS_PER_DAY), date("Y-m-d")]
+              "fecha[<>]" => [date("Y-m-d H:i:s", time() - SECONDS_PER_DAY), date("Y-m-d H:i:s")]
             ]
           ]))
           {
-            throw new Exception("Invalid token");
+            throw new Exception("Invalid token:" . $mysqli->last_query() );
             return;
           }              
 ?>

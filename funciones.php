@@ -552,7 +552,10 @@
         if(!in_array(basename($_SERVER['SCRIPT_NAME']),$Scripts)) 
             $Path = RelativePathUp($Path,2);            
         
-        return str_replace("\\","",$Path."/");
+        $Path = str_replace("\\","",$Path);
+
+        if($Path == "/") return $Path;        
+        return $Path . "/";
     }
     
     function RelativePathUp($Path,$Levels = 1)

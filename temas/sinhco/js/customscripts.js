@@ -97,8 +97,13 @@ function toggleFullScreen()
     }
 }
 
-function ConfirmDelete(title,content,ckMessage = "",YesCallback,strDelete = "borrar", strCancel = "cancelar")
+function ConfirmDelete(title,content,ckMessage,YesCallback,strDelete, strCancel)
 {
+    ckMessage = ckMessage || '';
+    strDelete = strDelete || 'borrar';
+    strCancel = strCancel || 'cancelar';
+
+
     var HTML = 
     '<div id="confirmar-eliminar" class="modal delete-item">'+
         '<div class="modal-content">'+
