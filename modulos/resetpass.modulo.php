@@ -51,8 +51,8 @@
                     <label for="txtconfirm">Confirmar contraseña</label>
                 </div>        
                 <input type="submit" value="Ingresar" style="display:none"/>
-                <a id="btnSend" class="btn-floating btn-large right right-top-margin blue darken-1 waves-effect"   onclick="$(this).parents().find(':submit').click();">
-                    <i class="material-icons">send</i>
+                <a id="btnSend" class="btn right-top-margin blue darken-1 waves-effect"   onclick="$(this).parents().find(':submit').click();">
+                    Cambiar contraseña
                 </a>	
             </form>
         </div>
@@ -155,25 +155,28 @@ function UpdatePass()
     }
 ?>
 
-<a class="btn-floating btn-medium blue darken-1 waves-effect" style="position:absolute;top:10px;left:10px" href="login">
-    <i class="material-icons">arrow_back</i>
-</a>	
 
-<div class="row center">
-    <form id="frmReset" action="javascript:SendResetEmail()" method="POST" autocomplete="off">
-        <label class="light"> Restablecer contraseña </label>
+<div id="resetform" class="row center">
+<?php
+		echo "<img id=\"Image\" class=\"circle responsive-img\" style=\"width:128px;height:auto\" src=\"uploads/static/email.svg\">";
+	?>
+    <form id="frmReset" action="javascript:SendResetEmail()" method="POST" autocomplete="on">
+
         <label id="lberror" class="light" style="display:none"></label>        
         <div class="input-field col s12">		
-            <input type="email" class="validate" name="correo" id="txtcorreo" required />
+            <input type="email" class="validate" name="correo" id="txtcorreo" required autocomplete="email"/>
             <label for="txtcorreo">Correo</label>
         </div>
         <input type="submit"  value="Ingresar" style="display:none"/>
-        <a id="btnSend" class="btn-floating btn-large right right-top-margin blue darken-1 waves-effect"   onclick="$(this).parents().find(':submit').click();">
-            <i class="material-icons">send</i>
+        <a id="btnSend" class="btn right-top-margin blue darken-1 waves-effect"   onclick="$(this).parents().find(':submit').click();">
+            Recuperar contraseña
         </a>	
     </form>
 </div>
-
+<div class="divider"></div>
+<div class="row center">
+    <a href="login" style="position:relative;top:20px;">Usar una cuenta diferente</a>
+</div>
 
 <script>
 

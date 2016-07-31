@@ -76,7 +76,9 @@
     .modal:not(.modal.bottom-sheet){
         width:95% !important;
     }
-    
+    #login-card.card-panel{
+        width: 345px !important;
+    }
     
 }
 
@@ -120,6 +122,9 @@
         height: 262px;
         max-width: 220px;
         width: calc(25% - 8px);    
+    }
+    #login-card.card-panel{
+        width: 285px !important;
     }
 }
 
@@ -243,6 +248,10 @@ nav {
     left: 50%;
     margin: -24px;
     position: absolute;
+}
+img.img-size{
+    height: 281px;
+    object-fit: cover;
 }
 .user-img-input{    
     transition: background .3s;
@@ -419,6 +428,17 @@ nav {
     text-overflow: ellipsis;
     word-break: break-word;
 }
+
+.wrap-word{
+    margin-top: 4px;
+overflow: hidden;
+text-overflow: ellipsis;
+}
+
+.card-panel.width{
+    width: 370px;
+}
+
 .card-subtitle-small{
     font-size: 12px;
     margin-top: 4px;

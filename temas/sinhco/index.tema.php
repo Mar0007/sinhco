@@ -32,7 +32,7 @@
             <nav class="grey lighten-5">
                 <div class="nav-wrapper">
                     <div class="">
-                        <a href="<?php echo GetURL("inicio");?>" class="brand-logo light-blue-text text-accent-4"><img class="logo responsive-img" src="<?php echo GetURL("uploads/static/logo.png");?>"></a>
+                        <a href="<?php echo GetURL("inicio");?>" class="brand-logo light-blue-text text-accent-4"><img class="logo responsive-img" src="<?php echo GetURL("uploads/static/logo.svg");?>"></a>
                         <a href="#" data-activates="mobile-demo" class="button-collapse light-blue-text text-accent-4"><i class="material-icons">menu</i></a>
                           <?php
                             echo menu($mysqli,3,"right boxline hide-on-med-and-down");

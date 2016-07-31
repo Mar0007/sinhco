@@ -66,8 +66,8 @@
                                         <div class="card medium hoverable">
                                             <div class="card-image waves-effect waves-block waves-light">
                                                 <a href="proyectview/'.$row["idproyecto"].'">
-                                                    <img class="responsive-img" src="'.GetProyectImagePath($row["idproyecto"], false).'">      
-                                                    <span class="card-title">'.$row["nombre"].'</span>
+                                                    <img class="responsive-img img-size" src="'.GetProyectImagePath($row["idproyecto"], false).'">      
+                                                    <span class="card-title word-wrap">'.$row["nombre"].'</span>
                                                 </a>
                                             </div>
                                             <div class="card-content">
