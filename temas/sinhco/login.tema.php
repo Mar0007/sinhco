@@ -1,5 +1,5 @@
 <?php
-    $Modulo = modulo($loginmod ,$mysqli, "bloque card-panel", "",true);
+    $Modulo = modulo($loginmod ,$mysqli, "bloque card-panel width", "login-card",true);
     
     if(empty($Modulo))
     {
@@ -47,23 +47,34 @@
     </style>
 </head>
 <body>    
-    <div class="row center " style="margin-top: 50px">
-        <div class="col s12">
-            <img src="<?php echo GetURL("recursos/img/sinhco.png")?>">
-        </div>  
-    </div>
-    <div class="row center ">
-        <div class="col s12">
-            <h4 class="light">Brindando soluciones reales y prácticas.</h4>
-            
-        </div>  
-    </div>
-    <div class="container center-wrapper" style="margin-top: 50px">        
+    <header>
+        <div class="navbar">
+            <nav class="light-blue z-depth-0">
+                <div class="nav-wrapper">
+                    <div class="" >
+                       <img class="brand-logo center responsive-img" style="max-height:44px;margin-top:10px; margin-left:0px" src="<?php echo GetURL("uploads/static/sinhco-white.svg");?>">                        
+                        <h5 class="center no-pad no-margin" style="position:relative;padding-top:70px">Inicia sesión para administrar el sitio</h5>
+                    </div>
+                    
+                </div>
+            </nav>
+        </div>        
+    </header>
+    <div class="light-blue " style="height:28vh;"></div>
+    <!-- here comes the login panel-->
+    <div class="container center-wrapper" style="margin-top: -17vh; ">        
         <div class="row">
             <?php
                 echo $Modulo;
             ?>
         </div>
-    </div>
+        
+    </div>    
+    
 </body>
+    <script>
+      $(document).ready(function(){
+        $('.tooltipped').tooltip({delay: 50});
+      });
+    </script>
 </html>

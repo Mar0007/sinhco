@@ -44,12 +44,14 @@
 	<input type="hidden" name="passw" id="passw" value=""/>
 	<input type="submit"  value="Ingresar" style="display:none"/>
 	
-    <a class="btn-floating btn-large right right-top-margin blue darken-1 waves-effect" onclick="$('#loginform').find(':submit').click();">
-        <i class="material-icons">send</i>
+    <a class="btn right-top-margin blue darken-1 waves-effect" onclick="$('#loginform').find(':submit').click();">
+        Iniciar sesión
     </a>	
 </form>
-<a href="<?php echo GetURL("reset") ?>" style="margin-left:10px;bottom:0px;margin-top:60px" class="left">Recuperar contraseña</a>
     </div>
+<div class="center row">
+    <a href="<?php echo GetURL("reset") ?>" style="position:relative;top:6%;" >Olvidé mi contraseña</a>
+</div>
 <!-- Import SHA512 functions -->
 <script src="<?php echo GetURL("recursos/sha512.js") ?>"></script>
 <script>		

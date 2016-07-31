@@ -35,7 +35,7 @@
                 <div class="section"></div>
                 <div class="container">
                     <div id="" class="center col s12 m6 l6">
-                    <img style="height:200px; weight:200px;" class="" src="<?php echo GetURL("uploads/static/logo2.png");?>">
+                    <img style="height:200px; weight:200px;" class="" src="<?php echo GetURL("uploads/static/logo2.svg");?>">
                 </div>
                 <div class="col s12 m6 l6">
                     <p class="medium ">Fundada en el año 2009 con la finalidad de ser una empresa de ingeniería especializada en el Suministro e Instalación de Obras Civiles e Hidráulicas incluyendo la comercialización de equipos de almacenamiento y distribución de agua. Es una empresa consolidada que se dedicada a servicios de ingeniería hidráulica, mecánica y civil,ofreciendo calidad basada en tecnología de punta y con el respaldo de personal capacitado y comprometido.</p>

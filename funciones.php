@@ -781,7 +781,7 @@
 		if(count($result) > 0 )
 			return GetURL(ltrim($result[0],"/."));
 		else
-			return GetURL("uploads/avatars/default.png");		
+			return GetURL("uploads/avatars/default.svg");		
 	}
     
     function GetProyectImagePath($idproyecto, $bIsService = false)

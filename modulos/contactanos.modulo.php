@@ -30,20 +30,20 @@
                 <p class="center">Llena el siguiente formulario de contacto para enviarnos un correo electrónico. Te responderemos en un plazo de 24 horas.</p>
             </div>
             <div class="row container section">
-                <form class="col s12" method="post" action="javascript:SendEmail()" autocomplete="off">
+                <form class="col s12" method="post" action="javascript:SendEmail()" autocomplete="on">
                     <div class="row">
                         <div class="input-field col s6">
-                            <input id="first_name" name="nombre" type="text" class="validate" required>
+                            <input id="first_name" name="nombre" type="text" class="validate" required autocomplete="fname" autofocus>
                             <label for="first_name">Nombre</label>
                         </div>
                         <div class="input-field col s6">
-                            <input id="last_name" name="apellido" type="text" class="validate" required>
+                            <input id="last_name" name="apellido" type="text" class="validate" required autocomplete="lname">
                             <label for="last_name">Apellido</label>
                         </div>
                     </div>
                     <div class="row">
                         <div class="input-field col s6">
-                            <input id="email" name="email" type="email" class="validate" required>
+                            <input id="email" name="email" type="email" class="validate" required autocomplete="email" title="Por favor ingresa un correo electrónico.">
                             <label for="email">Email</label>
                         </div>
                         <div class="input-field col s6">
@@ -53,7 +53,7 @@
                     </div>    
                     <div class="row">
                         <div class="input-field col s6">
-                            <input id="number" name="telefono" type="text" class="validate" required>
+                            <input id="number" name="telefono" type="tel" class="validate" required autocomplete="tel" pattern="\d*" maxlength="15" title="Por favor ingresa un número de teléfono.">
                             <label for="number">Teléfono</label>
                         </div>
                         <div class="input-field col s6">
@@ -69,7 +69,7 @@
                     <div class="row">
                         <div class="input-field col s12">
                             <textarea id="message" maxlength="1500" length="1500" name="mensaje" class="materialize-textarea" required></textarea>
-                            <label for="message">Textarea</label>
+                            <label for="message">Mensaje</label>
                         </div>
                     </div>   
                     <input type="submit" style="display:none">
