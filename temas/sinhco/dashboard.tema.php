@@ -20,7 +20,7 @@
             <li class="user-details cyan darken-2">
             <div class="row">
                 <div class="col s4 m4 l4">
-                    <img src=' . GetImageURL(GetUserImagePath($idusuario),64,64) . ' alt="" class="circle valign profile-image" style="width:60px; height:60px">
+                    <img src="' . GetImageURL(GetUserImagePath($idusuario),64,64) .'" alt="" class="circle valign profile-image" style="width:60px; height:60px">
                 </div>
                 <div class="col s8 m8 l8">
                     <ul id="profile-dropdown" class="dropdown-content">
@@ -91,7 +91,7 @@
     <!-- Custom CSS -->
     <link type="text/css" rel="stylesheet" href="<?php echo GetURL($tema."css/styles.css")?>" media="screen,projection">
     <link type="text/css" rel="stylesheet" href="<?php echo GetURL($tema."css/stylesgk.css")?>" media="screen,projection">
-    <link type="text/css" rel="stylesheet" href="<?php echo GetURL("recursos/iconfont.css")?>">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     
     <!-- Custom JS -->
     <script type="text/javascript" src="<?php echo GetURL($tema."js/customscripts.js")?>"></script>

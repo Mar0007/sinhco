@@ -373,7 +373,8 @@ var SearchAjaxFail = function(AjaxObject)
 function isHTML(str) 
 {
     var doc = new DOMParser().parseFromString(str, "text/html");
-    return Array.from(doc.body.childNodes).some(node => node.nodeType === 1);
+    //return [].slice.call(doc.body.childNodes).some(node => node.nodeType === 1);
+    return [].slice.call(doc.body.childNodes).some(function(node){return node.nodeType === 1});
 }
 
 // ----------- END Search --------------

@@ -645,8 +645,8 @@
         {            
             $headers = "MIME-Version: 1.0" . "\r\n";
             $headers .= "Content-type: text/html; charset=UTF-8" . "\r\n";
-            $headers .= "From: <no-reply@". implode('.', array_slice(explode('.', $_SERVER['HTTP_HOST']), -2)) .">" . "\r\n" .
-                        "Reply-To: ". $phpEmailUser . "\r\n" .
+            $headers .= "From: Sinhco <".$phpEmailUser.">" . "\r\n" .
+                        "Reply-To: Sinhco <". $phpEmailUser .">\r\n" .
                         "X-Mailer: PHP/" . phpversion();
             
             $errLevel = error_reporting(E_ALL ^ E_NOTICE);

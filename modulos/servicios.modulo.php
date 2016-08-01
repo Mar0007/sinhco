@@ -33,9 +33,9 @@
 
        
 <div class="section indigo-bg"><!-- FOR CONTAINER end -->
-    <div class="row"> <!-- SECTION TITLE -->
-        <h2 class="light center blue-grey-text text-darken-3">Nuestros servicios</h2>                
-    </div>
+<div class="row"> <!-- SECTION TITLE -->
+    <h2 class="light center blue-grey-text text-darken-3">Nuestros servicios</h2>                
+</div>
 
 <div id="services" class="indigo-bg section"></div>
 <div class="row container"> <!-- SECTION CONTENT -->
@@ -73,7 +73,7 @@
     </div>
     <div class="modal-footer"></div>
 </div>
-
+</div>
 <script>
 var ajax_request;
 function OpenModal(id)

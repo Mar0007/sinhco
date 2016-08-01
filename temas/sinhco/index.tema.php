@@ -57,42 +57,38 @@
     <main>
         <?php echo $Modulo ?>
     </main>
-    
-    <footer class="page-footer light-blue darken-4" style="margin-top:0px">
-          <?php
-                bloque('footer',$mysqli,"",'blqfooter');
-          ?>
-          <div class="footer-copyright">
-            <div class="container">
-                © 2014 Copyright Text
-                <a class="grey-text text-lighten-4 right" href="#!">Our-Link</a>
-            </div>
-          </div>
-    </footer>
-            
-    
+<footer class="page-footer light-blue darken-4" style="margin-top:0px">
+        <?php
+            bloque('footer',$mysqli,"",'blqfooter');
+        ?>
+        <div class="footer-copyright">
+        <div class="container">
+            © 2014 Copyright Text
+            <a class="grey-text text-lighten-4 right" href="#!">Our-Link</a>
+        </div>
+        </div>
+</footer>          
+<script>        
+    $(document).ready(function()
+    {           
+        smoothScroll(); 
+
+        $('.slider').slider({full_width: true, indicators:true});
+        $(".button-collapse").sideNav(); 
+        $('select').material_select();
+        $('.modal-trigger').leanModal();
+        $('.parallax').parallax();
+        $('.dropdown-button').dropdown({
+            inDuration: 300,
+            outDuration: 225,
+            constrain_width: false, // Does not change width of dropdown to that of the activator
+            hover: false, // Activate on hover
+            gutter: 0, // Spacing from edge
+            belowOrigin: true, // Displays dropdown below the button
+            alignment: 'left' // Displays dropdown with edge aligned to the left of button
+        }
+        );            
+    });        
+</script>                  
 </body> 
-    <script>        
-        $(document).ready(function()
-        {           
-            smoothScroll(); 
-    
-            $('.slider').slider({full_width: true, indicators:true});
-            $(".button-collapse").sideNav(); 
-            $('select').material_select();
-			$('.modal-trigger').leanModal();
-            $('.parallax').parallax();
-            $('.dropdown-button').dropdown({
-                  inDuration: 300,
-                  outDuration: 225,
-                  constrain_width: false, // Does not change width of dropdown to that of the activator
-                  hover: false, // Activate on hover
-                  gutter: 0, // Spacing from edge
-                  belowOrigin: true, // Displays dropdown below the button
-                  alignment: 'left' // Displays dropdown with edge aligned to the left of button
-                }
-              );            
-        });
-        
-    </script>    
 </html>

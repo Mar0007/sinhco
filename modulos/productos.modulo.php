@@ -9,8 +9,6 @@
 	}	
     
 ?>
-<body>
-   
     <section id="hero-slider">
         
         <div class="section banner banner-pad-bot z-depth-1">
@@ -45,7 +43,7 @@
        </div>
     </div>
         <div class="">
-            <div id="test1" class=" col s12"  >
+            <div id="test1" class="col s12">
                 <div class="row"> 
                     <div class="container">
                         <ul id="1" >
@@ -53,7 +51,7 @@
                     </div>
                 </div> 
             </div>
-            <div id="test2" class=" col s12" " >
+            <div id="test2" class="col s12">
                 <div class="row"> 
                     <div class="container">
                         <ul id="2"> 
@@ -62,7 +60,7 @@
                 </div>
                 
             </div>
-            <div id="test3" class=" col s12" ">
+            <div id="test3" class="col s12">
                 
                 <div class="row"> 
                     <div class="container">
@@ -72,7 +70,7 @@
                 </div>
             </div>
             
-            <div id="test4" class=" col s12" ">
+            <div id="test4" class="col s12">
                     <div class="row"> 
                     <div class="container">
                         <ul id="4">  
@@ -88,12 +86,7 @@
             </div>
         </div>
         
-    </main>
-    
-   
-            
-    
-</body> 
+    </main> 
     <script>
     
         $(function() {  
@@ -181,5 +174,3 @@
     }
     
     </script>
-    
-</html>

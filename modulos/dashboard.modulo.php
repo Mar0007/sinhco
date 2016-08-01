@@ -21,10 +21,10 @@
 
 
 <script>
-window.onbeforeunload = function() {            
-     if(ajax_request) ajax_request.abort();
-     return null;
-};
+//window.onbeforeunload = function() {            
+//     if(ajax_request) ajax_request.abort();
+//     return null;
+//};
     
 $(document).ready(function() {
     $("#ModuleView").append(HTMLLoader);
